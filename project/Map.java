@@ -5,8 +5,6 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Set;
 
 //Karte des Spiels
 public class Map {
@@ -14,7 +12,7 @@ public class Map {
     private AbstractBaseGraph<Coords, DefaultWeightedEdge> graphOfMap;
     //Liste an Gebäuden
     private ArrayList<Coords> buildings;
-
+    
     public Map(int length, int width){
         //Initialisiert den Graphen und die Liste der Gebäude
         graphOfMap = createMap(length, width);
