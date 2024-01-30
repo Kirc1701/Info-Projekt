@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Graphic extends JFrame {
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
