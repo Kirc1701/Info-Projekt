@@ -181,42 +181,6 @@ public class Graphic extends JFrame {
                     }
                     //Wird aufgerufen, wenn die Maus losgelassen wird
                     public void mouseReleased(MouseEvent e) {
-//                        if(!pressed){
-//                            pressed = true;
-//                            popup = new JDialog(getGraphic(), "Select Building", true);
-//                            popup.setLayout(new FlowLayout());
-//                            ActionListener actionListener = e12 -> {
-//                                popup.setVisible(false);
-//                                if (e12.getActionCommand().equals("Turm")) {
-//                                    for(Coords coords : coords){
-//                                        karte.addBuilding(new Coords(coords.getX(), coords.getY()), "Turm");
-//                                    }
-//                                    repaint();
-//                                } else if (e12.getActionCommand().equals("Mauer")) {
-//                                    for(Coords coords : coords) {
-//                                        karte.addBuilding(new Coords(coords.getX(), coords.getY()), "Mauer");
-//                                    }
-//                                    repaint();
-//                                }
-//                            };
-//                            JButton m = new JButton(new ImageIcon(finalMauer.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
-//                            m.setActionCommand("Mauer");
-//                            m.addActionListener(actionListener);
-//
-//                            JButton t = new JButton(new ImageIcon(finalTurm.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
-//                            t.setActionCommand("Turm");
-//                            t.addActionListener(actionListener);
-//
-//                            JButton c = new JButton("Cancel");
-//                            c.setActionCommand("");
-//                            c.addActionListener(actionListener);
-//                            popup.add(m);
-//                            popup.add(t);
-//                            popup.add(c);
-//                            popup.setSize(150, 100);
-//                            popup.setLocation(e.getX() - 75, e.getY() - 50);
-//                            popup.setVisible(true);
-//                        }
                     }
                     //Wird aufgerufen, wenn die Maus in den Frame kommt
                     public void mouseEntered(MouseEvent e) {
