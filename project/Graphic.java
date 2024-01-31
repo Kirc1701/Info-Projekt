@@ -154,6 +154,7 @@ public class Graphic extends JFrame {
                                     repaint();
                                 }else{
                                     popup.setVisible(false);
+                                    repaint();
                                 }
                             };
                             //Erstellung der Buttons
