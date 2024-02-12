@@ -1,5 +1,7 @@
 package project;
 
+import project.Graphikcontroller.EndbildschirmGewonnen;
+import project.Graphikcontroller.EndbildschirmVerloren;
 import project.Graphikcontroller.HauptgrafikSpiel;
 import project.Graphikcontroller.Startbildschirm;
 import project.Objekte.Basis.Basis;
@@ -118,7 +120,13 @@ public class Main {
             TimeUnit.MILLISECONDS.sleep(1000);
         }
         aktuelleGrafik.setVisible(false);
+        int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
+        int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
         aktuelleGrafik.dispose();
-        System.exit(0);
+        if(karte.playerWins()){
+            aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
+        }else{
+            aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
+        }
     }
 }
