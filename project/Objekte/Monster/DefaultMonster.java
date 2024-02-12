@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DefaultMonster extends Monster{
     public DefaultMonster(Coords position) {
-        super(10, 20, position, 5);
+        super(10, 20, position, 5, 2);
     }
 
     @Override

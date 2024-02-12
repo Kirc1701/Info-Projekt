@@ -7,14 +7,14 @@ public class Objekt {
     protected int health;
     protected Coords position;
     protected String type;
-    protected long speed;
+    protected long attackSpeed;
 
-    public Objekt(int pStrength, int pHealth, Coords position, String type, long speed){
+    public Objekt(int pStrength, int pHealth, Coords position, long speed, String type){
         strength = pStrength;
         health = pHealth;
         this.position = position;
         this.type = type;
-        this.speed = speed;
+        this.attackSpeed = speed;
     }
 
     public int getStrength() {
@@ -50,10 +50,10 @@ public class Objekt {
     }
 
     public long getSpeed() {
-        return speed;
+        return attackSpeed;
     }
 
     public void setSpeed(long speed) {
-        this.speed = speed;
+        this.attackSpeed = speed;
     }
 }

@@ -5,15 +5,16 @@ import project.Objekte.Monster.Monster;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DefaultTurm extends Turm{
     public DefaultTurm(Coords position){
-        super(10, 25, position, 4);
+        super(10, 25, position, 4, 2);
     }
 
     @Override
-    public boolean shoot(Monster[] monsters) {
+    public boolean shoot(List<Monster> monsters) {
         Map<Monster, Double> distances = new HashMap<>();
         for (Monster monster: monsters) {
             if(position.isInRange(reach, monster.getPosition())){

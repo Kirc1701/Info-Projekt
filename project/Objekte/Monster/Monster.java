@@ -8,10 +8,12 @@ import java.awt.*;
 import java.util.List;
 import project.Graphic;
 
+import static project.Graphic.space;
+
 public abstract class Monster extends Objekt {
     protected int movingSpeed;
-    public Monster(int strength, int health, Coords position, int movingSpeed){
-        super(strength, health, position, "Monster");
+    public Monster(int strength, int health, Coords position, int movingSpeed, int attackSpeed){
+        super(strength, health, position, attackSpeed,  "Monster");
         this.movingSpeed = movingSpeed;
     }
 
@@ -30,21 +32,21 @@ public abstract class Monster extends Objekt {
         int directionY = position.getY() - oldPosition.getY();
         int x;
         int y;
-        int width = graphic.space;
-        int height = graphic.space;
+        int width = space;
+        int height = space;
         if(directionX < 0){
             x = oldPosition.getX()+directionX;
-            width = width - directionX * graphic.space;
+            width = width - directionX * space;
         }else{
             x = oldPosition.getX();
-            width = width + directionX * graphic.space;
+            width = width + directionX * space;
         }
         if(directionY < 0){
             y = oldPosition.getY()+directionY;
-            height = height - directionY * graphic.space;
+            height = height - directionY * space;
         }else{
             y = oldPosition.getY();
-            height = height + directionY * graphic.space;
+            height = height + directionY * space;
         }
         return new Rectangle(x, y, width, height);
     }

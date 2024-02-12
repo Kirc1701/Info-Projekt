@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Graphic extends JFrame implements Runnable{
+public class Graphic extends JFrame{
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
     public final static int space = 27;
     //Höhe und Breite des geöffneten Fensters in Pixeln
@@ -44,6 +44,7 @@ public class Graphic extends JFrame implements Runnable{
         setBackground(Color.white);
         setSize(width, height);
         setLayout(null);
+        setVisible(true);
     }
 
     //paint()-Methode
@@ -156,10 +157,10 @@ public class Graphic extends JFrame implements Runnable{
                                     }
                                     //Das popup wird deaktiviert
                                     popup.setVisible(false);
-                                    building_update_place = new Rectangle(x, y, space, space);
+                                    Main.building_update_place = new Rectangle(x, y, space, space);
                                     pressed[0] = false;
                                     //Das Fenster wird aktualisiert
-                                    building_update = true;
+                                    Main.building_update = true;
                                 //Wenn der Button "Mauer" gedrückt wird
                                 } else if (e1.getActionCommand().equals("Mauer")) {
                                     //Es wird eine Mauer an den x, y-Koordinaten zum Graphen hinzugefügt
@@ -167,12 +168,12 @@ public class Graphic extends JFrame implements Runnable{
                                         System.out.println("Something went wrong");
                                     }
                                     //Das popup wird deaktiviert
-                                    building_update_place = new Rectangle(x, y, space, space);
+                                    Main.building_update_place = new Rectangle(x, y, space, space);
                                     popup.repaint();
                                     popup.setVisible(false);
                                     pressed[0] = false;
                                     //Das Fenster wird aktualisiert
-                                    building_update = true;
+                                    Main.building_update = true;
                                 }else{
                                     popup.setVisible(false);
                                     pressed[0] = false;
@@ -221,32 +222,6 @@ public class Graphic extends JFrame implements Runnable{
         return this;
     }
 
-    @Override
-    public void run() {
-        setVisible(true);
-        try {
-            while (true) {
-//            System.out.println("Still going");
-                if (building_update) {
-                    System.out.println("Update happened");
-                    repaint(building_update_place.x*space, building_update_place.y*space, building_update_place.width, building_update_place.height);
-                    if (karte.gameOver()) {
-                        break;
-                    }
-                    building_update = false;
-                }
-                if (monster_update) {
-                    System.out.println("Update happened");
-                    repaint();
-                    if (karte.gameOver()) {
-                        break;
-                    }
-                    monster_update = false;
-                }
-                Thread.sleep(100);
-            }
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
+    public void animateShoot() {
     }
 }

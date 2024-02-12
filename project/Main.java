@@ -11,9 +11,9 @@ import static project.Graphic.space;
 
 
 public class Main {
+    public static boolean building_update = false;
+    public static Rectangle building_update_place = new Rectangle();
     public static void main(String[] args) throws InterruptedException {
-        boolean building_update = false;
-        Rectangle building_update_place;
         Rectangle monster_update_place;
         Karte karte = new Karte(25, 40, new Coords(39, 12), new Coords(0, 12));
         Graphic graphic = new Graphic(karte);
@@ -23,21 +23,26 @@ public class Main {
                 monster_update_place = karte.spawnMonster(graphic);
                 graphic.repaint(monster_update_place.x*space, monster_update_place.y*space, monster_update_place.width, monster_update_place.height);
             }
+            if (!karte.getMonsterList().isEmpty()) {
+                for (Monster monster : karte.getMonsterList()) {
+                    if (time % monster.getMovingSpeed() == 0) {
+                        monster_update_place = monster.makeMove(karte, graphic);
+                        graphic.repaint(monster_update_place.x*space, monster_update_place.y*space, monster_update_place.width, monster_update_place.height);
+                    }
+                }
+            }
             for(Objekt building : karte.getBuildings().values()){
                 if(building.getType().equals("Turm")){
                     Turm turm = (Turm) building;
                     if(time % turm.getSpeed() == 0){
-                        turm.shoot();
+                        turm.shoot(karte.getMonsterList());
+                        graphic.animateShoot();
                     }
                 }
             }
-            if (!karte.getMonsterList().isEmpty()) {
-                for (Monster monster : karte.getMonsterList()) {
-                    if (time % monster.getMovingSpeed() == 0) {
-                        graphic.monster_update_place = monster.makeMove(karte, graphic);
-                        graphic.monster_update = true;
-                    }
-                }
+            if(building_update){
+                graphic.repaint(building_update_place.x*space, building_update_place.y*space, building_update_place.width, building_update_place.height);
+                building_update = false;
             }
             time++;
             TimeUnit.MILLISECONDS.sleep(1000);

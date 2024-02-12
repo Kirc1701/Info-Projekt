@@ -5,6 +5,6 @@ import project.Objekte.Objekt;
 
 public abstract class Basis extends Objekt {
     public Basis(int strength, int health, Coords position){
-        super(strength, health, position, "Basis");
+        super(strength, health, position, 0, "Basis");
     }
 }
