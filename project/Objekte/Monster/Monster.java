@@ -6,10 +6,9 @@ import project.Objekte.Objekt;
 
 import java.awt.*;
 import java.util.List;
-import project.Graphic;
+import project.Graphikcontroller.HauptgrafikSpiel;
 
-import static project.Graphic.space;
-import static project.Graphic.titelbalken;
+import static project.Graphikcontroller.HauptgrafikSpiel.space;
 
 public abstract class Monster extends Objekt {
     protected int movingSpeed;
@@ -20,7 +19,7 @@ public abstract class Monster extends Objekt {
         schritteBisZiel = 50;
     }
 
-    public Rectangle makeMove(Karte karte, Graphic graphic){
+    public Rectangle makeMove(Karte karte, HauptgrafikSpiel graphic){
         List<Coords> path = getPath(karte);
         Coords oldPosition = position;
         if(path.isEmpty()){

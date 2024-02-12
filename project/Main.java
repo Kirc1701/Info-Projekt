@@ -1,5 +1,6 @@
 package project;
 
+import project.Graphikcontroller.HauptgrafikSpiel;
 import project.Objekte.Basis.Basis;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Objekt;
@@ -15,8 +16,8 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 import static org.apache.commons.lang3.math.NumberUtils.min;
-import static project.Graphic.space;
-import static project.Graphic.titelbalken;
+import static project.Graphikcontroller.HauptgrafikSpiel.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.titelbalken;
 
 
 public class Main {
@@ -28,7 +29,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         Karte karte = new Karte(25, 40, new Coords(39, 12), new Coords(0, 12));
-        Graphic graphic = new Graphic(karte);
+        HauptgrafikSpiel graphic = new HauptgrafikSpiel(karte);
         long time = 0;
         while(!karte.gameOver()){
             shotMonster = new HashMap<>();

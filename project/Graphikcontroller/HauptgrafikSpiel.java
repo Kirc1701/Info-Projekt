@@ -1,5 +1,8 @@
-package project;
+package project.Graphikcontroller;
 
+import project.Coords;
+import project.Karte;
+import project.Main;
 import project.Objekte.Mauer.DefaultMauer;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Objekt;
@@ -14,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Graphic extends JFrame{
+public class HauptgrafikSpiel extends JFrame{
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
     public final static int space = 27;
     public final static int titelbalken = 27;
@@ -26,7 +29,7 @@ public class Graphic extends JFrame{
     //Vorbereitung des popup-Fensters für die Auswahl
 
     //Konstruktor für die Klasse Graphic
-    public Graphic(Karte karte){
+    public HauptgrafikSpiel(Karte karte){
         //Initialisierung der Karte
         this.karte = karte;
         //Initialisierung der Höhe und Breite als Vielfaches der Node-Anzahl
@@ -261,7 +264,7 @@ public class Graphic extends JFrame{
 
     }
 
-    public Graphic getGraphic() {
+    public HauptgrafikSpiel getGraphic() {
         return this;
     }
 }

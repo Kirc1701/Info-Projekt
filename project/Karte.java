@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static project.Graphic.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.space;
 
 //Karte des Spiels
 public class Karte {
