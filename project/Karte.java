@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static project.Graphic.space;
+
 //Karte des Spiels
 public class Karte {
     //Der Graph der Karte
@@ -182,10 +184,10 @@ public class Karte {
         return playerWins() || basis.getHealth() <= 0;
     }
 
-    public Rectangle spawnMonster(Graphic graphic) {
+    public Rectangle spawnMonster() {
         Monster monster = level.getMonstersToSpawn().remove(0);
         monster.setPosition(spawnpoint);
         monsterList.add(monster);
-        return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), graphic.space, graphic.space);
+        return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), space, space);
     }
 }

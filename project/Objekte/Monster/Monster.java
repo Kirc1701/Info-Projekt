@@ -9,12 +9,15 @@ import java.util.List;
 import project.Graphic;
 
 import static project.Graphic.space;
+import static project.Graphic.titelbalken;
 
 public abstract class Monster extends Objekt {
     protected int movingSpeed;
+    protected int schritteBisZiel;
     public Monster(int strength, int health, Coords position, int movingSpeed, int attackSpeed){
         super(strength, health, position, attackSpeed,  "Monster");
         this.movingSpeed = movingSpeed;
+        schritteBisZiel = 50;
     }
 
     public Rectangle makeMove(Karte karte, Graphic graphic){
@@ -23,7 +26,9 @@ public abstract class Monster extends Objekt {
         if(path.isEmpty()){
             System.out.println("Something went seriously wrong.");
         }else {
-            System.out.println(path.size());
+            System.out.println(path);
+            schritteBisZiel = path.size() - 2;
+            System.out.println(schritteBisZiel);
             position = path.get(1);
         }
         //-1 if monster moves left; 0 if no movement on the x-axis happens; 1 if monster moves right
@@ -51,6 +56,10 @@ public abstract class Monster extends Objekt {
         return new Rectangle(x, y, width, height);
     }
 
+    public void attack(Karte karte){
+        karte.getBasis().setHealth(karte.getBasis().getHealth() - strength);
+    }
+
     protected abstract List<Coords> getPath(Karte karte);
 
     public int getMovingSpeed() {
@@ -59,5 +68,13 @@ public abstract class Monster extends Objekt {
 
     public void setMovingSpeed(int movingSpeed) {
         this.movingSpeed = movingSpeed;
+    }
+
+    public int getSchritteBisZiel() {
+        return schritteBisZiel;
+    }
+
+    public void setSchritteBisZiel(int schritteBisZiel) {
+        this.schritteBisZiel = schritteBisZiel;
     }
 }

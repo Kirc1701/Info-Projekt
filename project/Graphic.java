@@ -17,6 +17,7 @@ import java.io.IOException;
 public class Graphic extends JFrame{
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
     public final static int space = 27;
+    public final static int titelbalken = 27;
     //Höhe und Breite des geöffneten Fensters in Pixeln
     private final int width;
     private final int height;
@@ -30,7 +31,7 @@ public class Graphic extends JFrame{
         this.karte = karte;
         //Initialisierung der Höhe und Breite als Vielfaches der Node-Anzahl
         width = karte.getWidth() * space;
-        height = karte.getHeight() * space + 27; //Anpassung der Höhe unter Einbeziehung des Titelbalkens
+        height = karte.getHeight() * space + titelbalken; //Anpassung der Höhe unter Einbeziehung des Titelbalkens
         //WindowListener um das Schließen des Fensters zu registrieren
         addWindowListener(
                 new WindowAdapter() {
@@ -73,7 +74,7 @@ public class Graphic extends JFrame{
         }
         if(karte.getBasis() != null) {
             int basisX = karte.getBasis().getPosition().getX() * space + 1;
-            int basisY = karte.getBasis().getPosition().getY() * space + 1;
+            int basisY = karte.getBasis().getPosition().getY() * space + 1 + titelbalken;
             g.setColor(Color.black);
             g.drawImage(
                     basisImage,
@@ -88,13 +89,31 @@ public class Graphic extends JFrame{
             int width = (int) (lifeInPercent * (space - 2));
             g.drawLine(basisX, basisY, basisX + width, basisY);
         }
+        //Zeichnen der Monster
+        for(Monster monster : karte.getMonsterList()){
+            int monsterX = monster.getPosition().getX()*space+1;
+            int monsterY = monster.getPosition().getY()*space+1 + titelbalken;
+            g.setColor(Color.black);
+            g.drawImage(
+                    monsterImage,
+                    monsterX,
+                    monsterY,
+                    space-2,
+                    space-2,
+                    null
+            );
+            g.setColor(Color.red);
+            double lifeInPercent = ((double) monster.getHealth()) /  ((double) monster.getMaxHealth());
+            int width = (int)(lifeInPercent * (space - 2));
+            g.drawLine(monsterX, monsterY, monsterX + width, monsterY);
+        }
         //Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
         for(Coords buildingCoords : karte.getBuildings().keySet()){
             Objekt building = karte.getBuildings().get(buildingCoords);
             //Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
             if(building.getType().equals("Mauer")){
                 int mauerX = buildingCoords.getX()*space+1;
-                int mauerY = buildingCoords.getY()*space+1;
+                int mauerY = buildingCoords.getY()*space+1 + titelbalken;
                 //Zeichnen der Mauer
                 g.setColor(Color.black);
                 g.drawImage(
@@ -111,7 +130,7 @@ public class Graphic extends JFrame{
                 g.drawLine(mauerX, mauerY, mauerX + width, mauerY);
             }else if(building.getType().equals("Turm")){
                 int turmX = buildingCoords.getX()*space+1;
-                int turmY = buildingCoords.getY()*space+1;
+                int turmY = buildingCoords.getY()*space+1 + titelbalken;
                 //Zeichnen des Turms
                 g.setColor(Color.black);
                 g.drawImage(
@@ -128,29 +147,11 @@ public class Graphic extends JFrame{
                 g.drawLine(turmX, turmY, turmX + width, turmY);
             }
         }
-        //Zeichnen der Monster
-        for(Monster monster : karte.getMonsterList()){
-            int monsterX = monster.getPosition().getX()*space+1;
-            int monsterY = monster.getPosition().getY()*space+1;
-            g.setColor(Color.black);
-            g.drawImage(
-                    monsterImage,
-                    monsterX,
-                    monsterY,
-                    space-2,
-                    space-2,
-                    null
-            );
-            g.setColor(Color.red);
-            double lifeInPercent = ((double) monster.getHealth()) /  ((double) monster.getMaxHealth());
-            int width = (int)(lifeInPercent * (space - 2));
-            g.drawLine(monsterX, monsterY, monsterX + width, monsterY);
-        }
 
         g.setColor(Color.black);
         //Zeichnen der Kanten
         for(int i = 1; i < karte.getHeight(); i++){
-            g.drawLine(0, i*space + 27, width, i*space + 27);
+            g.drawLine(0, i*space + titelbalken, width, i*space + titelbalken);
         }
         for(int i = 1; i < karte.getWidth(); i++){
             g.drawLine(i*space,0, i*space, height);
@@ -158,9 +159,9 @@ public class Graphic extends JFrame{
         g.setColor(Color.red);
         if(!Main.shotMonster.isEmpty()){
             int monsterX = Main.shotMonster.get("MonsterX") * space + space / 2;
-            int monsterY = Main.shotMonster.get("MonsterY") * space + space / 2;
+            int monsterY = Main.shotMonster.get("MonsterY") * space + space / 2 + titelbalken;
             int turmX = Main.shotMonster.get("TurmX") * space + space / 2;
-            int turmY = Main.shotMonster.get("TurmY") * space + space / 2;
+            int turmY = Main.shotMonster.get("TurmY") * space + space / 2 + titelbalken;
             g.drawLine(turmX, turmY, monsterX, monsterY);
         }
         //Übergabe der Bilder für Verwendung im MouseListener
@@ -187,7 +188,7 @@ public class Graphic extends JFrame{
                             pressed[0] = true;
                             //x und y werden aus dem Event gezogen
                             int x = e.getX() / space;
-                            int y = e.getY() / space;
+                            int y = (e.getY() - titelbalken) / space;
                             //ActionListener für die Buttons im popup
                             ActionListener actionListener = e1 -> {
                                 //Wenn der Button "Turm" gedrückt wird
