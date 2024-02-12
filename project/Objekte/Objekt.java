@@ -4,6 +4,7 @@ import project.Coords;
 
 public class Objekt {
     protected int strength;
+    protected int maxHealth;
     protected int health;
     protected Coords position;
     protected String type;
@@ -12,6 +13,7 @@ public class Objekt {
     public Objekt(int pStrength, int pHealth, Coords position, long speed, String type){
         strength = pStrength;
         health = pHealth;
+        maxHealth = health;
         this.position = position;
         this.type = type;
         this.attackSpeed = speed;
@@ -55,5 +57,21 @@ public class Objekt {
 
     public void setSpeed(long speed) {
         this.attackSpeed = speed;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public long getAttackSpeed() {
+        return attackSpeed;
+    }
+
+    public void setAttackSpeed(long attackSpeed) {
+        this.attackSpeed = attackSpeed;
     }
 }

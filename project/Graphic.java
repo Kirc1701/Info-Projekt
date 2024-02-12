@@ -3,7 +3,6 @@ package project;
 import project.Objekte.Mauer.DefaultMauer;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Turm.DefaultTurm;
-import project.Objekte.Turm.Turm;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,7 +12,6 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class Graphic extends JFrame{
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
@@ -106,15 +104,21 @@ public class Graphic extends JFrame{
             }
         }
         //Zeichnen der Monster
-        for(Monster monsters : karte.getMonsterList()){
+        for(Monster monster : karte.getMonsterList()){
+            int monsterX = monster.getPosition().getX()*space+1;
+            int monsterY = monster.getPosition().getY()*space+1;
+            double lifeInPercent = ((double) monster.getHealth()) /  ((double) monster.getMaxHealth());
+            int width = (int)(lifeInPercent * (space - 2));
             g.drawImage(
                     monsterImage,
-                    monsters.getPosition().getX()*space+1,
-                    monsters.getPosition().getY()*space+1,
+                    monsterX,
+                    monsterY,
                     space-2,
                     space-2,
                     null
             );
+            g.setColor(Color.red);
+            g.drawLine(monsterX, monsterY, monsterX + width, monsterY);
         }
 
         g.setColor(Color.black);
@@ -232,9 +236,5 @@ public class Graphic extends JFrame{
 
     public Graphic getGraphic() {
         return this;
-    }
-
-    public void animateShoot() {
-
     }
 }
