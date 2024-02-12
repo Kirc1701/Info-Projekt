@@ -2,6 +2,8 @@ package project;
 
 import java.util.Objects;
 
+import static java.lang.Math.sqrt;
+
 public class Coords{
     private int x;
     private int y;
@@ -42,5 +44,18 @@ public class Coords{
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isInRange(int reach, Coords position) {
+        return x - reach <= position.getX() &&
+                x + reach >= position.getX() &&
+                y - reach <= position.getY() &&
+                y + reach >= position.getY();
+    }
+
+    public Double getDistance(Coords position) {
+        int a = x - position.getX();
+        int b = y - position.getY();
+        return sqrt(a^2 + b^2);
     }
 }

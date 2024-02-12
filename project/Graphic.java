@@ -1,5 +1,9 @@
 package project;
 
+import project.Objekte.Mauer.DefaultMauer;
+import project.Objekte.Monster.Monster;
+import project.Objekte.Turm.DefaultTurm;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,16 +13,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Graphic extends JFrame {
+public class Graphic extends JFrame implements Runnable{
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
-    private final int space = 27;
+    public final static int space = 27;
     //Höhe und Breite des geöffneten Fensters in Pixeln
     private final int width;
     private final int height;
     //Verknüpfung mit der logischen Implementierung der Karte
     private final Karte karte;
     //Vorbereitung des popup-Fensters für die Auswahl
-    private JDialog popup;
 
     //Konstruktor für die Klasse Graphic
     public Graphic(Karte karte){
@@ -41,7 +44,6 @@ public class Graphic extends JFrame {
         setBackground(Color.white);
         setSize(width, height);
         setLayout(null);
-        setVisible(true);
     }
 
     //paint()-Methode
@@ -49,28 +51,36 @@ public class Graphic extends JFrame {
         //Aufruf der super.paint()-Methode
         super.paint(g);
         //Initialisierung des popup-Fensters ohne Darstellung
-        popup = new JDialog(this, "Select Building", true);
-        popup.setLayout(new FlowLayout());
-        popup.setVisible(false);
         //Zugriff auf die Bilddateien
         File fMauer = new File("images/Mauer.jpg");
         File fTurm = new File("images/Turm.jpg");
         File fBasis = new File("images/Basis.jpg");
+        File fMonster = new File("images/Monster.jpg");
         //Erstellung eines Images, in welches danach die Balddateien geladen werden
         BufferedImage mauer = null;
         BufferedImage turm = null;
         BufferedImage basis = null;
+        BufferedImage monster = null;
         try {
             mauer = ImageIO.read(fMauer);
             turm = ImageIO.read(fTurm);
             basis = ImageIO.read(fBasis);
+            monster = ImageIO.read(fMonster);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        g.drawImage(
+                basis,
+                karte.getBasis().getPosition().getX()*space+1,
+                karte.getBasis().getPosition().getY()*space+1,
+                space-2,
+                space-2,
+                null
+        );
         //Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
         for(Coords building : karte.getBuildings().keySet()){
             //Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
-            if(karte.getBuildings().get(building).equals("Mauer")){
+            if(karte.getBuildings().get(building).getType().equals("Mauer")){
                 //Zeichnen der Mauer
                 g.drawImage(
                         mauer,
@@ -80,7 +90,7 @@ public class Graphic extends JFrame {
                         space-2,
                         null
                 );
-            }else if(karte.getBuildings().get(building).equals("Turm")){
+            }else if(karte.getBuildings().get(building).getType().equals("Turm")){
                 //Zeichnen des Turms
                 g.drawImage(
                         turm,
@@ -90,18 +100,20 @@ public class Graphic extends JFrame {
                         space-2,
                         null
                 );
-            }else if(karte.getBuildings().get(building).equals("Basis")){
-                //Zeichnen der Basis
-                g.drawImage(
-                        basis,
-                        building.getX()*space+1,
-                        building.getY()*space+1,
-                        space-2,
-                        space-2,
-                        null
-                );
             }
         }
+        //Zeichnen der Monster
+        for(Monster monsters : karte.getMonsterList()){
+            g.drawImage(
+                    monster,
+                    monsters.getPosition().getX()*space+1,
+                    monsters.getPosition().getY()*space+1,
+                    space-2,
+                    space-2,
+                    null
+            );
+        }
+
         //Zeichnen der Kanten
         for(int i = 1; i < karte.getHeight(); i++){
             g.drawLine(0, i*space + 27, width, i*space + 27);
@@ -123,8 +135,12 @@ public class Graphic extends JFrame {
                     }
                     //Wird aufgerufen, wenn die Maus gedrückt wird
                     public void mousePressed(MouseEvent e) {
+                        JDialog popup;
+                        popup = new JDialog(getGraphic(), "Select Building", true);
+                        popup.setVisible(false);
                         //Wenn pressed auf false steht, kann das Programm ausgeführt werden
                         if(!pressed[0]) {
+                            popup.setLayout(new FlowLayout());
                             //pressed wird auf true gesetzt, um häufigere Öffnung des Fensters zu vermeiden
                             pressed[0] = true;
                             //x und y werden aus dem Event gezogen
@@ -135,26 +151,31 @@ public class Graphic extends JFrame {
                                 //Wenn der Button "Turm" gedrückt wird
                                 if (e1.getActionCommand().equals("Turm")) {
                                     //Es wird ein Turm an den x, y-Koordinaten zum Graphen hinzugefügt
-                                    if(!karte.addBuilding(new Coords(x, y), "Turm")){
+                                    if(!karte.addBuilding(new Coords(x, y), new DefaultTurm(new Coords(x,y)))){
                                         System.out.println("Something went wrong");
                                     }
                                     //Das popup wird deaktiviert
                                     popup.setVisible(false);
+                                    building_update_place = new Rectangle(x, y, space, space);
+                                    pressed[0] = false;
                                     //Das Fenster wird aktualisiert
-                                    repaint();
+                                    building_update = true;
                                 //Wenn der Button "Mauer" gedrückt wird
                                 } else if (e1.getActionCommand().equals("Mauer")) {
                                     //Es wird eine Mauer an den x, y-Koordinaten zum Graphen hinzugefügt
-                                    if(!karte.addBuilding(new Coords(x, y), "Mauer")){
+                                    if(!karte.addBuilding(new Coords(x, y), new DefaultMauer(new Coords(x,y)))){
                                         System.out.println("Something went wrong");
                                     }
                                     //Das popup wird deaktiviert
+                                    building_update_place = new Rectangle(x, y, space, space);
+                                    popup.repaint();
                                     popup.setVisible(false);
+                                    pressed[0] = false;
                                     //Das Fenster wird aktualisiert
-                                    repaint();
+                                    building_update = true;
                                 }else{
                                     popup.setVisible(false);
-                                    repaint();
+                                    pressed[0] = false;
                                 }
                             };
                             //Erstellung der Buttons
@@ -178,6 +199,7 @@ public class Graphic extends JFrame {
                             popup.setSize(150, 100);
                             popup.setLocation(e.getX() - 75, e.getY() - 50);
                             popup.setVisible(true);
+                            pressed[0] = true;
                         }
                     }
                     //Wird aufgerufen, wenn die Maus losgelassen wird
@@ -195,9 +217,36 @@ public class Graphic extends JFrame {
         );
     }
 
-    //statische Methode, welche von der Main-Klasse aufgerufen werden kann
-    public static void showMap(Karte graphOfKarte){
-        //Initialisierung
-        new Graphic(graphOfKarte);
+    public Graphic getGraphic() {
+        return this;
+    }
+
+    @Override
+    public void run() {
+        setVisible(true);
+        try {
+            while (true) {
+//            System.out.println("Still going");
+                if (building_update) {
+                    System.out.println("Update happened");
+                    repaint(building_update_place.x*space, building_update_place.y*space, building_update_place.width, building_update_place.height);
+                    if (karte.gameOver()) {
+                        break;
+                    }
+                    building_update = false;
+                }
+                if (monster_update) {
+                    System.out.println("Update happened");
+                    repaint();
+                    if (karte.gameOver()) {
+                        break;
+                    }
+                    monster_update = false;
+                }
+                Thread.sleep(100);
+            }
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }

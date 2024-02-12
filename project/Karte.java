@@ -3,8 +3,17 @@ package project;
 import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
+import project.Level.Level;
+import project.Level.Level1;
+import project.Objekte.Basis.Basis;
+import project.Objekte.Basis.DefaultBasis;
+import project.Objekte.Monster.Monster;
+import project.Objekte.Objekt;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //Karte des Spiels
@@ -12,21 +21,34 @@ public class Karte {
     //Der Graph der Karte
     private AbstractBaseGraph<Coords, DefaultWeightedEdge> graphOfMap;
     //Liste an Gebäuden
-    private Map<Coords, String> buildings;
+    private Map<Coords, Objekt> buildings;
     //Width and Height
     private int width;
     private int height;
+    //Basis
+    private Basis basis;
+    //Liste aller existierenden Monster
+    private List<Monster> monsterList;
+    //aktuelles Level
+    private Level level;
+    //spawnpoint
+    private final Coords spawnpoint;
 
-    public Karte(int height, int width){
+    public Karte(int height, int width, Coords basisPosition, Coords spawnpoint){
         //Initialisiert den Graphen und die Liste der Gebäude
         this.width = width;
         this.height = height;
         graphOfMap = createMap(height, width);
         buildings = new HashMap<>();
+        basis = new DefaultBasis(basisPosition);
+        addBuilding(basisPosition, basis);
+        monsterList = new ArrayList<>();
+        level = new Level1();
+        this.spawnpoint = spawnpoint;
     }
 
     //Methode um Gebäude sicher zur Liste hinzuzufügen
-    public boolean addBuilding(Coords coords, String name){
+    public boolean addBuilding(Coords coords, Objekt name){
         //Wenn Building bereits in der Liste enthalten ist return false
         if(buildings.containsKey(coords)){
             return false;
@@ -72,7 +94,7 @@ public class Karte {
     public AbstractBaseGraph<Coords, DefaultWeightedEdge> getGraphOfMap() {
         return graphOfMap;
     }
-    public Map<Coords, String> getBuildings() {
+    public Map<Coords, Objekt> getBuildings() {
         return buildings;
     }
     public int getWidth() {
@@ -81,7 +103,7 @@ public class Karte {
     public int getHeight() {
         return height;
     }
-    public void setBuildings(Map<Coords, String> buildings) {
+    public void setBuildings(Map<Coords, Objekt> buildings) {
         this.buildings = buildings;
     }
     public void setGraphOfMap(AbstractBaseGraph<Coords, DefaultWeightedEdge> graphOfMap) {
@@ -126,5 +148,44 @@ public class Karte {
 
         //Rückgabe des Graphen
         return graph;
+    }
+
+    public Basis getBasis() {
+        return basis;
+    }
+
+    public void setBasis(Basis basis) {
+        this.basis = basis;
+    }
+
+    public List<Monster> getMonsterList() {
+        return monsterList;
+    }
+
+    public void setMonsterList(List<Monster> monsterList) {
+        this.monsterList = monsterList;
+    }
+
+    public boolean playerWins() {
+        return level.getMonstersToSpawn().isEmpty() && monsterList.isEmpty();
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public boolean gameOver() {
+        return playerWins() || basis.getHealth() <= 0;
+    }
+
+    public Rectangle spawnMonster(Graphic graphic) {
+        Monster monster = level.getMonstersToSpawn().remove(0);
+        monster.setPosition(spawnpoint);
+        monsterList.add(monster);
+        return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), graphic.space, graphic.space);
     }
 }
