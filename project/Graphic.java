@@ -2,6 +2,7 @@ package project;
 
 import project.Objekte.Mauer.DefaultMauer;
 import project.Objekte.Monster.Monster;
+import project.Objekte.Objekt;
 import project.Objekte.Turm.DefaultTurm;
 
 import javax.imageio.ImageIO;
@@ -70,45 +71,68 @@ public class Graphic extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        g.drawImage(
-                basisImage,
-                karte.getBasis().getPosition().getX()*space+1,
-                karte.getBasis().getPosition().getY()*space+1,
-                space-2,
-                space-2,
-                null
-        );
+        if(karte.getBasis() != null) {
+            int basisX = karte.getBasis().getPosition().getX() * space + 1;
+            int basisY = karte.getBasis().getPosition().getY() * space + 1;
+            g.setColor(Color.black);
+            g.drawImage(
+                    basisImage,
+                    basisX,
+                    basisY,
+                    space - 2,
+                    space - 2,
+                    null
+            );
+            g.setColor(Color.red);
+            double lifeInPercent = ((double) karte.getBasis().getHealth()) / ((double) karte.getBasis().getMaxHealth());
+            int width = (int) (lifeInPercent * (space - 2));
+            g.drawLine(basisX, basisY, basisX + width, basisY);
+        }
         //Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
-        for(Coords building : karte.getBuildings().keySet()){
+        for(Coords buildingCoords : karte.getBuildings().keySet()){
+            Objekt building = karte.getBuildings().get(buildingCoords);
             //Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
-            if(karte.getBuildings().get(building).getType().equals("Mauer")){
+            if(building.getType().equals("Mauer")){
+                int mauerX = buildingCoords.getX()*space+1;
+                int mauerY = buildingCoords.getY()*space+1;
                 //Zeichnen der Mauer
+                g.setColor(Color.black);
                 g.drawImage(
                         mauerImage,
-                        building.getX()*space+1,
-                        building.getY()*space+1,
+                        mauerX,
+                        mauerY,
                         space-2,
                         space-2,
                         null
                 );
-            }else if(karte.getBuildings().get(building).getType().equals("Turm")){
+                g.setColor(Color.red);
+                double lifeInPercent = ((double) building.getHealth()) /  ((double) building.getMaxHealth());
+                int width = (int)(lifeInPercent * (space - 2));
+                g.drawLine(mauerX, mauerY, mauerX + width, mauerY);
+            }else if(building.getType().equals("Turm")){
+                int turmX = buildingCoords.getX()*space+1;
+                int turmY = buildingCoords.getY()*space+1;
                 //Zeichnen des Turms
+                g.setColor(Color.black);
                 g.drawImage(
                         turmImage,
-                        building.getX()*space+1,
-                        building.getY()*space+1,
+                        turmX,
+                        turmY,
                         space-2,
                         space-2,
                         null
                 );
+                g.setColor(Color.red);
+                double lifeInPercent = ((double) building.getHealth()) /  ((double) building.getMaxHealth());
+                int width = (int)(lifeInPercent * (space - 2));
+                g.drawLine(turmX, turmY, turmX + width, turmY);
             }
         }
         //Zeichnen der Monster
         for(Monster monster : karte.getMonsterList()){
             int monsterX = monster.getPosition().getX()*space+1;
             int monsterY = monster.getPosition().getY()*space+1;
-            double lifeInPercent = ((double) monster.getHealth()) /  ((double) monster.getMaxHealth());
-            int width = (int)(lifeInPercent * (space - 2));
+            g.setColor(Color.black);
             g.drawImage(
                     monsterImage,
                     monsterX,
@@ -118,6 +142,8 @@ public class Graphic extends JFrame{
                     null
             );
             g.setColor(Color.red);
+            double lifeInPercent = ((double) monster.getHealth()) /  ((double) monster.getMaxHealth());
+            int width = (int)(lifeInPercent * (space - 2));
             g.drawLine(monsterX, monsterY, monsterX + width, monsterY);
         }
 
