@@ -27,7 +27,8 @@ public class HauptgrafikSpiel extends JFrame{
     //Verknüpfung mit der logischen Implementierung der Karte
     private final Karte karte;
     //Vorbereitung des popup-Fensters für die Auswahl
-
+    //boolean der eine häufigere Öffnung des popups verhindert
+    public final static boolean[] pressed = {false};
     //Konstruktor für die Klasse Graphic
     public HauptgrafikSpiel(Karte karte){
         //Initialisierung der Karte
@@ -170,8 +171,6 @@ public class HauptgrafikSpiel extends JFrame{
         //Übergabe der Bilder für Verwendung im MouseListener
         BufferedImage finalMauer = mauerImage;
         BufferedImage finalTurm = turmImage;
-        //boolean der eine häufigere Öffnung des popups verhindert
-        final boolean[] pressed = {false};
         //Hinzufügen des MouseListeners
         this.addMouseListener(
                 new MouseListener() {
@@ -181,71 +180,22 @@ public class HauptgrafikSpiel extends JFrame{
                     }
                     //Wird aufgerufen, wenn die Maus gedrückt wird
                     public void mousePressed(MouseEvent e) {
-                        JDialog popup;
-                        popup = new JDialog(getGraphic(), "Select Building", true);
-                        popup.setVisible(false);
                         //Wenn pressed auf false steht, kann das Programm ausgeführt werden
                         if(!pressed[0]) {
-                            popup.setLayout(new FlowLayout());
                             //pressed wird auf true gesetzt, um häufigere Öffnung des Fensters zu vermeiden
                             pressed[0] = true;
                             //x und y werden aus dem Event gezogen
                             int x = e.getX() / space;
                             int y = (e.getY() - titelbalken) / space;
-                            //ActionListener für die Buttons im popup
-                            ActionListener actionListener = e1 -> {
-                                //Wenn der Button "Turm" gedrückt wird
-                                if (e1.getActionCommand().equals("Turm")) {
-                                    //Es wird ein Turm an den x, y-Koordinaten zum Graphen hinzugefügt
-                                    if(!karte.addBuilding(new Coords(x, y), new DefaultTurm(new Coords(x,y)))){
-                                        System.out.println("Something went wrong");
-                                    }
-                                    //Das popup wird deaktiviert
-                                    popup.setVisible(false);
-                                    Main.building_update_place = new Rectangle(x, y, space, space);
-                                    pressed[0] = false;
-                                    //Das Fenster wird aktualisiert
-                                    Main.building_update = true;
-                                //Wenn der Button "Mauer" gedrückt wird
-                                } else if (e1.getActionCommand().equals("Mauer")) {
-                                    //Es wird eine Mauer an den x, y-Koordinaten zum Graphen hinzugefügt
-                                    if(!karte.addBuilding(new Coords(x, y), new DefaultMauer(new Coords(x,y)))){
-                                        System.out.println("Something went wrong");
-                                    }
-                                    //Das popup wird deaktiviert
-                                    Main.building_update_place = new Rectangle(x, y, space, space);
-                                    popup.repaint();
-                                    popup.setVisible(false);
-                                    pressed[0] = false;
-                                    //Das Fenster wird aktualisiert
-                                    Main.building_update = true;
-                                }else{
-                                    popup.setVisible(false);
-                                    pressed[0] = false;
+                            if(karte.getBuildings().containsKey(new Coords(x, y))){
+                                try {
+                                    new PopupRemoven(x, y, e.getX(), e.getY());
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
                                 }
-                            };
-                            //Erstellung der Buttons
-                            JButton m = new JButton(new ImageIcon(finalMauer.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
-                            m.setActionCommand("Mauer");
-                            m.addActionListener(actionListener);
-
-                            JButton t = new JButton(new ImageIcon(finalTurm.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
-                            t.setActionCommand("Turm");
-                            t.addActionListener(actionListener);
-
-                            JButton c = new JButton("Cancel");
-                            c.setActionCommand("");
-                            c.addActionListener(actionListener);
-
-                            //Hinzufügen der Buttons
-                            popup.add(m);
-                            popup.add(t);
-                            popup.add(c);
-                            //Finalisierung des popups und Darstellung des popups
-                            popup.setSize(150, 100);
-                            popup.setLocation(e.getX() - 75, e.getY() - 50);
-                            popup.setVisible(true);
-                            pressed[0] = true;
+                            }else {
+                                new PopupSetzen(finalMauer, finalTurm, x, y, e.getX(), e.getY());
+                            }
                         }
                     }
                     //Wird aufgerufen, wenn die Maus losgelassen wird

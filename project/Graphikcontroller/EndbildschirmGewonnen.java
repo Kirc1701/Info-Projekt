@@ -1,4 +1,6 @@
 package project.Graphikcontroller;
 
-public class EndbildschirmGewonnen {
+import javax.swing.*;
+
+public class EndbildschirmGewonnen extends JFrame {
 }
