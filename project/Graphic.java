@@ -3,6 +3,7 @@ package project;
 import project.Objekte.Mauer.DefaultMauer;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Turm.DefaultTurm;
+import project.Objekte.Turm.Turm;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Graphic extends JFrame{
     //Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
@@ -58,20 +60,20 @@ public class Graphic extends JFrame{
         File fBasis = new File("images/Basis.jpg");
         File fMonster = new File("images/Monster.jpg");
         //Erstellung eines Images, in welches danach die Balddateien geladen werden
-        BufferedImage mauer = null;
-        BufferedImage turm = null;
-        BufferedImage basis = null;
-        BufferedImage monster = null;
+        BufferedImage mauerImage = null;
+        BufferedImage turmImage = null;
+        BufferedImage basisImage = null;
+        BufferedImage monsterImage = null;
         try {
-            mauer = ImageIO.read(fMauer);
-            turm = ImageIO.read(fTurm);
-            basis = ImageIO.read(fBasis);
-            monster = ImageIO.read(fMonster);
+            mauerImage = ImageIO.read(fMauer);
+            turmImage = ImageIO.read(fTurm);
+            basisImage = ImageIO.read(fBasis);
+            monsterImage = ImageIO.read(fMonster);
         } catch (IOException e) {
             e.printStackTrace();
         }
         g.drawImage(
-                basis,
+                basisImage,
                 karte.getBasis().getPosition().getX()*space+1,
                 karte.getBasis().getPosition().getY()*space+1,
                 space-2,
@@ -84,7 +86,7 @@ public class Graphic extends JFrame{
             if(karte.getBuildings().get(building).getType().equals("Mauer")){
                 //Zeichnen der Mauer
                 g.drawImage(
-                        mauer,
+                        mauerImage,
                         building.getX()*space+1,
                         building.getY()*space+1,
                         space-2,
@@ -94,7 +96,7 @@ public class Graphic extends JFrame{
             }else if(karte.getBuildings().get(building).getType().equals("Turm")){
                 //Zeichnen des Turms
                 g.drawImage(
-                        turm,
+                        turmImage,
                         building.getX()*space+1,
                         building.getY()*space+1,
                         space-2,
@@ -106,7 +108,7 @@ public class Graphic extends JFrame{
         //Zeichnen der Monster
         for(Monster monsters : karte.getMonsterList()){
             g.drawImage(
-                    monster,
+                    monsterImage,
                     monsters.getPosition().getX()*space+1,
                     monsters.getPosition().getY()*space+1,
                     space-2,
@@ -115,6 +117,7 @@ public class Graphic extends JFrame{
             );
         }
 
+        g.setColor(Color.black);
         //Zeichnen der Kanten
         for(int i = 1; i < karte.getHeight(); i++){
             g.drawLine(0, i*space + 27, width, i*space + 27);
@@ -122,9 +125,17 @@ public class Graphic extends JFrame{
         for(int i = 1; i < karte.getWidth(); i++){
             g.drawLine(i*space,0, i*space, height);
         }
+        g.setColor(Color.red);
+        if(!Main.shotMonster.isEmpty()){
+            int monsterX = Main.shotMonster.get("MonsterX") * space + space / 2;
+            int monsterY = Main.shotMonster.get("MonsterY") * space + space / 2;
+            int turmX = Main.shotMonster.get("TurmX") * space + space / 2;
+            int turmY = Main.shotMonster.get("TurmY") * space + space / 2;
+            g.drawLine(turmX, turmY, monsterX, monsterY);
+        }
         //Übergabe der Bilder für Verwendung im MouseListener
-        BufferedImage finalMauer = mauer;
-        BufferedImage finalTurm = turm;
+        BufferedImage finalMauer = mauerImage;
+        BufferedImage finalTurm = turmImage;
         //boolean der eine häufigere Öffnung des popups verhindert
         final boolean[] pressed = {false};
         //Hinzufügen des MouseListeners
@@ -216,6 +227,7 @@ public class Graphic extends JFrame{
                     }
                 }
         );
+
     }
 
     public Graphic getGraphic() {
@@ -223,5 +235,6 @@ public class Graphic extends JFrame{
     }
 
     public void animateShoot() {
+
     }
 }

@@ -4,7 +4,9 @@ import project.Coords;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Objekt;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Turm extends Objekt {
     int reach;
@@ -15,7 +17,7 @@ public abstract class Turm extends Objekt {
 
 
 
-    public abstract boolean shoot(List<Monster> monsters);
+    public abstract Map<String, Integer> shoot(List<Monster> monsters);
 
     public int getReach() {
         return reach;

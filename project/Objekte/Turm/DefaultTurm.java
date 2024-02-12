@@ -2,33 +2,38 @@ package project.Objekte.Turm;
 
 import project.Coords;
 import project.Objekte.Monster.Monster;
+import project.Objekte.Objekt;
 
 
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class DefaultTurm extends Turm{
     public DefaultTurm(Coords position){
-        super(10, 25, position, 4, 2);
+        super(5, 25, position, 4, 3);
     }
 
     @Override
-    public boolean shoot(List<Monster> monsters) {
-        Map<Monster, Double> distances = new HashMap<>();
+    public Map<String, Integer> shoot(List<Monster> monsters) {
+        List<Monster> shootingMonsters = new ArrayList<>();
         for (Monster monster: monsters) {
             if(position.isInRange(reach, monster.getPosition())){
-                distances.put(monster, position.getDistance(monster.getPosition()));
+                shootingMonsters.add(monster);
             }
         }
-        Double smallest = 240.0;
-        for(Double distance : distances.values()){
-            if(distance < smallest){
-                smallest = distance;
-            }
+        if(!shootingMonsters.isEmpty()) {
+            Monster monsterToShoot = shootingMonsters.get(0);
+            monsterToShoot.setHealth(monsterToShoot.getHealth() - strength);
+            System.out.println("health: "+monsterToShoot.getHealth());
+
+            Map<String, Integer> map = new HashMap<>();
+            map.put("MonsterX", monsterToShoot.getPosition().getX());
+            map.put("MonsterY", monsterToShoot.getPosition().getY());
+            map.put("TurmX", position.getX());
+            map.put("TurmY", position.getY());
+            return map;
         }
-
-
-        return false;
+        return new HashMap<>();
     }
 }
