@@ -1,5 +1,6 @@
 package project.Graphikcontroller;
 
+// Import anderer Klassen von außerhalb des Projekts
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;

@@ -29,7 +29,6 @@ public class PopupSetzen extends JFrame implements ActionListener {
                     public void windowClosing(WindowEvent e) {
                         setVisible(false);
                         dispose();
-                        System.exit(0);
                     }
                 }
         );
