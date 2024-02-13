@@ -9,7 +9,7 @@ import project.Karte;
 import java.awt.*;
 import java.util.List;
 
-import static project.Graphikcontroller.HauptgrafikSpiel.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class DefaultMonster extends Monster{
     public DefaultMonster(Coords position) {
@@ -25,15 +25,15 @@ public class DefaultMonster extends Monster{
         Coords nextPosition = pathNodes.get(1);
         if(weight >= 10000 && karte.getBuildings().containsKey(nextPosition)){
             attack(karte.getBuildings().get(nextPosition));
-            return new Rectangle(nextPosition.getX(), nextPosition.getY(), space, space);
+            return new Rectangle(nextPosition.getX(), nextPosition.getY(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
         }else {
             Coords oldPosition = position;
             if (pathNodes.isEmpty()) {
                 System.out.println("Something went seriously wrong.");
             } else {
-                System.out.println(path);
+//                System.out.println(path);
                 schritteBisZiel = pathNodes.size() - 2;
-                System.out.println(schritteBisZiel);
+//                System.out.println(schritteBisZiel);
                 position = nextPosition;
             }
             //-1 if monster moves left; 0 if no movement on the x-axis happens; 1 if monster moves right
@@ -42,21 +42,21 @@ public class DefaultMonster extends Monster{
             int directionY = position.getY() - oldPosition.getY();
             int x;
             int y;
-            int width = space;
-            int height = space;
+            int width = spaceBetweenLinesPixels;
+            int height = spaceBetweenLinesPixels;
             if (directionX < 0) {
                 x = oldPosition.getX() + directionX;
-                width = width - directionX * space;
+                width = width - directionX * spaceBetweenLinesPixels;
             } else {
                 x = oldPosition.getX();
-                width = width + directionX * space;
+                width = width + directionX * spaceBetweenLinesPixels;
             }
             if (directionY < 0) {
                 y = oldPosition.getY() + directionY;
-                height = height - directionY * space;
+                height = height - directionY * spaceBetweenLinesPixels;
             } else {
                 y = oldPosition.getY();
-                height = height + directionY * space;
+                height = height + directionY * spaceBetweenLinesPixels;
             }
             return new Rectangle(x, y, width, height);
         }

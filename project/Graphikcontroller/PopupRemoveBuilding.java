@@ -18,7 +18,7 @@ import java.io.IOException;
 
 // Import statischer Variablen aus anderen Klassen des Projekts
 import static project.Graphikcontroller.HauptgrafikSpiel.pressed;
-import static project.Graphikcontroller.HauptgrafikSpiel.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 import static project.Main.karte;
 
 // Ein Fenster mit dem der User ein Gebäude entfernen kann
@@ -55,7 +55,7 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
         );
         // Erstellung der Buttons
         // Erstellung des TrashButtons, der aus einem skalierten Version des trashcanImage besteht
-        JButton trashButton = new JButton(new ImageIcon(trashcanImage.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
+        JButton trashButton = new JButton(new ImageIcon(trashcanImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH)));
         // Wird der TrashButton gedrückt, gibt er als ActionCommand "Delete" zurück
         // und die Methode actionPerformed() wird aufgerufen
         trashButton.setActionCommand("Delete");
@@ -94,7 +94,7 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
             }
 
             // Es wird der Bereich an die Main-Klasse übergeben, der aktualisiert werden muss
-            Main.building_update_place = new Rectangle(targetXCoordinate, targetYCoordinate, space, space);
+            Main.building_update_place = new Rectangle(targetXCoordinate, targetYCoordinate, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
 
             // Das Popup wird nicht mehr dargestellt
             setVisible(false);

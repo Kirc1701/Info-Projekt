@@ -22,7 +22,7 @@ public class DefaultTurm extends Turm{
         if(!shootingMonsters.isEmpty()) {
             Monster monsterToShoot = shootingMonsters.get(0);
             monsterToShoot.setHealth(monsterToShoot.getHealth() - strength);
-            System.out.println("health: "+monsterToShoot.getHealth());
+//            System.out.println("health: "+monsterToShoot.getHealth());
 
             Map<String, Integer> map = new HashMap<>();
             map.put("MonsterX", monsterToShoot.getPosition().getX());

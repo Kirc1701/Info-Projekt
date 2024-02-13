@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static project.Graphikcontroller.HauptgrafikSpiel.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 //Karte des Spiels
 public class Karte {
@@ -188,6 +188,6 @@ public class Karte {
         Monster monster = level.getMonstersToSpawn().remove(0);
         monster.setPosition(spawnpoint);
         monsterList.add(monster);
-        return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), space, space);
+        return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
     }
 }

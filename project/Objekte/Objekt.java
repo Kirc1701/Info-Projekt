@@ -8,9 +8,9 @@ public class Objekt {
     protected int health;
     protected Coords position;
     protected String type;
-    protected long attackSpeed;
+    protected int attackSpeed;
 
-    public Objekt(int pStrength, int pHealth, Coords position, long speed, String type){
+    public Objekt(int pStrength, int pHealth, Coords position, int speed, String type){
         strength = pStrength;
         health = pHealth;
         maxHealth = health;
@@ -51,11 +51,11 @@ public class Objekt {
         this.type = type;
     }
 
-    public long getSpeed() {
+    public int getSpeed() {
         return attackSpeed;
     }
 
-    public void setSpeed(long speed) {
+    public void setSpeed(int speed) {
         this.attackSpeed = speed;
     }
 
@@ -67,11 +67,11 @@ public class Objekt {
         this.maxHealth = maxHealth;
     }
 
-    public long getAttackSpeed() {
+    public int getAttackSpeed() {
         return attackSpeed;
     }
 
-    public void setAttackSpeed(long attackSpeed) {
+    public void setAttackSpeed(int attackSpeed) {
         this.attackSpeed = attackSpeed;
     }
 }

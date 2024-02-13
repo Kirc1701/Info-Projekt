@@ -19,8 +19,8 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 import static org.apache.commons.lang3.math.NumberUtils.min;
-import static project.Graphikcontroller.HauptgrafikSpiel.space;
-import static project.Graphikcontroller.HauptgrafikSpiel.titelbalken;
+import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
+import static project.Graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
 
 public class Main {
@@ -36,7 +36,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         karte = new Karte(25, 40, new Coords(39, 12), new Coords(0, 12));
         aktuelleGrafik = new Startbildschirm();
-        long time = 0;
+        int time = 0;
         while(!gameHasStarted){
             TimeUnit.MILLISECONDS.sleep(500);
         }
@@ -48,38 +48,41 @@ public class Main {
                     if(monster.getSchritteBisZiel() > 1) {
                         if (time % monster.getMovingSpeed() == 0) {
                             monster_update_place = monster.makeMove(karte);
-                            aktuelleGrafik.repaint(monster_update_place.x * space, monster_update_place.y * space + titelbalken, monster_update_place.width, monster_update_place.height);
+                            aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
                         }
                     }else{
                         if(time % monster.getAttackSpeed() == 0){
                             Basis basis = karte.getBasis();
                             monster.attack(basis);
-                            aktuelleGrafik.repaint(basis.getPosition().getX() * space, basis.getPosition().getY() * space + titelbalken, space, space);
+                            aktuelleGrafik.repaint(basis.getPosition().getX() * spaceBetweenLinesPixels, basis.getPosition().getY() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
                         }
                     }
                 }
             }
             if ((time % karte.getLevel().getSpawntime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
                 monster_update_place = karte.spawnMonster();
-                aktuelleGrafik.repaint(monster_update_place.x*space, monster_update_place.y*space + titelbalken, monster_update_place.width, monster_update_place.height);
+                aktuelleGrafik.repaint(monster_update_place.x* spaceBetweenLinesPixels, monster_update_place.y* spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
             }
 
             for(Map<String, Integer> shot : oldShots){
-                int monsterX = shot.get("MonsterX");
-                int monsterY = shot.get("MonsterY");
-                int turmX = shot.get("TurmX");
-                int turmY = shot.get("TurmY");
+                int timeFired = shot.get("TimeFired");
+                if(time == timeFired + 2) {
+                    int monsterX = shot.get("MonsterX");
+                    int monsterY = shot.get("MonsterY");
+                    int turmX = shot.get("TurmX");
+                    int turmY = shot.get("TurmY");
 
-                int x = min(turmX, monsterX) * space;
-                int y = min(turmY, monsterY) * space + titelbalken;
-                int width = space * abs(turmX - monsterX);
-                int height = space * abs(turmY - monsterY);
+                    int x = min(turmX, monsterX) * spaceBetweenLinesPixels;
+                    int y = min(turmY, monsterY) * spaceBetweenLinesPixels + titelbalkenSizePixels;
+                    int width = spaceBetweenLinesPixels * abs(turmX - monsterX);
+                    int height = spaceBetweenLinesPixels * abs(turmY - monsterY);
 
-                aktuelleGrafik.repaint(x + space/2, y + space / 2, width + 2, height +2);
-                List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
-                temp.remove(shot);
-                Map<String, Integer>[] arr = new Map[temp.size()];
-                oldShots = temp.toArray(arr);
+                    aktuelleGrafik.repaint(x + spaceBetweenLinesPixels / 2, y + spaceBetweenLinesPixels / 2, width + 2, height + 2);
+                    List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
+                    temp.remove(shot);
+                    Map<String, Integer>[] arr = new Map[temp.size()];
+                    oldShots = temp.toArray(arr);
+                }
             }
 
             for(Objekt building : karte.getBuildings().values()){
@@ -87,20 +90,20 @@ public class Main {
                     Turm turm = (Turm) building;
                     if(time % turm.getSpeed() == 0){
                         shotMonster = turm.shoot(karte.getMonsterList());
-
                         if(!shotMonster.isEmpty()) {
                             int monsterX = shotMonster.get("MonsterX");
                             int monsterY = shotMonster.get("MonsterY");
                             int turmX = shotMonster.get("TurmX");
                             int turmY = shotMonster.get("TurmY");
 
-                            int x = min(turmX, monsterX) * space;
-                            int y = min(turmY, monsterY) * space + titelbalken;
-                            int width = space * abs(turmX - monsterX);
-                            int height = space * abs(turmY - monsterY);
+                            int x = min(turmX, monsterX) * spaceBetweenLinesPixels;
+                            int y = min(turmY, monsterY) * spaceBetweenLinesPixels + titelbalkenSizePixels;
+                            int width = spaceBetweenLinesPixels * abs(turmX - monsterX);
+                            int height = spaceBetweenLinesPixels * abs(turmY - monsterY);
 
-                            aktuelleGrafik.repaint(x + space/2, y + space / 2, width + 2, height +2);
-                            aktuelleGrafik.repaint(monsterX * space, monsterY * space + titelbalken, space, space);
+                            aktuelleGrafik.repaint(x + spaceBetweenLinesPixels /2 - 1, y + spaceBetweenLinesPixels / 2 - 1, width + 2, height +2);
+                            aktuelleGrafik.repaint(monsterX * spaceBetweenLinesPixels, monsterY * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                            shotMonster.put("TimeFired", time);
                             List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
                             temp.add(shotMonster);
                             Map<String, Integer>[] arr = new Map[temp.size()];
@@ -119,7 +122,7 @@ public class Main {
             }
 
             if(building_update){
-                aktuelleGrafik.repaint(building_update_place.x * space, building_update_place.y * space + titelbalken, building_update_place.width, building_update_place.height);
+                aktuelleGrafik.repaint(building_update_place.x * spaceBetweenLinesPixels, building_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, building_update_place.width, building_update_place.height);
                 building_update = false;
             }
             time++;

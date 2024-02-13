@@ -8,7 +8,7 @@ import project.Karte;
 import java.awt.*;
 import java.util.List;
 
-import static project.Graphikcontroller.HauptgrafikSpiel.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Lakai extends Monster{
     public Lakai(Coords position){
@@ -34,21 +34,21 @@ public class Lakai extends Monster{
         int directionY = position.getY() - oldPosition.getY();
         int x;
         int y;
-        int width = space;
-        int height = space;
+        int width = spaceBetweenLinesPixels;
+        int height = spaceBetweenLinesPixels;
         if(directionX < 0){
             x = oldPosition.getX()+directionX;
-            width = width - directionX * space;
+            width = width - directionX * spaceBetweenLinesPixels;
         }else{
             x = oldPosition.getX();
-            width = width + directionX * space;
+            width = width + directionX * spaceBetweenLinesPixels;
         }
         if(directionY < 0){
             y = oldPosition.getY()+directionY;
-            height = height - directionY * space;
+            height = height - directionY * spaceBetweenLinesPixels;
         }else{
             y = oldPosition.getY();
-            height = height + directionY * space;
+            height = height + directionY * spaceBetweenLinesPixels;
         }
         return new Rectangle(x, y, width, height);
     }

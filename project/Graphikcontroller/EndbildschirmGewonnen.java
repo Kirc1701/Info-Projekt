@@ -6,23 +6,34 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+// Das Fenster welches angezeigt wird, wenn der User es schafft alle Monster zu besiegen
 public class EndbildschirmGewonnen extends JFrame {
-    public EndbildschirmGewonnen(int x, int y){
+    // Konstruktor des Frames + Initialisierung
+    // xCoordinateUpperLeftCorner: x-Koordinate der linken oberen Ecke
+    // yCoordinateUpperLeftCorner: y-Koordinate der linken oberen Ecke
+    public EndbildschirmGewonnen(int xCoordinateUpperLeftCorner, int yCoordinateUpperLeftCorner){
+        // WindowListener, der bei Betätigung des Schließen-Buttons das Endfenster beendet
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
+                        // Fenster wird nicht mehr dargestellt
                         setVisible(false);
+                        // Alle weiteren Prozesse im Fenster werden unterbrochen
                         dispose();
+                        // Das Programm wird mit dem Exit-code 0 beendet
                         System.exit(0);
                     }
                 }
         );
-        setBackground(Color.white);
-        setFont(new Font("font", Font.BOLD, 20));
-        JLabel text = new JLabel("Du hast Gewonnen");
+        // Neues Label mit Text
+        JLabel text = new JLabel("Du hast gewonnen");
+        text.setFont(new Font("font", Font.BOLD, 20));
         add(text);
+
+        // Initialisierung des Frames und Sichtbarkeit
+        setBackground(Color.white);
         setSize(200, 100);
-        setLocation(x, y);
+        setLocation(xCoordinateUpperLeftCorner, yCoordinateUpperLeftCorner);
         setLayout(new FlowLayout());
         setVisible(true);
     }

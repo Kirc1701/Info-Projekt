@@ -13,7 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
-import static project.Graphikcontroller.HauptgrafikSpiel.space;
+import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 import static project.Graphikcontroller.HauptgrafikSpiel.pressed;
 import static project.Main.karte;
 
@@ -33,11 +33,11 @@ public class PopupSetzen extends JFrame implements ActionListener {
                 }
         );
         //Erstellung der Buttons
-        JButton m = new JButton(new ImageIcon(finalMauer.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
+        JButton m = new JButton(new ImageIcon(finalMauer.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH)));
         m.setActionCommand("Mauer");
         m.addActionListener(this);
 
-        JButton t = new JButton(new ImageIcon(finalTurm.getScaledInstance(space - 2, space - 2, Image.SCALE_SMOOTH)));
+        JButton t = new JButton(new ImageIcon(finalTurm.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH)));
         t.setActionCommand("Turm");
         t.addActionListener(this);
 
@@ -66,7 +66,7 @@ public class PopupSetzen extends JFrame implements ActionListener {
             }
             //Das popup wird deaktiviert
             setVisible(false);
-            Main.building_update_place = new Rectangle(x, y, space, space);
+            Main.building_update_place = new Rectangle(x, y, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
             pressed[0] = false;
             //Das Fenster wird aktualisiert
             Main.building_update = true;
@@ -78,7 +78,7 @@ public class PopupSetzen extends JFrame implements ActionListener {
                 System.out.println("Something went wrong");
             }
             //Das popup wird deaktiviert
-            Main.building_update_place = new Rectangle(x, y, space, space);
+            Main.building_update_place = new Rectangle(x, y, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
             setVisible(false);
             pressed[0] = false;
             //Das Fenster wird aktualisiert

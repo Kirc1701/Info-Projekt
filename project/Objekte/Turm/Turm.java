@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class Turm extends Objekt {
     int reach;
-    public Turm(int strength, int health, Coords position, int reach, long speed){
+    public Turm(int strength, int health, Coords position, int reach, int speed){
         super(strength, health, position, speed, "Turm");
         this.reach = reach;
     }
