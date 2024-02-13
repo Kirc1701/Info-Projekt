@@ -4,7 +4,6 @@ import project.Coords;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Objekt;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 

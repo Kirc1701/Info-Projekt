@@ -15,23 +15,15 @@ import java.awt.image.BufferedImage;
 
 import static project.Graphikcontroller.HauptgrafikSpiel.space;
 import static project.Graphikcontroller.HauptgrafikSpiel.pressed;
-import static project.Main.gameHasStarted;
 import static project.Main.karte;
 
 public class PopupSetzen extends JFrame implements ActionListener {
-    private BufferedImage finalMauer;
-    private BufferedImage finalTurm;
-    private int x;
-    private int y;
-    private int locX;
-    private int locY;
+    private final int x;
+    private final int y;
+
     public PopupSetzen(BufferedImage finalMauer, BufferedImage finalTurm, int x, int y, int locX, int locY){
-        this.finalMauer = finalMauer;
-        this.finalTurm = finalTurm;
         this.x = x;
         this.y = y;
-        this.locX = locX;
-        this.locY = locY;
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {

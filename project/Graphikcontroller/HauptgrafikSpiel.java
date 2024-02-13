@@ -3,10 +3,8 @@ package project.Graphikcontroller;
 import project.Coords;
 import project.Karte;
 import project.Main;
-import project.Objekte.Mauer.DefaultMauer;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Objekt;
-import project.Objekte.Turm.DefaultTurm;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -63,7 +61,7 @@ public class HauptgrafikSpiel extends JFrame{
         File fTurm = new File("images/Turm.jpg");
         File fBasis = new File("images/Basis.jpg");
         File fMonster = new File("images/Monster.jpg");
-        //Erstellung eines Images, in welches danach die Balddateien geladen werden
+        //Erstellung eines Images, in welches danach die Bilddateien geladen werden
         BufferedImage mauerImage = null;
         BufferedImage turmImage = null;
         BufferedImage basisImage = null;
@@ -189,7 +187,7 @@ public class HauptgrafikSpiel extends JFrame{
                             int y = (e.getY() - titelbalken) / space;
                             if(karte.getBuildings().containsKey(new Coords(x, y))){
                                 try {
-                                    new PopupRemoven(x, y, e.getX(), e.getY());
+                                    new PopupRemoveBuilding(x, y, e.getX(), e.getY());
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
@@ -212,9 +210,5 @@ public class HauptgrafikSpiel extends JFrame{
                 }
         );
 
-    }
-
-    public HauptgrafikSpiel getGraphic() {
-        return this;
     }
 }

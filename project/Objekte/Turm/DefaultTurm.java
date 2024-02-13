@@ -2,16 +2,13 @@ package project.Objekte.Turm;
 
 import project.Coords;
 import project.Objekte.Monster.Monster;
-import project.Objekte.Objekt;
 
-
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 public class DefaultTurm extends Turm{
     public DefaultTurm(Coords position){
-        super(5, 25, position, 4, 3);
+        super(5, 25, position, 4, 6);
     }
 
     @Override

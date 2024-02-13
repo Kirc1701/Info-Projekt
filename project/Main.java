@@ -2,7 +2,6 @@ package project;
 
 import project.Graphikcontroller.EndbildschirmGewonnen;
 import project.Graphikcontroller.EndbildschirmVerloren;
-import project.Graphikcontroller.HauptgrafikSpiel;
 import project.Graphikcontroller.Startbildschirm;
 import project.Objekte.Basis.Basis;
 import project.Objekte.Monster.Monster;
@@ -48,13 +47,13 @@ public class Main {
                 for (Monster monster : karte.getMonsterList()) {
                     if(monster.getSchritteBisZiel() > 1) {
                         if (time % monster.getMovingSpeed() == 0) {
-                            monster_update_place = monster.makeMove(karte, aktuelleGrafik);
+                            monster_update_place = monster.makeMove(karte);
                             aktuelleGrafik.repaint(monster_update_place.x * space, monster_update_place.y * space + titelbalken, monster_update_place.width, monster_update_place.height);
                         }
                     }else{
                         if(time % monster.getAttackSpeed() == 0){
-                            monster.attack(karte);
                             Basis basis = karte.getBasis();
+                            monster.attack(basis);
                             aktuelleGrafik.repaint(basis.getPosition().getX() * space, basis.getPosition().getY() * space + titelbalken, space, space);
                         }
                     }
@@ -111,13 +110,20 @@ public class Main {
                 }
             }
             karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
+            for (Objekt building : karte.getBuildings().values().stream().toList()) {
+                if (building.getHealth() <= 0) {
+                    int x = building.getPosition().getX();
+                    int y = building.getPosition().getY();
+                    karte.getBuildings().remove(new Coords(x, y));
+                }
+            }
 
             if(building_update){
                 aktuelleGrafik.repaint(building_update_place.x * space, building_update_place.y * space + titelbalken, building_update_place.width, building_update_place.height);
                 building_update = false;
             }
             time++;
-            TimeUnit.MILLISECONDS.sleep(1000);
+            TimeUnit.MILLISECONDS.sleep(500);
         }
         aktuelleGrafik.setVisible(false);
         int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
