@@ -15,6 +15,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 // Das Hauptfenster, auf dem das Spiel abläuft.
 public class HauptgrafikSpiel extends JFrame{
@@ -200,16 +201,18 @@ public class HauptgrafikSpiel extends JFrame{
         }
 
         // Zeichnen des Schusses
-        if(!Main.shotMonster.isEmpty()){
-            int monsterX = Main.shotMonster.get("MonsterX") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2;
-            int monsterY = Main.shotMonster.get("MonsterY") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2 + titelbalkenSizePixels;
-            int turmX = Main.shotMonster.get("TurmX") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2;
-            int turmY = Main.shotMonster.get("TurmY") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2 + titelbalkenSizePixels;
+        for(Map<String, Integer> shot : Main.shotMonster) {
+            if (!shot.isEmpty()) {
+                int monsterX = shot.get("MonsterX") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2;
+                int monsterY = shot.get("MonsterY") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2 + titelbalkenSizePixels;
+                int turmX = shot.get("TurmX") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2;
+                int turmY = shot.get("TurmY") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2 + titelbalkenSizePixels;
 
-            Graphics2D graphics2D = (Graphics2D) g;
-            graphics2D.setStroke(new BasicStroke(3));
-            graphics2D.setColor(Color.red);
-            graphics2D.drawLine(turmX, turmY, monsterX, monsterY);
+                Graphics2D graphics2D = (Graphics2D) g;
+                graphics2D.setStroke(new BasicStroke(3));
+                graphics2D.setColor(Color.red);
+                graphics2D.drawLine(turmX, turmY, monsterX, monsterY);
+            }
         }
 
         // Übergabe der Bilder für Verwendung im MouseListener

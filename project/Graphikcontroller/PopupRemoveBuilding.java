@@ -48,6 +48,8 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
                     public void windowClosing(WindowEvent e) {
                         // Popup wird nicht mehr dargestellt
                         setVisible(false);
+                        // Es kann ein neues Popup erzeugt werden
+                        pressed[0] = false;
                         // Alle weiteren Prozesse im Popup werden unterbrochen
                         dispose();
                     }

@@ -28,6 +28,8 @@ public class PopupSetzen extends JFrame implements ActionListener {
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
                         setVisible(false);
+                        // Es kann ein neues Popup erzeugt werden
+                        pressed[0] = false;
                         dispose();
                     }
                 }
