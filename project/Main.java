@@ -2,6 +2,7 @@ package project;
 
 import project.Graphikcontroller.EndbildschirmGewonnen;
 import project.Graphikcontroller.EndbildschirmVerloren;
+import project.Graphikcontroller.HauptgrafikSpiel;
 import project.Graphikcontroller.Startbildschirm;
 import project.Level.Level;
 import project.Level.Level1;
@@ -43,9 +44,16 @@ public class Main {
         int aktuellesLevel = 0;
         karte = new Karte(LEVELS[aktuellesLevel]);
         aktuelleGrafik = new Startbildschirm();
+        aktuelleGrafik = new HauptgrafikSpiel(karte);
+        TimeUnit.MILLISECONDS.sleep(500);
+        aktuelleGrafik.repaint();
         while(true) {
             int time = 0;
             while (!gameHasStarted) {
+                if (building_update) {
+                    aktuelleGrafik.repaint(building_update_place.x * spaceBetweenLinesPixels, building_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, building_update_place.width, building_update_place.height);
+                    building_update = false;
+                }
                 TimeUnit.MILLISECONDS.sleep(500);
             }
 
@@ -151,6 +159,7 @@ public class Main {
                 karte = new Karte(LEVELS[aktuellesLevel]);
                 gameHasStarted = false;
                 aktuelleGrafik = new Startbildschirm();
+                aktuelleGrafik = new HauptgrafikSpiel(karte);
             } else {
                 break;
             }

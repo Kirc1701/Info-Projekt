@@ -26,12 +26,12 @@ public class Startbildschirm extends JFrame {
         JButton button = new JButton("Start");
         button.addActionListener(e -> {
             setVisible(false);
-            Main.aktuelleGrafik = new HauptgrafikSpiel(karte);
             gameHasStarted = true;
             dispose();
         });
         add(button);
         setSize(100, 100);
+        setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - 100, 0);
         setLayout(new FlowLayout());
         setVisible(true);
     }
