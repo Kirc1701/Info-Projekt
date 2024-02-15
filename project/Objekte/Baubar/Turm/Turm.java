@@ -1,16 +1,16 @@
-package project.Objekte.Turm;
+package project.Objekte.Baubar.Turm;
 
 import project.Coords;
+import project.Objekte.Baubar.Baubar;
 import project.Objekte.Monster.Monster;
-import project.Objekte.Objekt;
 
 import java.util.List;
 import java.util.Map;
 
-public abstract class Turm extends Objekt {
+public abstract class Turm extends Baubar {
     int reach;
-    public Turm(int strength, int health, Coords position, int reach, int speed){
-        super(strength, health, position, speed, "Turm");
+    public Turm(int strength, int health, Coords position, int reach, int speed, double kosten){
+        super(strength, health, position, speed, "Turm", kosten);
         this.reach = reach;
     }
 

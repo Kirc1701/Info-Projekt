@@ -1,4 +1,4 @@
-package project.Objekte.Turm;
+package project.Objekte.Baubar.Turm;
 
 import project.Coords;
 import project.Objekte.Monster.Monster;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DefaultTurm extends Turm{
     public DefaultTurm(Coords position){
-        super(5, 25, position, 4, 6);
+        super(5, 25, position, 4, 6, 20);
     }
 
     @Override

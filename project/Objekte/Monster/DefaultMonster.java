@@ -12,8 +12,8 @@ import java.util.List;
 import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class DefaultMonster extends Monster{
-    public DefaultMonster(Coords position) {
-        super(10, 20, position, 2, 4);
+    public DefaultMonster(Coords position, int spawntime) {
+        super(10, 20, position, 2, 4, 10, spawntime);
     }
 
     @Override

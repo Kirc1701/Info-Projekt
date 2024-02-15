@@ -1,4 +1,4 @@
-package project.Objekte.Basis;
+package project.Objekte.Baubar.Basis;
 
 import project.Coords;
 

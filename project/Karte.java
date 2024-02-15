@@ -4,11 +4,9 @@ import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import project.Level.Level;
-import project.Level.Level1;
-import project.Objekte.Basis.Basis;
-import project.Objekte.Basis.DefaultBasis;
+import project.Objekte.Baubar.Basis.Basis;
+import project.Objekte.Baubar.Baubar;
 import project.Objekte.Monster.Monster;
-import project.Objekte.Objekt;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class Karte {
     //Der Graph der Karte
     private AbstractBaseGraph<Coords, DefaultWeightedEdge> graphOfMap;
     //Liste an Gebäuden
-    private Map<Coords, Objekt> buildings;
+    private Map<Coords, Baubar> buildings;
     //Width and Height
     private int width;
     private int height;
@@ -51,7 +49,7 @@ public class Karte {
     }
 
     //Methode um Gebäude sicher zur Liste hinzuzufügen
-    public boolean addBuilding(Coords coords, Objekt name){
+    public boolean addBuilding(Coords coords, Baubar name){
         //Wenn Building bereits in der Liste enthalten ist return false
         if(buildings.containsKey(coords)){
             return false;
@@ -137,9 +135,10 @@ public class Karte {
     }
 
     // Es wird ein Monster gespawnt
-    public Rectangle spawnMonster() {
+    public Rectangle spawnMonster(int time) {
         Monster monster = level.getMonstersToSpawn().remove(0);
         monster.setPosition(spawnpoint);
+        monster.setSpawntime(time);
         monsterList.add(monster);
         return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
     }
@@ -148,7 +147,7 @@ public class Karte {
     public AbstractBaseGraph<Coords, DefaultWeightedEdge> getGraphOfMap() {
         return graphOfMap;
     }
-    public Map<Coords, Objekt> getBuildings() {
+    public Map<Coords, Baubar> getBuildings() {
         return buildings;
     }
     public int getWidth() {
@@ -166,7 +165,7 @@ public class Karte {
     public Level getLevel() {
         return level;
     }
-    public void setBuildings(Map<Coords, Objekt> buildings) {
+    public void setBuildings(Map<Coords, Baubar> buildings) {
         this.buildings = buildings;
     }
     public void setGraphOfMap(AbstractBaseGraph<Coords, DefaultWeightedEdge> graphOfMap) {

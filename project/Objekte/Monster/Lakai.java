@@ -11,8 +11,8 @@ import java.util.List;
 import static project.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Lakai extends Monster{
-    public Lakai(Coords position){
-        super(10, 80, position, 1, 3);
+    public Lakai(Coords position, int spawntime){
+        super(10, 80, position, 1, 3, 20, spawntime);
     }
 
     @Override

@@ -1,17 +1,14 @@
 package project.Graphikcontroller;
 
-import project.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import static project.Main.gameHasStarted;
-import static project.Main.karte;
 
-public class Startbildschirm extends JFrame {
-    public Startbildschirm(){
+public class StarteSpielBildschirm extends JFrame {
+    public StarteSpielBildschirm(){
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {

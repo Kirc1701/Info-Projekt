@@ -3,14 +3,14 @@ package project;
 import project.Graphikcontroller.EndbildschirmGewonnen;
 import project.Graphikcontroller.EndbildschirmVerloren;
 import project.Graphikcontroller.HauptgrafikSpiel;
-import project.Graphikcontroller.Startbildschirm;
+import project.Graphikcontroller.StarteSpielBildschirm;
 import project.Level.Level;
 import project.Level.Level1;
 import project.Level.Level2;
-import project.Objekte.Basis.Basis;
+import project.Objekte.Baubar.Basis.Basis;
 import project.Objekte.Monster.Monster;
 import project.Objekte.Objekt;
-import project.Objekte.Turm.Turm;
+import project.Objekte.Baubar.Turm.Turm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,23 +36,32 @@ public class Main {
     public static JFrame aktuelleGrafik;
     public static Karte karte;
     public static boolean gameHasStarted = false;
+    public static double money = 0;
+    public static double laufendeKosten;
 
     public static void main(String[] args) throws InterruptedException {
         Level[] LEVELS = new Level[2];
         LEVELS[0] = new Level1();
         LEVELS[1] = new Level2(new Level1().getBasis());
         int aktuellesLevel = 0;
+        money = LEVELS[aktuellesLevel].getStartKapital();
         karte = new Karte(LEVELS[aktuellesLevel]);
-        aktuelleGrafik = new Startbildschirm();
+        aktuelleGrafik = new StarteSpielBildschirm();
         aktuelleGrafik = new HauptgrafikSpiel(karte);
         TimeUnit.MILLISECONDS.sleep(500);
         aktuelleGrafik.repaint();
         while(true) {
+            laufendeKosten = 0;
             int time = 0;
             while (!gameHasStarted) {
                 if (building_update) {
                     aktuelleGrafik.repaint(building_update_place.x * spaceBetweenLinesPixels, building_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, building_update_place.width, building_update_place.height);
                     building_update = false;
+                }
+                if(laufendeKosten > 0){
+                    money -= laufendeKosten;
+                    laufendeKosten = 0;
+                    System.out.println("Money "+money);
                 }
                 TimeUnit.MILLISECONDS.sleep(500);
             }
@@ -63,7 +72,7 @@ public class Main {
                 if (!karte.getMonsterList().isEmpty()) {
                     for (Monster monster : karte.getMonsterList()) {
                         if (monster.getSchritteBisZiel() > 1) {
-                            if (time % monster.getMovingSpeed() == 0) {
+                            if (time % monster.getMovingSpeed() == monster.getSpawntime() % monster.getMovingSpeed()) {
                                 monster_update_place = monster.makeMove(karte);
                                 aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
                             }
@@ -77,7 +86,7 @@ public class Main {
                     }
                 }
                 if ((time % karte.getLevel().getSpawnTime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
-                    monster_update_place = karte.spawnMonster();
+                    monster_update_place = karte.spawnMonster(time);
                     aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
                 }
 
@@ -134,7 +143,15 @@ public class Main {
                         }
                     }
                 }
+                Monster[] tempList = karte.getMonsterList().toArray(new Monster[karte.getMonsterList().size()]);
                 karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
+                for(Monster monster : tempList){
+                    if(!karte.getMonsterList().contains(monster)){
+                        money += monster.getKopfgeld();
+                        System.out.println("Money "+money);
+                    }
+                }
+
                 for (Objekt building : karte.getBuildings().values().stream().toList()) {
                     if (building.getHealth() <= 0) {
                         int x = building.getPosition().getX();
@@ -147,6 +164,12 @@ public class Main {
                     aktuelleGrafik.repaint(building_update_place.x * spaceBetweenLinesPixels, building_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, building_update_place.width, building_update_place.height);
                     building_update = false;
                 }
+
+                if(laufendeKosten > 0){
+                    money -= laufendeKosten;
+                    laufendeKosten = 0;
+                    System.out.println("Money "+money);
+                }
                 time++;
                 TimeUnit.MILLISECONDS.sleep(500);
             }
@@ -156,10 +179,15 @@ public class Main {
             if (karte.playerWins() && LEVELS.length > aktuellesLevel + 1) {
                 LEVELS[aktuellesLevel + 1].setBasis(LEVELS[aktuellesLevel].getBasis());
                 aktuellesLevel++;
+                LEVELS[aktuellesLevel].getBasis().setHealth(LEVELS[aktuellesLevel].getBasis().getMaxHealth());
                 karte = new Karte(LEVELS[aktuellesLevel]);
                 gameHasStarted = false;
-                aktuelleGrafik = new Startbildschirm();
+                money += LEVELS[aktuellesLevel].getStartKapital();
+                System.out.println("Money "+ money);
+                aktuelleGrafik = new StarteSpielBildschirm();
                 aktuelleGrafik = new HauptgrafikSpiel(karte);
+                TimeUnit.MILLISECONDS.sleep(500);
+                aktuelleGrafik.repaint();
             } else {
                 break;
             }

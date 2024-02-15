@@ -21,7 +21,7 @@ import java.util.Map;
 public class HauptgrafikSpiel extends JFrame{
     // Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
     public final static int spaceBetweenLinesPixels = 27;
-    public final static int titelbalkenSizePixels = 27;
+    public final static int titelbalkenSizePixels = 27 + 27;
 
     // Höhe und Breite des geöffneten Fensters in Pixeln
     private final int windowWidthPixels;
@@ -187,7 +187,7 @@ public class HauptgrafikSpiel extends JFrame{
         }
 
         //Zeichnen der Kanten
-        for(int i = 1; i < karte.getHeight(); i++){
+        for(int i = 0; i < karte.getHeight(); i++){
             Graphics2D graphics2D = (Graphics2D) g;
             graphics2D.setStroke(new BasicStroke(1));
             graphics2D.setColor(Color.black);
@@ -197,7 +197,7 @@ public class HauptgrafikSpiel extends JFrame{
             Graphics2D graphics2D = (Graphics2D) g;
             graphics2D.setStroke(new BasicStroke(1));
             graphics2D.setColor(Color.black);
-            graphics2D.drawLine(i* spaceBetweenLinesPixels,0, i* spaceBetweenLinesPixels, windowHeightPixels);
+            graphics2D.drawLine(i* spaceBetweenLinesPixels,titelbalkenSizePixels, i* spaceBetweenLinesPixels, windowHeightPixels);
         }
 
         // Zeichnen des Schusses

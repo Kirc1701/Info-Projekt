@@ -1,7 +1,7 @@
 package project.Level;
 
 import project.Coords;
-import project.Objekte.Basis.Basis;
+import project.Objekte.Baubar.Basis.Basis;
 import project.Objekte.Monster.Monster;
 
 import java.util.ArrayList;
@@ -17,14 +17,16 @@ public abstract class Level {
     protected Coords basisPosition;
     protected Basis basis;
     protected Coords spawnPoint;
+    protected double startKapital;
 
     //konstruktor
-    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, Coords spawnPoint){
+    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, Coords spawnPoint, double startKapital){
         this.width = width;
         this.height = height;
         this.basisPosition = basisPosition;
         this.basis = basis;
         this.spawnPoint = spawnPoint;
+        this.startKapital = startKapital;
         monstersToSpawn = new ArrayList<>();
         this.spawnTime = spawnTime;
     }
@@ -51,6 +53,9 @@ public abstract class Level {
     public Coords getSpawnPoint() {
         return spawnPoint;
     }
+    public double getStartKapital() {
+        return startKapital;
+    }
     public void setSpawnTime(long spawnTime) {
         this.spawnTime = spawnTime;
     }
@@ -71,5 +76,8 @@ public abstract class Level {
     }
     public void setSpawnPoint(Coords spawnPoint) {
         this.spawnPoint = spawnPoint;
+    }
+    public void setStartKapital(double startKapital) {
+        this.startKapital = startKapital;
     }
 }
