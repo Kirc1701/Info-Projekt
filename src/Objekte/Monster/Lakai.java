@@ -2,6 +2,7 @@ package src.Objekte.Monster;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.graph.AsUnweightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import src.Coords;
 import src.Karte;
@@ -12,7 +13,7 @@ import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Lakai extends Monster{
     public Lakai(Coords position){
-        super(10, 80, position, 1, 3, 20);
+        super(10, 80, position, 1, 3, 20, "Lakai");
     }
 
     @Override
@@ -25,6 +26,7 @@ public class Lakai extends Monster{
             Coords oldPosition = position;
             schritteBisZiel = monsterPathNodes.size() - 2;
             position = nextPosition;
+            monsterPathNodes.remove(1);
             //-1 if monster moves left; 0 if no movement on the x-axis happens; 1 if monster moves right
             int directionX = position.getX() - oldPosition.getX();
             //-1 if monster moves up; 0 if no movement on the y-axis happens; 1 if monster moves down
@@ -53,7 +55,7 @@ public class Lakai extends Monster{
 
     @Override
     public void updateMonsterPath(Karte karte){
-        DijkstraShortestPath<Coords, DefaultWeightedEdge> pathfinder = new DijkstraShortestPath<>(karte.getGraphOfMap());
+        DijkstraShortestPath<Coords, DefaultWeightedEdge> pathfinder = new DijkstraShortestPath<>(new AsUnweightedGraph<>(karte.getGraphOfMap()));
         GraphPath<Coords, DefaultWeightedEdge> monsterPath = pathfinder.getPath(position, karte.getBasis().getPosition());
         monsterPathWeight = monsterPath.getWeight();
         monsterPathNodes = monsterPath.getVertexList();

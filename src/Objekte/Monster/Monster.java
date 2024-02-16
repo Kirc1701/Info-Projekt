@@ -14,8 +14,8 @@ public abstract class Monster extends Objekt {
     protected double monsterPathWeight;
     protected List<Coords> monsterPathNodes;
 
-    public Monster(int strength, int health, Coords position, int movingSpeed, int attackSpeed, double kopfgeld){
-        super(strength, health, position, attackSpeed,  "Monster");
+    public Monster(int strength, int health, Coords position, int movingSpeed, int attackSpeed, double kopfgeld, String type){
+        super(strength, health, position, attackSpeed, type);
         this.movingSpeed = movingSpeed;
         this.kopfgeld = kopfgeld;
         schritteBisZiel = 250;

@@ -34,7 +34,8 @@ public class HauptgrafikSpiel extends JFrame{
     public final static boolean[] pressed = {false};
     private BufferedImage mauerImage = null;
     private BufferedImage turmImage = null;
-    private BufferedImage monsterImage = null;
+    private BufferedImage defaultMonsterImage = null;
+    private BufferedImage lakaiImage = null;
     private BufferedImage basisImage = null;
     private final ImageIcon mauerIcon;
     private final ImageIcon turmIcon;
@@ -64,14 +65,16 @@ public class HauptgrafikSpiel extends JFrame{
         File fMauer = new File("images/Mauer.jpg");
         File fTurm = new File("images/Turm.jpg");
         File fBasis = new File("images/Basis.jpg");
-        File fMonster = new File("images/Monster.jpg");
+        File fDefaultMonster = new File("images/DefaultMonster.jpg");
+        File fLakai = new File("images/Lakai.jpg");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
             mauerImage = ImageIO.read(fMauer);
             turmImage = ImageIO.read(fTurm);
             basisImage = ImageIO.read(fBasis);
-            monsterImage = ImageIO.read(fMonster);
+            defaultMonsterImage = ImageIO.read(fDefaultMonster);
+            lakaiImage = ImageIO.read(fLakai);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,78 +120,71 @@ public class HauptgrafikSpiel extends JFrame{
             graphics2D.drawLine(basisXCoordinate + 1, basisYCoordinate, basisXCoordinate + widthOfLifeline, basisYCoordinate);
         }
 
-        // Zeichnen der Monster
-        for(Monster monster : karte.getMonsterList()){
-            int monsterX = monster.getPosition().getX()* spaceBetweenLinesPixels +1;
-            int monsterY = monster.getPosition().getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
-            g.setColor(Color.black);
-            g.drawImage(
-                    monsterImage,
-                    monsterX,
-                    monsterY,
-                    spaceBetweenLinesPixels -2,
-                    spaceBetweenLinesPixels -2,
-                    null
-            );
-            double lifeInPercent = ((double) monster.getHealth()) /  ((double) monster.getMaxHealth());
-            int width = (int)(lifeInPercent * (spaceBetweenLinesPixels - 2));
-            Graphics2D graphics2D = (Graphics2D) g;
-            graphics2D.setStroke(new BasicStroke(3));
-            graphics2D.setColor(Color.red);
-            graphics2D.drawLine(monsterX + 1, monsterY, monsterX + width, monsterY);
-        }
-
         // Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
         for(Coords buildingCoords : karte.getBuildings().keySet()){
             Objekt building = karte.getBuildings().get(buildingCoords);
 
+            // Koordinaten des Gebäudes
+            int buildingX = buildingCoords.getX()* spaceBetweenLinesPixels +1;
+            int buildingY = buildingCoords.getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
+
             // Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
             if(building.getType().equals("Mauer")){
-                // Koordinaten der Mauer
-                int mauerX = buildingCoords.getX()* spaceBetweenLinesPixels +1;
-                int mauerY = buildingCoords.getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
-
                 // Zeichnen der Mauer
                 g.setColor(Color.black);
                 g.drawImage(
                         mauerImage,
-                        mauerX,
-                        mauerY,
+                        buildingX,
+                        buildingY,
                         spaceBetweenLinesPixels -2,
                         spaceBetweenLinesPixels -2,
                         null
                 );
 
-                double lifeInPercent = ((double) building.getHealth()) /  ((double) building.getMaxHealth());
-                int width = (int)(lifeInPercent * (spaceBetweenLinesPixels - 2));
-                Graphics2D graphics2D = (Graphics2D) g;
-                graphics2D.setStroke(new BasicStroke(3));
-                graphics2D.setColor(Color.red);
-                graphics2D.drawLine(mauerX + 1, mauerY, mauerX + width, mauerY);
+                setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
 
             }else if(building.getType().equals("Turm")){
-                // Koordinaten des Turms
-                int turmX = buildingCoords.getX()* spaceBetweenLinesPixels +1;
-                int turmY = buildingCoords.getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
-
                 // Zeichnen des Turms
                 g.setColor(Color.black);
                 g.drawImage(
                         turmImage,
-                        turmX,
-                        turmY,
+                        buildingX,
+                        buildingY,
                         spaceBetweenLinesPixels -2,
                         spaceBetweenLinesPixels -2,
                         null
                 );
 
-                double lifeInPercent = ((double) building.getHealth()) /  ((double) building.getMaxHealth());
-                int width = (int)(lifeInPercent * (spaceBetweenLinesPixels - 2));
-                Graphics2D graphics2D = (Graphics2D) g;
-                graphics2D.setStroke(new BasicStroke(3));
-                graphics2D.setColor(Color.red);
-                graphics2D.drawLine(turmX + 1, turmY, turmX + width, turmY);
+                setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
             }
+        }
+
+        // Zeichnen der Monster
+        for(Monster monster : karte.getMonsterList()){
+
+            int monsterX = monster.getPosition().getX()* spaceBetweenLinesPixels +1;
+            int monsterY = monster.getPosition().getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
+            g.setColor(Color.black);
+            if(monster.getType().equals("Default")) {
+                g.drawImage(
+                        defaultMonsterImage,
+                        monsterX,
+                        monsterY,
+                        spaceBetweenLinesPixels - 2,
+                        spaceBetweenLinesPixels - 2,
+                        null
+                );
+            } else if (monster.getType().equals("Lakai")) {
+                g.drawImage(
+                        lakaiImage,
+                        monsterX,
+                        monsterY,
+                        spaceBetweenLinesPixels - 2,
+                        spaceBetweenLinesPixels - 2,
+                        null
+                );
+            }
+            setLifeBar((Graphics2D) g, monsterX, monsterY, monster.getHealth(), monster.getMaxHealth());
         }
 
         //Zeichnen der Kanten
@@ -266,5 +262,13 @@ public class HauptgrafikSpiel extends JFrame{
                     }
                 }
         );
+    }
+
+    private void setLifeBar(Graphics2D graphics2D, int monsterX, int monsterY, double health, double maxHealth) {
+        double lifeInPercent = health / maxHealth;
+        int width = (int)(lifeInPercent * (spaceBetweenLinesPixels - 2));
+        graphics2D.setStroke(new BasicStroke(3));
+        graphics2D.setColor(Color.red);
+        graphics2D.drawLine(monsterX + 1, monsterY, monsterX + width, monsterY);
     }
 }
