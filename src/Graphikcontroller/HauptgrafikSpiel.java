@@ -4,8 +4,8 @@ package src.Graphikcontroller;
 import src.Coords;
 import src.Karte;
 import src.Main;
+import src.Objekte.Baubar.Baubar;
 import src.Objekte.Monster.Monster;
-import src.Objekte.Objekt;
 
 // Import anderer Klassen von außerhalb des Projekts
 import javax.imageio.ImageIO;
@@ -15,6 +15,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 // Das Hauptfenster, auf dem das Spiel abläuft.
@@ -97,8 +98,8 @@ public class HauptgrafikSpiel extends JFrame{
         // Darstellung der Basis, wenn vorhanden
         if(karte.getBasis() != null) {
             //Position der linken oberen Ecke der Basis
-            int basisXCoordinate = karte.getBasis().getPosition().getX() * spaceBetweenLinesPixels + 1;
-            int basisYCoordinate = karte.getBasis().getPosition().getY() * spaceBetweenLinesPixels + 1 + titelbalkenSizePixels;
+            int basisXCoordinate = karte.getBasis().getPosition().x() * spaceBetweenLinesPixels + 1;
+            int basisYCoordinate = karte.getBasis().getPosition().y() * spaceBetweenLinesPixels + 1 + titelbalkenSizePixels;
 
             // Darstellung des Bildes von der Basis
             g.setColor(Color.black);
@@ -121,12 +122,13 @@ public class HauptgrafikSpiel extends JFrame{
         }
 
         // Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
-        for(Coords buildingCoords : karte.getBuildings().keySet()){
-            Objekt building = karte.getBuildings().get(buildingCoords);
+        Map<Coords, Baubar> buildings = karte.getBuildings();
+        for(Coords buildingCoords : buildings.keySet()){
+            Baubar building = buildings.get(buildingCoords);
 
             // Koordinaten des Gebäudes
-            int buildingX = buildingCoords.getX()* spaceBetweenLinesPixels +1;
-            int buildingY = buildingCoords.getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
+            int buildingX = buildingCoords.x()* spaceBetweenLinesPixels +1;
+            int buildingY = buildingCoords.y()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
 
             // Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
             if(building.getType().equals("Mauer")){
@@ -142,7 +144,6 @@ public class HauptgrafikSpiel extends JFrame{
                 );
 
                 setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
-
             }else if(building.getType().equals("Turm")){
                 // Zeichnen des Turms
                 g.setColor(Color.black);
@@ -154,37 +155,38 @@ public class HauptgrafikSpiel extends JFrame{
                         spaceBetweenLinesPixels -2,
                         null
                 );
-
                 setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
             }
         }
 
         // Zeichnen der Monster
-        for(Monster monster : karte.getMonsterList()){
-
-            int monsterX = monster.getPosition().getX()* spaceBetweenLinesPixels +1;
-            int monsterY = monster.getPosition().getY()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
-            g.setColor(Color.black);
-            if(monster.getType().equals("Default")) {
-                g.drawImage(
-                        defaultMonsterImage,
-                        monsterX,
-                        monsterY,
-                        spaceBetweenLinesPixels - 2,
-                        spaceBetweenLinesPixels - 2,
-                        null
-                );
-            } else if (monster.getType().equals("Lakai")) {
-                g.drawImage(
-                        lakaiImage,
-                        monsterX,
-                        monsterY,
-                        spaceBetweenLinesPixels - 2,
-                        spaceBetweenLinesPixels - 2,
-                        null
-                );
+        if(!karte.getMonsterList().isEmpty()) {
+            List<Monster> monsterList = karte.getMonsterList().subList(0, karte.getMonsterList().size());
+            for(Monster monster : monsterList){
+                int monsterX = monster.getPosition().x()* spaceBetweenLinesPixels +1;
+                int monsterY = monster.getPosition().y()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
+                g.setColor(Color.black);
+                if(monster.getType().equals("Default")) {
+                    g.drawImage(
+                            defaultMonsterImage,
+                            monsterX,
+                            monsterY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                } else if (monster.getType().equals("Lakai")) {
+                    g.drawImage(
+                            lakaiImage,
+                            monsterX,
+                            monsterY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                }
+                setLifeBar((Graphics2D) g, monsterX, monsterY, monster.getHealth(), monster.getMaxHealth());
             }
-            setLifeBar((Graphics2D) g, monsterX, monsterY, monster.getHealth(), monster.getMaxHealth());
         }
 
         //Zeichnen der Kanten
@@ -201,8 +203,15 @@ public class HauptgrafikSpiel extends JFrame{
             graphics2D.drawLine(i* spaceBetweenLinesPixels,titelbalkenSizePixels, i* spaceBetweenLinesPixels, windowHeightPixels);
         }
 
+        //Darstellen des Geldes
+        double geld = Main.money;
+        g.setColor(Color.black);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 5);
+
         // Zeichnen des Schusses
-        for(Map<String, Integer> shot : Main.shotMonster) {
+        Map<String, Integer>[] shots = Main.shotMonster.clone();
+        for(Map<String, Integer> shot : shots) {
             if (!shot.isEmpty()) {
                 int monsterX = shot.get("MonsterX") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2;
                 int monsterY = shot.get("MonsterY") * spaceBetweenLinesPixels + spaceBetweenLinesPixels / 2 + titelbalkenSizePixels;

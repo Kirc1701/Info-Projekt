@@ -8,7 +8,7 @@ import src.Objekte.Monster.Lakai;
 
 public class Level1 extends Level{
     public Level1(){
-        super(5, 40, 25, new Coords(39, 1), new DefaultBasis(new Coords(39, 1)), new Coords(0, 24), 800);
+        super(5, 40, 25, new Coords(39, 1), new DefaultBasis(new Coords(39, 1)), new Coords(0, 24), 80);
         monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
         monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));

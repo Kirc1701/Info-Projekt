@@ -21,32 +21,32 @@ public class Lakai extends Monster{
         Coords nextPosition = monsterPathNodes.get(1);
         if(monsterPathWeight >= 10000 && karte.getBuildings().containsKey(nextPosition)){
             attack(karte.getBuildings().get(nextPosition));
-            return new Rectangle(nextPosition.getX(), nextPosition.getY(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+            return new Rectangle(nextPosition.x(), nextPosition.y(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
         }else {
             Coords oldPosition = position;
             schritteBisZiel = monsterPathNodes.size() - 2;
             position = nextPosition;
             monsterPathNodes.remove(1);
             //-1 if monster moves left; 0 if no movement on the x-axis happens; 1 if monster moves right
-            int directionX = position.getX() - oldPosition.getX();
+            int directionX = position.x() - oldPosition.x();
             //-1 if monster moves up; 0 if no movement on the y-axis happens; 1 if monster moves down
-            int directionY = position.getY() - oldPosition.getY();
+            int directionY = position.y() - oldPosition.y();
             int x;
             int y;
             int width = spaceBetweenLinesPixels;
             int height = spaceBetweenLinesPixels;
             if (directionX < 0) {
-                x = oldPosition.getX() + directionX;
+                x = oldPosition.x() + directionX;
                 width = width - directionX * spaceBetweenLinesPixels;
             } else {
-                x = oldPosition.getX();
+                x = oldPosition.x();
                 width = width + directionX * spaceBetweenLinesPixels;
             }
             if (directionY < 0) {
-                y = oldPosition.getY() + directionY;
+                y = oldPosition.y() + directionY;
                 height = height - directionY * spaceBetweenLinesPixels;
             } else {
-                y = oldPosition.getY();
+                y = oldPosition.y();
                 height = height + directionY * spaceBetweenLinesPixels;
             }
             return new Rectangle(x, y, width, height);

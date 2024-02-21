@@ -25,10 +25,10 @@ public class DefaultTurm extends Turm{
 //            System.out.println("health: "+monsterToShoot.getHealth());
 
             Map<String, Integer> map = new HashMap<>();
-            map.put("MonsterX", monsterToShoot.getPosition().getX());
-            map.put("MonsterY", monsterToShoot.getPosition().getY());
-            map.put("TurmX", position.getX());
-            map.put("TurmY", position.getY());
+            map.put("MonsterX", monsterToShoot.getPosition().x());
+            map.put("MonsterY", monsterToShoot.getPosition().y());
+            map.put("TurmX", position.x());
+            map.put("TurmY", position.y());
             return map;
         }
         return new HashMap<>();

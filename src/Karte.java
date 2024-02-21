@@ -128,7 +128,7 @@ public class Karte {
     public Rectangle spawnMonster(int time) {
         Monster monster = createAndSetupMonster(time);
         monster.updateMonsterPath(this);
-        return new Rectangle(monster.getPosition().getX(), monster.getPosition().getY(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+        return new Rectangle(monster.getPosition().x(), monster.getPosition().y(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
     }
 
     private Monster createAndSetupMonster(int time) {

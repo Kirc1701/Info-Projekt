@@ -98,7 +98,7 @@ public class Main {
                             if (time % monster.getAttackSpeed() == 0) {
                                 Basis basis = karte.getBasis();
                                 monster.attack(basis);
-                                aktuelleGrafik.repaint(basis.getPosition().getX() * spaceBetweenLinesPixels, basis.getPosition().getY() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                                aktuelleGrafik.repaint(basis.getPosition().x() * spaceBetweenLinesPixels, basis.getPosition().y() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
                             }
                         }
                     }
@@ -110,18 +110,13 @@ public class Main {
 
                 for (Map<String, Integer> shot : oldShots) {
                     int timeFired = shot.get("TimeFired");
-                    if (time == timeFired + 2) {
+                    if (time == timeFired + 1) {
                         int monsterX = shot.get("MonsterX");
                         int monsterY = shot.get("MonsterY");
                         int turmX = shot.get("TurmX");
                         int turmY = shot.get("TurmY");
 
-                        int x = min(turmX, monsterX) * spaceBetweenLinesPixels;
-                        int y = min(turmY, monsterY) * spaceBetweenLinesPixels + titelbalkenSizePixels;
-                        int width = spaceBetweenLinesPixels * abs(turmX - monsterX);
-                        int height = spaceBetweenLinesPixels * abs(turmY - monsterY);
-
-                        aktuelleGrafik.repaint(x + spaceBetweenLinesPixels / 2, y + spaceBetweenLinesPixels / 2, width + 2, height + 2);
+                        paintShot(monsterX, monsterY, turmX, turmY);
                         List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
                         temp.remove(shot);
                         Map<String, Integer>[] arr = new Map[temp.size()];
@@ -144,12 +139,7 @@ public class Main {
                                 int turmX = shotMonster[shotCounter].get("TurmX");
                                 int turmY = shotMonster[shotCounter].get("TurmY");
 
-                                int x = min(turmX, monsterX) * spaceBetweenLinesPixels;
-                                int y = min(turmY, monsterY) * spaceBetweenLinesPixels + titelbalkenSizePixels;
-                                int width = spaceBetweenLinesPixels * abs(turmX - monsterX);
-                                int height = spaceBetweenLinesPixels * abs(turmY - monsterY);
-
-                                aktuelleGrafik.repaint(x + spaceBetweenLinesPixels / 2 - 1, y + spaceBetweenLinesPixels / 2 - 1, width + 2, height + 2);
+                                paintShot(monsterX, monsterY, turmX, turmY);
                                 aktuelleGrafik.repaint(monsterX * spaceBetweenLinesPixels, monsterY * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
                                 shotMonster[shotCounter].put("TimeFired", time);
 
@@ -162,7 +152,7 @@ public class Main {
                                 karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
                                 for(Monster monster : tempList){
                                     if(!karte.getMonsterList().contains(monster)){
-                                        money += monster.getKopfgeld();
+                                        laufendeKosten -= monster.getKopfgeld();
                                         System.out.println("Money "+money);
                                     }
                                 }
@@ -173,8 +163,8 @@ public class Main {
 
                 for (Objekt building : karte.getBuildings().values().stream().toList()) {
                     if (building.getHealth() <= 0) {
-                        int x = building.getPosition().getX();
-                        int y = building.getPosition().getY();
+                        int x = building.getPosition().x();
+                        int y = building.getPosition().y();
                         karte.getBuildings().remove(new Coords(x, y));
                     }
                 }
@@ -194,6 +184,8 @@ public class Main {
                 gameHasStarted = false;
                 money += LEVELS[aktuellesLevel].getStartKapital();
                 System.out.println("Money "+ money);
+                shotMonster = new HashMap[0];
+                oldShots = new HashMap[0];
                 aktuelleGrafik = new StarteSpielBildschirm();
                 aktuelleGrafik = new HauptgrafikSpiel(karte);
                 TimeUnit.MILLISECONDS.sleep(500);
@@ -212,6 +204,23 @@ public class Main {
     }
 
     /**
+     * This method is used to paint a shot on the graphics.
+     *
+     * @param monsterX The x-coordinate of the monster.
+     * @param monsterY The y-coordinate of the monster.
+     * @param turmX The x-coordinate of the tower.
+     * @param turmY The y-coordinate of the tower.
+     */
+    private static void paintShot(int monsterX, int monsterY, int turmX, int turmY) {
+        int x = min(turmX, monsterX) * spaceBetweenLinesPixels;
+        int y = min(turmY, monsterY) * spaceBetweenLinesPixels + titelbalkenSizePixels;
+        int width = spaceBetweenLinesPixels * abs(turmX - monsterX);
+        int height = spaceBetweenLinesPixels * abs(turmY - monsterY);
+
+        aktuelleGrafik.repaint(x + spaceBetweenLinesPixels / 2 - 2, y + spaceBetweenLinesPixels / 2 - 2, width + 4, height + 4);
+    }
+
+    /**
      * Updates the buildings in the game.
      * This method repaints the graphics of the building being updated and resets the update flag.
      * It also deducts the ongoing costs from the available money if any.
@@ -225,9 +234,10 @@ public class Main {
                 monster.updateMonsterPath(karte);
             }
         }
-        if(laufendeKosten > 0){
+        if(laufendeKosten != 0){
             money -= laufendeKosten;
             laufendeKosten = 0;
+            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 2, 100, 30);
             System.out.println("Money "+money);
         }
     }
