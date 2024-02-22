@@ -3,7 +3,7 @@ package src;
 public record Coords(int x, int y) {
 
     public String toString() {
-        return "(" + x + ", " + y + ")";
+        return x + "_" + y;
     }
 
     public boolean isInRange(int reach, Coords position) {

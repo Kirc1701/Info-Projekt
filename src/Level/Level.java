@@ -1,5 +1,6 @@
 package src.Level;
 
+import org.javatuples.Pair;
 import src.Coords;
 import src.Objekte.Baubar.Basis.Basis;
 import src.Objekte.Monster.Monster;
@@ -16,7 +17,9 @@ public abstract class Level {
     protected int height;
     protected Coords basisPosition;
     protected Basis basis;
+    protected boolean spawnAtPoint;
     protected Coords spawnPoint;
+    protected List<Pair<Coords, Coords>> spawnArea;
     protected double startKapital;
 
     //konstruktor
@@ -29,6 +32,18 @@ public abstract class Level {
         this.startKapital = startKapital;
         monstersToSpawn = new ArrayList<>();
         this.spawnTime = spawnTime;
+        spawnAtPoint = true;
+    }
+    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, List<Pair<Coords, Coords>> spawnArea, double startKapital){
+        this.width = width;
+        this.height = height;
+        this.basisPosition = basisPosition;
+        this.basis = basis;
+        this.spawnArea = spawnArea;
+        this.startKapital = startKapital;
+        monstersToSpawn = new ArrayList<>();
+        this.spawnTime = spawnTime;
+        spawnAtPoint = false;
     }
 
     //getter und setter Methoden
@@ -56,28 +71,17 @@ public abstract class Level {
     public double getStartKapital() {
         return startKapital;
     }
-//    public void setSpawnTime(long spawnTime) {
-//        this.spawnTime = spawnTime;
-//    }
-//    public void setMonstersToSpawn(List<Monster> monstersToSpawn) {
-//        this.monstersToSpawn = monstersToSpawn;
-//    }
-//    public void setWidth(int width) {
-//        this.width = width;
-//    }
-//    public void setHeight(int height) {
-//        this.height = height;
-//    }
-//    public void setBasisPosition(Coords basisPosition) {
-//        this.basisPosition = basisPosition;
-//    }
     public void setBasis(Basis basis) {
         this.basis = basis;
     }
-//    public void setSpawnPoint(Coords spawnPoint) {
-//        this.spawnPoint = spawnPoint;
-//    }
-//    public void setStartKapital(double startKapital) {
-//        this.startKapital = startKapital;
-//    }
+    public List<Pair<Coords, Coords>> getSpawnArea() {
+        return spawnArea;
+    }
+    public void addSpawnArea(Pair<Coords, Coords> spawnArea) {
+        this.spawnArea.add(spawnArea);
+    }
+
+    public boolean spawnAtPoint() {
+        return spawnAtPoint;
+    }
 }

@@ -1,5 +1,6 @@
 package src;
 
+import org.javatuples.Pair;
 import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
@@ -9,10 +10,8 @@ import src.Objekte.Baubar.Baubar;
 import src.Objekte.Monster.Monster;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
@@ -133,7 +132,24 @@ public class Karte {
 
     private Monster createAndSetupMonster(int time) {
         Monster monster = level.getMonstersToSpawn().remove(0);
-        monster.setPosition(spawnpoint);
+        if(level.spawnAtPoint()) {
+            monster.setPosition(spawnpoint);
+        }else{
+            Pair<Coords, Coords> specificSpawnArea = level.getSpawnArea().get(new Random().nextInt(level.getSpawnArea().size()));
+            int x;
+            int y;
+            try {
+                x = new Random().nextInt(specificSpawnArea.getValue0().x(), specificSpawnArea.getValue1().x());
+            }catch(IllegalArgumentException e){
+                x = specificSpawnArea.getValue1().x();
+            }
+            try {
+                y = new Random().nextInt(specificSpawnArea.getValue0().y(), specificSpawnArea.getValue1().y());
+            } catch(IllegalArgumentException e){
+                y = specificSpawnArea.getValue0().y();
+            }
+            monster.setPosition(new Coords(x, y));
+        }
         monster.setSpawntime(time);
         monsterList.add(monster);
         return monster;

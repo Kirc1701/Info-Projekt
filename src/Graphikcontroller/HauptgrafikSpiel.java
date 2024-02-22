@@ -15,6 +15,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,13 +77,23 @@ public class HauptgrafikSpiel extends JFrame{
             basisImage = ImageIO.read(fBasis);
             defaultMonsterImage = ImageIO.read(fDefaultMonster);
             lakaiImage = ImageIO.read(fLakai);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
 
         turmIcon = new ImageIcon(turmImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
         mauerIcon = new ImageIcon(mauerImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
 
+        JButton save = new JButton("Design Speichern");
+        save.addActionListener(
+                e -> new Save()
+        );
+        save.setBounds(300, 0, 150, 25);
+        JButton load = new JButton("Design laden");
+        load.addActionListener(
+                e -> new Load()
+        );
+        load.setBounds(500, 0, 150, 25);
+        add(load);
+        add(save);
         // Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setBackground(Color.white);
         setSize(windowWidthPixels, windowHeightPixels);
@@ -122,7 +133,7 @@ public class HauptgrafikSpiel extends JFrame{
         }
 
         // Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
-        Map<Coords, Baubar> buildings = karte.getBuildings();
+        Map<Coords, Baubar> buildings = new HashMap<>(karte.getBuildings());
         for(Coords buildingCoords : buildings.keySet()){
             Baubar building = buildings.get(buildingCoords);
 
@@ -131,7 +142,7 @@ public class HauptgrafikSpiel extends JFrame{
             int buildingY = buildingCoords.y()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
 
             // Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
-            if(building.getType().equals("Mauer")){
+            if(building.getType().equals("DefaultMauer")){
                 // Zeichnen der Mauer
                 g.setColor(Color.black);
                 g.drawImage(
@@ -144,7 +155,7 @@ public class HauptgrafikSpiel extends JFrame{
                 );
 
                 setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
-            }else if(building.getType().equals("Turm")){
+            }else if(building.getType().equals("DefaultTurm")){
                 // Zeichnen des Turms
                 g.setColor(Color.black);
                 g.drawImage(
@@ -229,43 +240,33 @@ public class HauptgrafikSpiel extends JFrame{
         this.addMouseListener(
                 new MouseListener() {
                     // Wird aufgerufen, wenn die Maus gedrückt oder losgelassen wird
-                    public void mouseClicked(MouseEvent e) {
-
-                    }
-
+                    public void mouseClicked(MouseEvent e) {}
                     // Wird aufgerufen, wenn die Maus gedrückt wird
                     public void mousePressed(MouseEvent e) {
                         // Wenn pressed auf false steht, kann das Programm ausgeführt werden
                         if(!pressed[0]) {
                             // pressed wird auf true gesetzt, um häufigere Öffnung des Fensters zu vermeiden
                             pressed[0] = true;
-
                             // x und y werden aus dem Event gezogen
                             int x = e.getX() / spaceBetweenLinesPixels;
                             int y = (e.getY() - titelbalkenSizePixels) / spaceBetweenLinesPixels;
-
                             // Wenn an der gewählten Position bereits ein Gebäude steht, so wird remove aufgerufen,
                             // sonst wird setzen aufgerufen
                             if(karte.getBuildings().containsKey(new Coords(x, y))){
                                 try {
                                     new PopupRemoveBuilding(x, y, e.getX(), e.getY());
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
-                                }
+                                } catch (IOException ignored) {}
                             }else {
                                 new PopupSetzen(mauerIcon, turmIcon, x, y, e.getX(), e.getY());
                             }
                         }
                     }
-
                     //Wird aufgerufen, wenn die Maus losgelassen wird
                     public void mouseReleased(MouseEvent e) {
                     }
-
                     //Wird aufgerufen, wenn die Maus in den Frame kommt
                     public void mouseEntered(MouseEvent e) {
                     }
-
                     //Wird aufgerufen, wenn die Maus den Frame verlässt
                     public void mouseExited(MouseEvent e) {
                     }

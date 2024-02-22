@@ -1,20 +1,24 @@
 package src;
 
 // Import necessary packages and classes
-import src.Graphikcontroller.EndbildschirmGewonnen;
-import src.Graphikcontroller.EndbildschirmVerloren;
-import src.Graphikcontroller.HauptgrafikSpiel;
-import src.Graphikcontroller.StarteSpielBildschirm;
+import org.jetbrains.annotations.NotNull;
+import src.Graphikcontroller.*;
 import src.Level.Level;
 import src.Level.Level1;
 import src.Level.Level2;
 import src.Objekte.Baubar.Basis.Basis;
+import src.Objekte.Baubar.Baubar;
+import src.Objekte.Baubar.Mauer.DefaultMauer;
+import src.Objekte.Baubar.Turm.DefaultTurm;
 import src.Objekte.Monster.Monster;
 import src.Objekte.Objekt;
 import src.Objekte.Baubar.Turm.Turm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +49,8 @@ public class Main {
     public static double money = 0;  // The amount of money a player has
     public static double laufendeKosten;  // Running costs variable
     public static int time = 0;
+    public static boolean waitForStart = true;
+    public static String loadLevel = "";
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
@@ -52,13 +58,12 @@ public class Main {
      * @param args the command line arguments
      * @throws InterruptedException if the thread is interrupted while sleeping
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         // Array of game levels
         Level[] LEVELS = new Level[2];
         LEVELS[0] = new Level1();
         LEVELS[1] = new Level2(new Level1().getBasis());
         int aktuellesLevel = 0;
-
 
         // Player's starting balance is set according to the level's starting capital
         money = LEVELS[aktuellesLevel].getStartKapital();
@@ -78,6 +83,7 @@ public class Main {
 
                 // Calls the method updateBuildings() which updates the state of the buildings in the game.
                 updateBuildings();
+                loadLevel();
 
                 // Sleeps the current thread for 500 milliseconds.
                 // This can be used to control the pace of the game, reducing the processing load on the CPU.
@@ -103,6 +109,7 @@ public class Main {
                         }
                     }
                 }
+
                 if ((time % karte.getLevel().getSpawnTime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
                     monster_update_place = karte.spawnMonster(time);
                     aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
@@ -126,7 +133,7 @@ public class Main {
 
                 int shotCounter = 0;
                 for (Objekt building : karte.getBuildings().values()) {
-                    if (building.getType().equals("Turm")) {
+                    if (building.getType().equals("DefaultTurm")) {
                         Turm turm = (Turm) building;
                         if (time % turm.getSpeed() == turm.getSpawntime() % turm.getSpeed()) {
                             List<Map<String, Integer>> tempShot = new ArrayList<>(List.of(shotMonster));
@@ -168,8 +175,8 @@ public class Main {
                         karte.getBuildings().remove(new Coords(x, y));
                     }
                 }
-
                 updateBuildings();
+                loadLevel();
                 time++;
                 TimeUnit.MILLISECONDS.sleep(500);
             }
@@ -201,6 +208,52 @@ public class Main {
         }else {
             aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
         }
+    }
+
+    private static void loadLevel() throws IOException {
+        if(!loadLevel.isEmpty()){
+            File file = new File("savedDesigns/"+loadLevel+".txt");
+            if(file.canRead()){
+                String[] arguments = getArguments(file);
+
+                for(int i = 0; i < arguments.length-2; i += 3){
+                    Baubar building = null;
+                    Coords position = new Coords(Integer.parseInt(String.valueOf(arguments[i])), Integer.parseInt(String.valueOf(arguments[i + 1])));
+                    if(arguments[i + 2].equals("DefaultTurm")){
+                        building = new DefaultTurm(position);
+                    }else if(arguments[i + 2].equals("DefaultMauer")){
+                        building = new DefaultMauer(position);
+                    }
+                    if(building != null){
+                        if(money - building.getKosten() >= 0) {
+                            karte.addBuilding(position, building);
+                            aktuelleGrafik.repaint(position.x() * spaceBetweenLinesPixels, position.y() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                            for(Monster monster : karte.getMonsterList()){
+                                monster.updateMonsterPath(karte);
+                            }
+                            money -= building.getKosten();
+                            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 2, 100, 30);
+                        }
+                    }
+                }
+            }
+            loadLevel = "";
+        }
+    }
+
+    @NotNull
+    private static String[] getArguments(File file) throws IOException {
+        FileReader reader = new FileReader(file);
+        char[] input = new char[500];
+        reader.read(input);
+        String inputString = String.copyValueOf(input);
+        for(int i = 0; i < input.length; i++){
+            if(input[i] == '\u0000'){
+                inputString = inputString.substring(0, i);
+                break;
+            }
+        }
+        return inputString.split("_");
     }
 
     /**

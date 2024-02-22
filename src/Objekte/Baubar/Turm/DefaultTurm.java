@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DefaultTurm extends Turm{
     public DefaultTurm(Coords position){
-        super(5, 25, position, 4, 6, 20);
+        super(5, 25, position, 4, 6, 20, "DefaultTurm");
     }
 
     @Override
