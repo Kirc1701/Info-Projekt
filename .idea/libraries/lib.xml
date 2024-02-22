@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-ext-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jheaps-0.14-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-io-1.5.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-core-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/apfloat-1.10.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgraphx-4.2.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgraphx-4.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr4-runtime-4.12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-ext-1.5.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/apfloat-1.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jheaps-0.14-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-core-1.5.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-text-1.10.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-20.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.12.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-text-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-core-1.5.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr4-runtime-4.12.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/apfloat-1.10.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jheaps-0.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-io-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgraphx-4.2.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-ext-1.5.2-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
