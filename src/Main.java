@@ -29,7 +29,7 @@ import java.util.List;
 
 // Imported these to use in calculations
 import static java.lang.Math.abs;
-import static org.apache.commons.lang3.math.NumberUtils.min;
+import static java.lang.Math.min;
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 import static src.Graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
