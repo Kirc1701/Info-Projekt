@@ -7,6 +7,7 @@ import src.Level.Level;
 import src.Level.Level1;
 import src.Level.Level2;
 import src.Objekte.Baubar.Basis.Basis;
+import src.Objekte.Baubar.Basis.DefaultBasis;
 import src.Objekte.Baubar.Baubar;
 import src.Objekte.Baubar.Mauer.DefaultMauer;
 import src.Objekte.Baubar.Turm.DefaultTurm;
@@ -59,10 +60,12 @@ public class Main {
      * @throws InterruptedException if the thread is interrupted while sleeping
      */
     public static void main(String[] args) throws InterruptedException, IOException {
+        //Neue Basis
+        Basis newBasis = new DefaultBasis(new Coords(0,0));
         // Array of game levels
         Level[] LEVELS = new Level[2];
-        LEVELS[0] = new Level1();
-        LEVELS[1] = new Level2(new Level1().getBasis());
+        LEVELS[0] = new Level1(newBasis);
+        LEVELS[1] = new Level2(LEVELS[0].getBasis());
         int aktuellesLevel = 0;
 
         // Player's starting balance is set according to the level's starting capital
