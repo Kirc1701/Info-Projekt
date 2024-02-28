@@ -13,7 +13,7 @@ import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Lakai extends Monster{
     public Lakai(Coords position){
-        super(10, 80, position, 1, 3, 20, "Lakai");
+        super(10, 20, position, 1, 3, 20, "Lakai");
     }
 
     @Override

@@ -6,6 +6,8 @@ import src.Objekte.Monster.Monster;
 import java.util.*;
 import java.util.List;
 
+import static java.util.Collections.min;
+
 public class DefaultTurm extends Turm{
     public DefaultTurm(Coords position){
         super(5, 25, position, 4, 6, 20, "DefaultTurm");
@@ -20,7 +22,12 @@ public class DefaultTurm extends Turm{
             }
         }
         if(!shootingMonsters.isEmpty()) {
-            Monster monsterToShoot = shootingMonsters.get(0);
+            HashMap<Integer, Monster> monsterMap = new HashMap<>();
+            for(Monster monster : shootingMonsters){
+                monsterMap.put(monster.getSchritteBisZiel(), monster);
+            }
+            int minimum = min(monsterMap.keySet());
+            Monster monsterToShoot = monsterMap.get(minimum);
             monsterToShoot.setHealth(monsterToShoot.getHealth() - strength);
 //            System.out.println("health: "+monsterToShoot.getHealth());
 
