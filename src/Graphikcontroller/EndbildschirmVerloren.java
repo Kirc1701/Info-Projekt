@@ -30,6 +30,16 @@ public class EndbildschirmVerloren extends JFrame {
         text.setFont(new Font("font", Font.BOLD, 20));
         add(text);
 
+        JButton mainMenu = new JButton("Hauptmenü");
+        mainMenu.addActionListener(
+                e -> {
+                    new Hauptmenü();
+                    setVisible(false);
+                    dispose();
+                }
+        );
+        add(mainMenu);
+
         // Initialisierung des Frames und Sichtbarkeit
         setBackground(Color.white);
         setSize(200, 100);

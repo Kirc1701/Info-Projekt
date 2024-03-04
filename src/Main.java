@@ -51,7 +51,8 @@ public class Main {
     public static double laufendeKosten;  // Running costs variable
     public static int time = 0;
     public static boolean waitForStart = true;
-    public static String loadLevel = "";
+    public static String loadDesign = "";
+    public static int screenSelection;
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
@@ -60,13 +61,19 @@ public class Main {
      * @throws InterruptedException if the thread is interrupted while sleeping
      */
     public static void main(String[] args) throws InterruptedException, IOException {
+        aktuelleGrafik = new Hauptmenü();
+        Main.screenSelection = 0;
+        int aktuellesLevel;
+        while(screenSelection == 0) {
+            TimeUnit.MILLISECONDS.sleep(500);
+        }
+        aktuellesLevel = Hauptmenü.chosenLevel - 1;
         //Neue Basis
         Basis newBasis = new DefaultBasis(new Coords(0,0));
         // Array of game levels
         Level[] LEVELS = new Level[2];
         LEVELS[0] = new Level1(newBasis);
         LEVELS[1] = new Level2(LEVELS[0].getBasis());
-        int aktuellesLevel = 0;
 
         // Player's starting balance is set according to the level's starting capital
         money = LEVELS[aktuellesLevel].getStartKapital();
@@ -82,11 +89,10 @@ public class Main {
             laufendeKosten = 0;
             time = 0;
             // The while loop below forms part of the game loop. It waits for the game to start.
-            while (!gameHasStarted) {
-
+            while (screenSelection == 1) {
                 // Calls the method updateBuildings() which updates the state of the buildings in the game.
                 updateBuildings();
-                loadLevel();
+                loadDesign();
 
                 // Sleeps the current thread for 500 milliseconds.
                 // This can be used to control the pace of the game, reducing the processing load on the CPU.
@@ -179,43 +185,53 @@ public class Main {
                     }
                 }
                 updateBuildings();
-                loadLevel();
+                loadDesign();
                 time++;
                 TimeUnit.MILLISECONDS.sleep(500);
             }
-
             aktuelleGrafik.setVisible(false);
             aktuelleGrafik.dispose();
-            if (karte.playerWins() && LEVELS.length > aktuellesLevel + 1) {
-                LEVELS[aktuellesLevel + 1].setBasis(LEVELS[aktuellesLevel].getBasis());
-                aktuellesLevel++;
-                LEVELS[aktuellesLevel].getBasis().setHealth(LEVELS[aktuellesLevel].getBasis().getMaxHealth());
-                karte = new Karte(LEVELS[aktuellesLevel]);
-                gameHasStarted = false;
-                money += LEVELS[aktuellesLevel].getStartKapital();
-                System.out.println("Money "+ money);
-                shotMonster = new HashMap[0];
-                oldShots = new HashMap[0];
-                aktuelleGrafik = new StarteSpielBildschirm();
-                aktuelleGrafik = new HauptgrafikSpiel(karte);
-                TimeUnit.MILLISECONDS.sleep(500);
-                aktuelleGrafik.repaint();
-            } else {
-                break;
+            if(aktuellesLevel == LEVELS.length - 1){
+                Hauptmenü.chosenLevel = 1;
+            }else{
+                aktuellesLevel ++;
+                Hauptmenü.chosenLevel = aktuellesLevel + 1;
             }
-        }
-        int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
-        int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
-        if(karte.playerWins()){
-            aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
-        }else {
-            aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
+
+            int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
+            int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
+            screenSelection = 0;
+            if(karte.playerWins()){
+                aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
+            }else {
+                aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
+            }
+            while(screenSelection == 0){
+                TimeUnit.MILLISECONDS.sleep(500);
+            }
+//            if (karte.playerWins() && LEVELS.length > aktuellesLevel + 1) {
+//                LEVELS[aktuellesLevel + 1].setBasis(LEVELS[aktuellesLevel].getBasis());
+//                aktuellesLevel++;
+//                LEVELS[aktuellesLevel].getBasis().setHealth(LEVELS[aktuellesLevel].getBasis().getMaxHealth());
+//                karte = new Karte(LEVELS[aktuellesLevel]);
+//                gameHasStarted = false;
+//                money += LEVELS[aktuellesLevel].getStartKapital();
+//                System.out.println("Money "+ money);
+//                shotMonster = new HashMap[0];
+//                oldShots = new HashMap[0];
+//                aktuelleGrafik = new StarteSpielBildschirm();
+//                aktuelleGrafik = new HauptgrafikSpiel(karte);
+//                TimeUnit.MILLISECONDS.sleep(500);
+//                aktuelleGrafik.repaint();
+//            } else {
+//                break;
+//            }
         }
     }
 
-    private static void loadLevel() throws IOException {
-        if(!loadLevel.isEmpty()){
-            File file = new File("savedDesigns/"+loadLevel+".txt");
+    private static void loadDesign() throws IOException {
+        if(!loadDesign.isEmpty()){
+            File file = new File("savedDesigns/"+ loadDesign +".txt");
             if(file.canRead()){
                 String[] arguments = getArguments(file);
 
@@ -240,7 +256,7 @@ public class Main {
                     }
                 }
             }
-            loadLevel = "";
+            loadDesign = "";
         }
     }
 

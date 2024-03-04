@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import static src.Main.gameHasStarted;
+import static src.Main.screenSelection;
 
 public class StarteSpielBildschirm extends JFrame {
     public StarteSpielBildschirm(){
@@ -23,7 +24,7 @@ public class StarteSpielBildschirm extends JFrame {
         JButton button = new JButton("Start");
         button.addActionListener(e -> {
             setVisible(false);
-            gameHasStarted = true;
+            screenSelection = 2;
             dispose();
         });
         add(button);

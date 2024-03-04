@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import static src.Main.loadLevel;
+import static src.Main.loadDesign;
 
 public class Load extends JFrame {
     public Load(){
@@ -23,7 +23,7 @@ public class Load extends JFrame {
         JButton acceptText = new JButton("Load Level");
         acceptText.addActionListener(
                 e -> {
-                    loadLevel = textField.getText();
+                    loadDesign = textField.getText();
                     setVisible(false);
                     dispose();
                 }
