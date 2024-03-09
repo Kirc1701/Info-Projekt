@@ -13,7 +13,7 @@ import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Bombenschiff extends Monster{
     public Bombenschiff(Coords position){
-        super(30, 35, position, 1, 1, 40, "Bombenschiff");
+        super(30, 35, position, 4, 1, 40, "Bombenschiff");
     }
 
     @Override

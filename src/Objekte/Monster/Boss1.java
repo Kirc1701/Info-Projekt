@@ -10,9 +10,9 @@ import java.awt.*;
 
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
-public class Golem extends Monster{
-    public Golem(Coords position) {
-        super(20, 40, position, 4, 1, 20, "Golem");
+public class Boss1 extends Monster{
+    public Boss1(Coords position) {
+        super(30, 100, position, 3, 3, 100, "Boss1");
     }
 
     @Override
