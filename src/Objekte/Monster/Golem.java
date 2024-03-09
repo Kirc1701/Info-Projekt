@@ -12,7 +12,7 @@ import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Golem extends Monster{
     public Golem(Coords position) {
-        super(15, 40, position, 1, 1, 20, "Golem");
+        super(15, 40, position, 1, 1, 20, "Golem1");
     }
 
     @Override
