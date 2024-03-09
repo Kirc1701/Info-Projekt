@@ -1,7 +1,7 @@
 package src;
 
 // Import necessary packages and classes
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 import src.Graphikcontroller.*;
 import src.Level.Level;
 import src.Level.Level1;
@@ -61,13 +61,13 @@ public class Main {
      * @throws InterruptedException if the thread is interrupted while sleeping
      */
     public static void main(String[] args) throws InterruptedException, IOException {
-        aktuelleGrafik = new Hauptmenü();
+        aktuelleGrafik = new Hauptmenue();
         Main.screenSelection = 0;
         int aktuellesLevel;
         while(screenSelection == 0) {
             TimeUnit.MILLISECONDS.sleep(500);
         }
-        aktuellesLevel = Hauptmenü.chosenLevel - 1;
+        aktuellesLevel = Hauptmenue.chosenLevel - 1;
         //Neue Basis
         Basis newBasis = new DefaultBasis(new Coords(0,0));
         // Array of game levels
@@ -192,10 +192,10 @@ public class Main {
             aktuelleGrafik.setVisible(false);
             aktuelleGrafik.dispose();
             if(aktuellesLevel == LEVELS.length - 1){
-                Hauptmenü.chosenLevel = 1;
+                Hauptmenue.chosenLevel = 1;
             }else{
                 aktuellesLevel ++;
-                Hauptmenü.chosenLevel = aktuellesLevel + 1;
+                Hauptmenue.chosenLevel = aktuellesLevel + 1;
             }
 
             int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
@@ -260,7 +260,7 @@ public class Main {
         }
     }
 
-    @NotNull
+//    @NotNull
     private static String[] getArguments(File file) throws IOException {
         FileReader reader = new FileReader(file);
         char[] input = new char[500];

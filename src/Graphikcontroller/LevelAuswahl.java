@@ -32,8 +32,8 @@ public class LevelAuswahl extends JFrame {
         level1.setBounds(level1CornerX, level1CornerY, levelWidth, levelHeight);
         level1.addActionListener(
                 e -> {
-                    Hauptmenü.chosenLevel = 1;
-                    new Hauptmenü();
+                    Hauptmenue.chosenLevel = 1;
+                    new Hauptmenue();
                     setVisible(false);
                     dispose();
                 }
@@ -44,8 +44,8 @@ public class LevelAuswahl extends JFrame {
         level2.setBounds(level2CornerX, level1CornerY, levelWidth, levelHeight);
         level2.addActionListener(
                 e -> {
-                    Hauptmenü.chosenLevel = 2;
-                    new Hauptmenü();
+                    Hauptmenue.chosenLevel = 2;
+                    new Hauptmenue();
                     setVisible(false);
                     dispose();
                 }

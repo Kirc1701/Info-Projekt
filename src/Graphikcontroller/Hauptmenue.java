@@ -7,9 +7,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Hauptmenü extends JFrame {
+public class Hauptmenue extends JFrame {
     public static int chosenLevel = 1;
-    public Hauptmenü(){
+    public Hauptmenue(){
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {

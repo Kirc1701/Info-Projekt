@@ -33,7 +33,7 @@ public class EndbildschirmGewonnen extends JFrame {
         JButton mainMenu = new JButton("Hauptmenü");
         mainMenu.addActionListener(
                 e -> {
-                    new Hauptmenü();
+                    new Hauptmenue();
                     setVisible(false);
                     dispose();
                 }
