@@ -16,8 +16,8 @@ public class LevelAuswahl extends JFrame {
                     }
                 }
         );
-        int levelWidth = 60;
-        int levelHeight = 60;
+        int levelWidth = 100;
+        int levelHeight = 100;
         int margin = 10;
         int width = 700;
         int height = 700;
