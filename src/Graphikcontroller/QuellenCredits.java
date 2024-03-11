@@ -16,8 +16,12 @@ public class QuellenCredits extends JFrame {
                     }
                 }
         );
+
+
         JLabel label1 = new JLabel("Lead Guitar: Anton Kirchert");
         add(label1);
+
+
         setSize(450, 300);
         setLocation(
                 Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 225,
