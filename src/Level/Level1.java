@@ -11,8 +11,7 @@ import java.util.ArrayList;
 public class Level1 extends Level{
 
     public Level1(Basis basis){
-        super(
-                1,
+        super(3,
                 40,
                 25,
                 new Coords(20, 12),
