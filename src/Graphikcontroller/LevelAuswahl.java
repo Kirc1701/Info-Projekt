@@ -1,11 +1,15 @@
 package src.Graphikcontroller;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class LevelAuswahl extends JFrame implements MouseListener {
     private final int levelWidth = 60;
@@ -22,6 +26,9 @@ public class LevelAuswahl extends JFrame implements MouseListener {
     private final Rectangle level3Bounds = new Rectangle(level3CornerX, level1CornerY, levelWidth, levelHeight);
     private final Rectangle level4Bounds = new Rectangle(level4CornerX, level1CornerY, levelWidth, levelHeight);
     private final Rectangle level5Bounds = new Rectangle(level5CornerX, level1CornerY, levelWidth, levelHeight);
+    private BufferedImage bufferedImage = null;
+    private final int width = 800;
+    private final int height = 533;
     public LevelAuswahl(){
         addWindowListener(
                 new WindowAdapter() {
@@ -32,8 +39,10 @@ public class LevelAuswahl extends JFrame implements MouseListener {
                     }
                 }
         );
-        int width = 800;
-        int height = 533;
+        File file = new File("images/BackgroundLevelAuswahl.png");
+        try {
+            bufferedImage = ImageIO.read(file);
+        } catch (IOException ignored) {}
         int systemWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         int systemHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         int leftCornerUpX = systemWidth / 2 - (width / 2);
@@ -49,7 +58,20 @@ public class LevelAuswahl extends JFrame implements MouseListener {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g2) {
+        g2.drawImage(
+                bufferedImage,
+                0,
+                0,
+                width,
+                height,
+                null
+        );
+
+        Graphics2D g = (Graphics2D) g2;
+
+        g.setStroke(new BasicStroke(3));
+
         g.drawRect(level1Bounds.x, level1Bounds.y, level1Bounds.width, level1Bounds.height);
         g.drawString("Level 1", level1Bounds.x + 8, level1Bounds.y + 33);
 
