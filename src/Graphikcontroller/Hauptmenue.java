@@ -53,6 +53,8 @@ public class Hauptmenue extends JFrame implements MouseListener {
         g.setFont(new Font("Helvetica", Font.BOLD, 18));
         g.drawString("Starte Spiel | Gewähltes Level: Level " + chosenLevel, 59, 78);
         g.drawString("-> Levelauswahl", 152, 121);
+        g.drawString("Einstellungen",170, 164);
+        g.drawString("Credits/Quellen",160, 207);
     }
 
     @Override
@@ -68,6 +70,14 @@ public class Hauptmenue extends JFrame implements MouseListener {
             dispose();
         }else if(e.getX() >= 147 && e.getX() <= 299 && e.getY() >= 95 && e.getY() <= 132){
             new LevelAuswahl();
+            setVisible(false);
+            dispose();
+        }else if(e.getX() >= 165 && e.getX() <= 299 && e.getY() >= 138 && e.getY() <= 175){
+            new Einstellungen();
+            setVisible(false);
+            dispose();
+        }else if(e.getX() >= 155 && e.getX() <= 299 && e.getY() >= 181 && e.getY() <= 218){
+            new QuellenCredits();
             setVisible(false);
             dispose();
         }
