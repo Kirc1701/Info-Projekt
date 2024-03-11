@@ -205,6 +205,7 @@ public class Main {
                     Hauptmenue.chosenLevel = aktuellesLevel + 1;
                 }
             }
+            karte.getBasis().setHealth(karte.getBasis().getMaxHealth());
 
             int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
             int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;

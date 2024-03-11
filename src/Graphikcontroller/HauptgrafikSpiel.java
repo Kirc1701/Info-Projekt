@@ -40,6 +40,7 @@ public class HauptgrafikSpiel extends JFrame{
     private BufferedImage lakaiImage = null;
     private BufferedImage basisImage = null;
     private BufferedImage bossImage = null;
+    private BufferedImage backgroundImage = null;
     private final ImageIcon mauerIcon;
     private final ImageIcon turmIcon;
 
@@ -65,12 +66,13 @@ public class HauptgrafikSpiel extends JFrame{
         );
 
         // Zugriff auf die Bilddateien
-        File fMauer = new File("images/Mauer.jpg");
-        File fTurm = new File("images/Turm.jpg");
-        File fBasis = new File("images/Basis.jpg");
-        File fDefaultMonster = new File("images/DefaultMonster.jpg");
-        File fLakai = new File("images/Lakai.jpg");
-        File fBoss = new File("images/Boss.jpg");
+        File fMauer = new File("images/Mauer.png");
+        File fTurm = new File("images/Turm.png");
+        File fBasis = new File("images/Basis.png");
+        File fDefaultMonster = new File("images/DefaultMonster.png");
+        File fLakai = new File("images/Lakai.png");
+        File fBoss = new File("images/Boss.png");
+        File fBackground = new File("images/Background.jpg");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
@@ -80,6 +82,7 @@ public class HauptgrafikSpiel extends JFrame{
             defaultMonsterImage = ImageIO.read(fDefaultMonster);
             lakaiImage = ImageIO.read(fLakai);
             bossImage = ImageIO.read(fBoss);
+            backgroundImage = ImageIO.read(fBackground);
         } catch (IOException ignored) {}
 
         turmIcon = new ImageIcon(turmImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
@@ -108,6 +111,14 @@ public class HauptgrafikSpiel extends JFrame{
     public void paint(Graphics g) {
         // Aufruf der super.paint()-Methode
         super.paint(g);
+        g.drawImage(
+                backgroundImage,
+                0,
+                0,
+                windowWidthPixels,
+                windowHeightPixels,
+                null
+        );
 
         // Darstellung der Basis, wenn vorhanden
         if(karte.getBasis() != null) {
