@@ -271,7 +271,7 @@ public class Main {
 //    @NotNull
     private static String[] getArguments(File file) throws IOException {
         FileReader reader = new FileReader(file);
-        char[] input = new char[500];
+        char[] input = new char[2000];
         reader.read(input);
         String inputString = String.copyValueOf(input);
         for(int i = 0; i < input.length; i++){

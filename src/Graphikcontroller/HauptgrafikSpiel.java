@@ -39,6 +39,7 @@ public class HauptgrafikSpiel extends JFrame{
     private BufferedImage defaultMonsterImage = null;
     private BufferedImage lakaiImage = null;
     private BufferedImage basisImage = null;
+    private BufferedImage bossImage = null;
     private final ImageIcon mauerIcon;
     private final ImageIcon turmIcon;
 
@@ -78,6 +79,7 @@ public class HauptgrafikSpiel extends JFrame{
             basisImage = ImageIO.read(fBasis);
             defaultMonsterImage = ImageIO.read(fDefaultMonster);
             lakaiImage = ImageIO.read(fLakai);
+            bossImage = ImageIO.read(fBoss);
         } catch (IOException ignored) {}
 
         turmIcon = new ImageIcon(turmImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
@@ -190,6 +192,15 @@ public class HauptgrafikSpiel extends JFrame{
                 } else if (monster.getType().equals("Lakai")) {
                     g.drawImage(
                             lakaiImage,
+                            monsterX,
+                            monsterY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                } else if (monster.getType().equals("Boss1")) {
+                    g.drawImage(
+                            bossImage,
                             monsterX,
                             monsterY,
                             spaceBetweenLinesPixels - 2,

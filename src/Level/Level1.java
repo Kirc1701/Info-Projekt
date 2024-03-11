@@ -43,5 +43,6 @@ public class Level1 extends Level{
           monstersToSpawn.add(new Bombenschiff(new Coords(-1, -1)));
           monstersToSpawn.add(new Golem(new Coords(-1, -1)));
           monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
+          monstersToSpawn.add(new Boss1(new Coords(-1, -1)));
     }
 }
