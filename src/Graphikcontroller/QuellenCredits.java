@@ -18,8 +18,10 @@ public class QuellenCredits extends JFrame {
         );
 
 
-        JLabel label1 = new JLabel("Lead Guitar: Anton Kirchert");
+        JLabel label1 = new JLabel("Lead Guitar: Anton K.");
         add(label1);
+        JLabel label2 = new JLabel("External Design Artist: Maya R.");
+        add(label2);
 
 
         setSize(450, 300);

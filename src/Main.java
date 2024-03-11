@@ -328,7 +328,7 @@ public class Main {
     public static void stopMusic() {
         sound.stop();
     }
-    public static void playSE(int i) {
+    public static void playSFX(int i) {
         sound.setFile(i);
         sound.play();
     }
