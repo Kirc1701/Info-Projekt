@@ -69,6 +69,7 @@ public class HauptgrafikSpiel extends JFrame{
         File fBasis = new File("images/Basis.jpg");
         File fDefaultMonster = new File("images/DefaultMonster.jpg");
         File fLakai = new File("images/Lakai.jpg");
+        File fBoss = new File("images/Boss.jpg");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {

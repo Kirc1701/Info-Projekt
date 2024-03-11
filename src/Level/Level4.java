@@ -4,8 +4,8 @@ import src.Coords;
 import src.Objekte.Baubar.Basis.Basis;
 import src.Objekte.Monster.DefaultMonster;
 
-public class Level2 extends Level{
-    public Level2(Basis basis){
+public class Level4 extends Level{
+    public Level4(Basis basis){
         super(
                 3,
                 40,

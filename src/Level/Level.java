@@ -21,26 +21,29 @@ public abstract class Level {
     protected Coords spawnPoint;
     protected List<Pair<Coords, Coords>> spawnArea;
     protected double startKapital;
+    protected int anzahlMauern;
 
     //konstruktor
-    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, Coords spawnPoint, double startKapital){
+    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, Coords spawnPoint, double startKapital, int anzahlMauern){
         this.width = width;
         this.height = height;
         this.basisPosition = basisPosition;
         this.basis = basis;
         this.spawnPoint = spawnPoint;
         this.startKapital = startKapital;
+        this.anzahlMauern = anzahlMauern;
         monstersToSpawn = new ArrayList<>();
         this.spawnTime = spawnTime;
         spawnAtPoint = true;
     }
-    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, List<Pair<Coords, Coords>> spawnArea, double startKapital){
+    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, List<Pair<Coords, Coords>> spawnArea, double startKapital, int anzahlMauern){
         this.width = width;
         this.height = height;
         this.basisPosition = basisPosition;
         this.basis = basis;
         this.spawnArea = spawnArea;
         this.startKapital = startKapital;
+        this.anzahlMauern = anzahlMauern;
         monstersToSpawn = new ArrayList<>();
         this.spawnTime = spawnTime;
         spawnAtPoint = false;
@@ -83,5 +86,13 @@ public abstract class Level {
 
     public boolean spawnAtPoint() {
         return spawnAtPoint;
+    }
+
+    public int getAnzahlMauern() {
+        return anzahlMauern;
+    }
+
+    public void setAnzahlMauern(int anzahlMauern) {
+        this.anzahlMauern = anzahlMauern;
     }
 }

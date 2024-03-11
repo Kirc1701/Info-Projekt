@@ -50,9 +50,10 @@ public class Main {
     public static double money = 0;  // The amount of money a player has
     public static double laufendeKosten;  // Running costs variable
     public static int time = 0;
-    public static boolean waitForStart = true;
+//    public static boolean waitForStart = true;
     public static String loadDesign = "";
     public static int screenSelection;
+    public static int anzahlMauern = 0;
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
@@ -71,21 +72,26 @@ public class Main {
         //Neue Basis
         Basis newBasis = new DefaultBasis(new Coords(0,0));
         // Array of game levels
-        Level[] LEVELS = new Level[2];
+        Level[] LEVELS = new Level[5];
         LEVELS[0] = new Level1(newBasis);
         LEVELS[1] = new Level2(LEVELS[0].getBasis());
+        LEVELS[2] = new Level2(LEVELS[1].getBasis());
+        LEVELS[3] = new Level2(LEVELS[2].getBasis());
+        LEVELS[4] = new Level2(LEVELS[3].getBasis());
 
         // Player's starting balance is set according to the level's starting capital
         money = LEVELS[aktuellesLevel].getStartKapital();
-        // A map is created based on the current level configuration
-        karte = new Karte(LEVELS[aktuellesLevel]);
-
-        // Creation of game windows
-        aktuelleGrafik = new StarteSpielBildschirm(); // Initial game startup screen
-        aktuelleGrafik = new HauptgrafikSpiel(karte); // Main game window with map
-        TimeUnit.MILLISECONDS.sleep(500);
-        aktuelleGrafik.repaint();
         while(true) {
+            // A map is created based on the current level configuration
+            karte = new Karte(LEVELS[aktuellesLevel]);
+            shotMonster = new HashMap[0];
+            oldShots = new Map[0];
+
+            // Creation of game windows
+            aktuelleGrafik = new StarteSpielBildschirm(); // Initial game startup screen
+            aktuelleGrafik = new HauptgrafikSpiel(karte); // Main game window with map
+            TimeUnit.MILLISECONDS.sleep(500);
+            aktuelleGrafik.repaint();
             laufendeKosten = 0;
             time = 0;
             // The while loop below forms part of the game loop. It waits for the game to start.
@@ -194,8 +200,10 @@ public class Main {
             if(aktuellesLevel == LEVELS.length - 1){
                 Hauptmenue.chosenLevel = 1;
             }else{
-                aktuellesLevel ++;
-                Hauptmenue.chosenLevel = aktuellesLevel + 1;
+                if(karte.playerWins()) {
+                    aktuellesLevel++;
+                    Hauptmenue.chosenLevel = aktuellesLevel + 1;
+                }
             }
 
             int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;

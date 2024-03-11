@@ -12,13 +12,14 @@ public class Level1 extends Level{
 
     public Level1(Basis basis){
         super(
-                3,
+                1,
                 40,
                 25,
                 new Coords(20, 12),
                 basis,
                 new ArrayList<>(),
-                80
+                80,
+                20
         );
         int height = 25;
         int width = 40;
