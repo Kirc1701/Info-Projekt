@@ -52,6 +52,7 @@ public class Main {
     public static String loadDesign = "";
     public static int screenSelection;
     public static int anzahlMauern = 0;
+    public static Sound sound = new Sound();
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
@@ -107,10 +108,10 @@ public class Main {
                 // This can be used to control the pace of the game, reducing the processing load on the CPU.
                 TimeUnit.MILLISECONDS.sleep(500);
             }
+            playMusic(0);
 
             while (!karte.gameOver()) {
                 shotMonster = new HashMap[0];
-
                 if (!karte.getMonsterList().isEmpty()) {
                     for (Monster monster : karte.getMonsterList()) {
                         if (monster.getSchritteBisZiel() > 1) {
@@ -198,6 +199,7 @@ public class Main {
                 time++;
                 TimeUnit.MILLISECONDS.sleep(500);
             }
+            stopMusic();
             aktuelleGrafik.setVisible(false);
             aktuelleGrafik.dispose();
             if(aktuellesLevel == 4){
@@ -316,5 +318,17 @@ public class Main {
             aktuelleGrafik.repaint(50, titelbalkenSizePixels / 2, 100, 30);
             System.out.println("Money "+money);
         }
+    }
+    public static void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+    public static void stopMusic() {
+        sound.stop();
+    }
+    public static void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
     }
 }
