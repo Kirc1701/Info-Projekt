@@ -2,10 +2,26 @@ package src.Graphikcontroller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class LevelAuswahl extends JFrame {
+public class LevelAuswahl extends JFrame implements MouseListener {
+    private final int levelWidth = 60;
+    private final int levelHeight = 60;
+    private final int margin = 10;
+    private final int level1CornerX = 10 + margin;
+    private final int level1CornerY = 10 + margin + 28;
+    private final int level2CornerX = level1CornerX + levelWidth + margin;
+    private final int level3CornerX = level2CornerX + levelWidth + margin;
+    private final int level4CornerX = level3CornerX + levelWidth + margin;
+    private final int level5CornerX = level4CornerX + levelWidth + margin;
+    private final Rectangle level1Bounds = new Rectangle(level1CornerX, level1CornerY, levelWidth, levelHeight);
+    private final Rectangle level2Bounds = new Rectangle(level2CornerX, level1CornerY, levelWidth, levelHeight);
+    private final Rectangle level3Bounds = new Rectangle(level3CornerX, level1CornerY, levelWidth, levelHeight);
+    private final Rectangle level4Bounds = new Rectangle(level4CornerX, level1CornerY, levelWidth, levelHeight);
+    private final Rectangle level5Bounds = new Rectangle(level5CornerX, level1CornerY, levelWidth, levelHeight);
     public LevelAuswahl(){
         addWindowListener(
                 new WindowAdapter() {
@@ -16,82 +32,12 @@ public class LevelAuswahl extends JFrame {
                     }
                 }
         );
-        int levelWidth = 100;
-        int levelHeight = 100;
-        int margin = 10;
-        int width = 700;
-        int height = 700;
+        int width = 800;
+        int height = 533;
         int systemWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         int systemHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         int leftCornerUpX = systemWidth / 2 - (width / 2);
         int leftCornerUpY = systemHeight / 2 - (height / 2);
-
-        int level1CornerX = 10 + margin;
-        int level1CornerY = 10 + margin;
-        JButton level1 = new JButton("Level 1");
-        level1.setBounds(level1CornerX, level1CornerY, levelWidth, levelHeight);
-        level1.addActionListener(
-                e -> {
-                    Hauptmenue.chosenLevel = 1;
-                    new Hauptmenue();
-                    setVisible(false);
-                    dispose();
-                }
-        );
-
-        int level2CornerX = level1CornerX + levelWidth + margin;
-        JButton level2 = new JButton("Level 2");
-        level2.setBounds(level2CornerX, level1CornerY, levelWidth, levelHeight);
-        level2.addActionListener(
-                e -> {
-                    Hauptmenue.chosenLevel = 2;
-                    new Hauptmenue();
-                    setVisible(false);
-                    dispose();
-                }
-        );
-
-        int level3CornerX = level2CornerX + levelWidth + margin;
-        JButton level3 = new JButton("Level 3");
-        level3.setBounds(level3CornerX, level1CornerY, levelWidth, levelHeight);
-        level3.addActionListener(
-                e -> {
-                    Hauptmenue.chosenLevel = 3;
-                    new Hauptmenue();
-                    setVisible(false);
-                    dispose();
-                }
-        );
-
-        int level4CornerX = level3CornerX + levelWidth + margin;
-        JButton level4 = new JButton("Level 4");
-        level4.setBounds(level4CornerX, level1CornerY, levelWidth, levelHeight);
-        level4.addActionListener(
-                e -> {
-                    Hauptmenue.chosenLevel = 4;
-                    new Hauptmenue();
-                    setVisible(false);
-                    dispose();
-                }
-        );
-
-        int level5CornerX = level4CornerX + levelWidth + margin;
-        JButton level5 = new JButton("Level 5");
-        level5.setBounds(level5CornerX, level1CornerY, levelWidth, levelHeight);
-        level5.addActionListener(
-                e -> {
-                    Hauptmenue.chosenLevel = 5;
-                    new Hauptmenue();
-                    setVisible(false);
-                    dispose();
-                }
-        );
-
-        add(level1);
-        add(level2);
-        add(level3);
-        add(level4);
-        add(level5);
 
         setBackground(Color.white);
         setSize(width, height);
@@ -100,5 +46,75 @@ public class LevelAuswahl extends JFrame {
         );
         setLayout(null);
         setVisible(true);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        g.drawRect(level1Bounds.x, level1Bounds.y, level1Bounds.width, level1Bounds.height);
+        g.drawString("Level 1", level1Bounds.x + 8, level1Bounds.y + 33);
+
+        g.drawRect(level2Bounds.x, level2Bounds.y, level2Bounds.width, level2Bounds.height);
+        g.drawString("Level 2", level2Bounds.x + 8, level2Bounds.y + 33);
+
+        g.drawRect(level3Bounds.x, level3Bounds.y, level3Bounds.width, level3Bounds.height);
+        g.drawString("Level 3", level3Bounds.x + 8, level3Bounds.y + 33);
+
+        g.drawRect(level4Bounds.x, level4Bounds.y, level4Bounds.width, level4Bounds.height);
+        g.drawString("Level 4", level4Bounds.x + 8, level4Bounds.y + 33);
+
+        g.drawRect(level5Bounds.x, level5Bounds.y, level5Bounds.width, level5Bounds.height);
+        g.drawString("Level 5", level5Bounds.x + 8, level5Bounds.y + 33);
+
+        addMouseListener(this);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(level1Bounds.contains(e.getX(), e.getY())){
+            Hauptmenue.chosenLevel = 1;
+            new Hauptmenue();
+            setVisible(false);
+            dispose();
+        }else if(level2Bounds.contains(e.getX(), e.getY())){
+            Hauptmenue.chosenLevel = 2;
+            new Hauptmenue();
+            setVisible(false);
+            dispose();
+        }else if(level3Bounds.contains(e.getX(), e.getY())){
+            Hauptmenue.chosenLevel = 3;
+            new Hauptmenue();
+            setVisible(false);
+            dispose();
+        }else if(level4Bounds.contains(e.getX(), e.getY())){
+            Hauptmenue.chosenLevel = 4;
+            new Hauptmenue();
+            setVisible(false);
+            dispose();
+        }else if(level5Bounds.contains(e.getX(), e.getY())){
+            Hauptmenue.chosenLevel = 5;
+            new Hauptmenue();
+            setVisible(false);
+            dispose();
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
