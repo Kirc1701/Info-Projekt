@@ -3,6 +3,7 @@ package src.Graphikcontroller;
 // Import anderer Klassen innerhalb des Projekts
 import src.Coords;
 import src.Main;
+import src.Objekte.Baubar.Baubar;
 
 // Import anderer Klassen von außerhalb des Projekts
 import javax.imageio.ImageIO;
@@ -38,7 +39,7 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
         this.targetYCoordinate = targetYCoordinate;
 
         // Laden der Bilddatei in die Variable trashcanImage
-        File trashcanFile = new File("images/Trashcan.jpg");
+        File trashcanFile = new File("images/Trashcan.png");
         BufferedImage trashcanImage;
         trashcanImage = ImageIO.read(trashcanFile);
 
@@ -91,9 +92,12 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
             // Das Gebäude wird von der Karte entfernt.
             // Sollte hierbei irgendetwas schiefgehen, wie dass das Gebäude nicht vorhanden ist,
             // wird eine Fehlermeldung in die Konsole ausgegeben
-            if(!karte.removeBuilding(new Coords(targetXCoordinate, targetYCoordinate))){
+            Baubar building = karte.removeBuilding(new Coords(targetXCoordinate, targetYCoordinate));
+            if(building == null){
                 System.out.println("Something went wrong");
             }
+
+            Main.laufendeKosten -= building.getKosten();
 
             // Es wird der Bereich an die Main-Klasse übergeben, der aktualisiert werden muss
             Main.building_update_place = new Rectangle(targetXCoordinate, targetYCoordinate, spaceBetweenLinesPixels, spaceBetweenLinesPixels);

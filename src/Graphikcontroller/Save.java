@@ -21,6 +21,7 @@ public class Save extends JFrame {
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
                         setVisible(false);
+                        HauptgrafikSpiel.pressed[1] = false;
                         dispose();
                     }
                 }
@@ -49,6 +50,7 @@ public class Save extends JFrame {
                         throw new RuntimeException(ex);
                     }
                     setVisible(false);
+                    HauptgrafikSpiel.pressed[1] = false;
                     dispose();
                 }
         );

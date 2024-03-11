@@ -33,7 +33,7 @@ public class HauptgrafikSpiel extends JFrame{
     private final Karte karte;
 
     // boolean der eine häufigere Öffnung des popups verhindert
-    public final static boolean[] pressed = {false};
+    public final static boolean[] pressed = {false, false};
     private BufferedImage mauerImage = null;
     private BufferedImage turmImage = null;
     private BufferedImage defaultMonsterImage = null;
@@ -72,7 +72,7 @@ public class HauptgrafikSpiel extends JFrame{
         File fDefaultMonster = new File("images/DefaultMonster.png");
         File fLakai = new File("images/Lakai.png");
         File fBoss = new File("images/Boss.png");
-        File fBackground = new File("images/Background.jpg");
+        File fBackground = new File("images/Background.png");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
@@ -88,20 +88,7 @@ public class HauptgrafikSpiel extends JFrame{
         turmIcon = new ImageIcon(turmImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
         mauerIcon = new ImageIcon(mauerImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
 
-        JButton save = new JButton("Design Speichern");
-        save.addActionListener(
-                e -> new Save()
-        );
-        save.setBounds(300, 0, 150, 25);
-        JButton load = new JButton("Design laden");
-        load.addActionListener(
-                e -> new Load()
-        );
-        load.setBounds(500, 0, 150, 25);
-        add(load);
-        add(save);
         // Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
-        setBackground(Color.white);
         setSize(windowWidthPixels, windowHeightPixels);
         setLayout(null);
         setVisible(true);
@@ -110,7 +97,7 @@ public class HauptgrafikSpiel extends JFrame{
     // paint()-Methode
     public void paint(Graphics g) {
         // Aufruf der super.paint()-Methode
-        super.paint(g);
+//        super.paint(g);
         g.drawImage(
                 backgroundImage,
                 0,
@@ -239,7 +226,7 @@ public class HauptgrafikSpiel extends JFrame{
 
         //Darstellen des Geldes
         double geld = Main.money;
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 5);
 
@@ -258,6 +245,27 @@ public class HauptgrafikSpiel extends JFrame{
                 graphics2D.drawLine(turmX, turmY, monsterX, monsterY);
             }
         }
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Helvetica", Font.BOLD, 20));
+        g.drawString("Design speichern", 300, titelbalkenSizePixels - 5);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Helvetica", Font.BOLD, 20));
+        g.drawString("Design laden", 490, titelbalkenSizePixels - 5);
+
+//        JButton save = new JButton("Design speichern");
+//        save.addActionListener(
+//                e -> new Save()
+//        );
+//        save.setBounds(300, 0, 150, 25);
+//        JButton load = new JButton("Design laden");
+//        load.addActionListener(
+//                e -> new Load()
+//        );
+//        load.setBounds(500, 0, 150, 25);
+//        add(load);
+//        add(save);
+
 
         // Hinzufügen des MouseListeners
         this.addMouseListener(
@@ -266,6 +274,18 @@ public class HauptgrafikSpiel extends JFrame{
                     public void mouseClicked(MouseEvent e) {}
                     // Wird aufgerufen, wenn die Maus gedrückt wird
                     public void mousePressed(MouseEvent e) {
+                        if(e.getY() <= titelbalkenSizePixels) {
+                            if (!pressed[1]) {
+                                pressed[1] = true;
+                                if (e.getX() >= 300 && e.getX() <= 470) {
+                                    new Save();
+                                } else if(e.getX() >= 490 && e.getX() <= 660){
+                                    new Load();
+                                }
+
+                            }
+                            return;
+                        }
                         // Wenn pressed auf false steht, kann das Programm ausgeführt werden
                         if(!pressed[0]) {
                             // pressed wird auf true gesetzt, um häufigere Öffnung des Fensters zu vermeiden

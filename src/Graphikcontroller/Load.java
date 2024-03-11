@@ -13,6 +13,7 @@ public class Load extends JFrame {
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
                         setVisible(false);
+                        HauptgrafikSpiel.pressed[1] = false;
                         dispose();
                     }
                 }
@@ -25,6 +26,7 @@ public class Load extends JFrame {
                 e -> {
                     loadDesign = textField.getText();
                     setVisible(false);
+                    HauptgrafikSpiel.pressed[1] = false;
                     dispose();
                 }
         );

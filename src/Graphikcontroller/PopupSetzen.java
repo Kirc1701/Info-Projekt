@@ -63,7 +63,7 @@ public class PopupSetzen extends JFrame implements ActionListener {
             Baubar newBaubar = getBaubar(e1.getActionCommand(), new Coords(x, y));
             assert newBaubar != null;
             if (newBaubar.getKosten() <= money) {
-                if (!karte.addBuilding(newBaubar.getPosition(), newBaubar)) {
+                if (karte.addBuilding(newBaubar.getPosition(), newBaubar) == null) {
                     System.out.println("Something went wrong");
                 } else {
                     laufendeKosten += newBaubar.getKosten();

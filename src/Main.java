@@ -3,9 +3,7 @@ package src;
 // Import necessary packages and classes
 //import org.jetbrains.annotations.NotNull;
 import src.Graphikcontroller.*;
-import src.Level.Level;
-import src.Level.Level1;
-import src.Level.Level2;
+import src.Level.*;
 import src.Objekte.Baubar.Basis.Basis;
 import src.Objekte.Baubar.Basis.DefaultBasis;
 import src.Objekte.Baubar.Baubar;
@@ -71,21 +69,26 @@ public class Main {
         aktuellesLevel = Hauptmenue.chosenLevel - 1;
         //Neue Basis
         Basis newBasis = new DefaultBasis(new Coords(0,0));
-        // Array of game levels
-        Level[] LEVELS = new Level[5];
-        LEVELS[0] = new Level1(newBasis);
-        LEVELS[1] = new Level2(LEVELS[0].getBasis());
-        LEVELS[2] = new Level2(LEVELS[1].getBasis());
-        LEVELS[3] = new Level2(LEVELS[2].getBasis());
-        LEVELS[4] = new Level2(LEVELS[3].getBasis());
 
         // Player's starting balance is set according to the level's starting capital
-        money = LEVELS[aktuellesLevel].getStartKapital();
+        Level level = aktuellesLevel == 0 ?
+                new Level1(newBasis) :
+                aktuellesLevel == 1 ?
+                        new Level2(newBasis) :
+                        aktuellesLevel == 2 ?
+                                new Level3(newBasis) :
+                                aktuellesLevel == 3 ?
+                                        new Level4(newBasis) :
+                                        new Level5(newBasis);
+        money = level.getStartKapital();
         while(true) {
+
             // A map is created based on the current level configuration
-            karte = new Karte(LEVELS[aktuellesLevel]);
+            karte = new Karte(level);
             shotMonster = new HashMap[0];
             oldShots = new Map[0];
+
+            anzahlMauern = karte.getLevel().getAnzahlMauern();
 
             // Creation of game windows
             aktuelleGrafik = new StarteSpielBildschirm(); // Initial game startup screen
@@ -197,7 +200,7 @@ public class Main {
             }
             aktuelleGrafik.setVisible(false);
             aktuelleGrafik.dispose();
-            if(aktuellesLevel == LEVELS.length - 1){
+            if(aktuellesLevel == 4){
                 Hauptmenue.chosenLevel = 1;
             }else{
                 if(karte.playerWins()) {
@@ -205,7 +208,16 @@ public class Main {
                     Hauptmenue.chosenLevel = aktuellesLevel + 1;
                 }
             }
-            karte.getBasis().setHealth(karte.getBasis().getMaxHealth());
+//            karte.getBasis().setHealth(karte.getBasis().getMaxHealth());
+            level = aktuellesLevel == 0 ?
+                    new Level1(karte.getBasis()) :
+                    aktuellesLevel == 1 ?
+                            new Level2(karte.getBasis()) :
+                            aktuellesLevel == 2 ?
+                                    new Level3(karte.getBasis()) :
+                                    aktuellesLevel == 3 ?
+                                            new Level4(karte.getBasis()) :
+                                            new Level5(karte.getBasis());
 
             int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
             int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
@@ -218,23 +230,6 @@ public class Main {
             while(screenSelection == 0){
                 TimeUnit.MILLISECONDS.sleep(500);
             }
-//            if (karte.playerWins() && LEVELS.length > aktuellesLevel + 1) {
-//                LEVELS[aktuellesLevel + 1].setBasis(LEVELS[aktuellesLevel].getBasis());
-//                aktuellesLevel++;
-//                LEVELS[aktuellesLevel].getBasis().setHealth(LEVELS[aktuellesLevel].getBasis().getMaxHealth());
-//                karte = new Karte(LEVELS[aktuellesLevel]);
-//                gameHasStarted = false;
-//                money += LEVELS[aktuellesLevel].getStartKapital();
-//                System.out.println("Money "+ money);
-//                shotMonster = new HashMap[0];
-//                oldShots = new HashMap[0];
-//                aktuelleGrafik = new StarteSpielBildschirm();
-//                aktuelleGrafik = new HauptgrafikSpiel(karte);
-//                TimeUnit.MILLISECONDS.sleep(500);
-//                aktuelleGrafik.repaint();
-//            } else {
-//                break;
-//            }
         }
     }
 

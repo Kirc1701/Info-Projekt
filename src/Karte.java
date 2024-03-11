@@ -47,25 +47,25 @@ public class Karte {
         spawnpoint = level.getSpawnPoint();
     }
 
-    public boolean addBuilding(Coords coords, Baubar building) {
+    public Baubar addBuilding(Coords coords, Baubar building) {
         return modifyBuildings(coords, building, true);
     }
 
-    public boolean removeBuilding(Coords coords) {
+    public Baubar removeBuilding(Coords coords) {
         return modifyBuildings(coords, null, false);
     }
 
-    private boolean modifyBuildings(Coords coords, Baubar building, boolean shouldAdd) {
+    private Baubar modifyBuildings(Coords coords, Baubar building, boolean shouldAdd) {
         if (shouldAdd == buildings.containsKey(coords)) {
-            return false;
+            return null;
         }
         if (shouldAdd) {
             buildings.put(coords, building);
         } else {
-            buildings.remove(coords);
+            building = buildings.remove(coords);
         }
         updateMap();
-        return true;
+        return building;
     }
 
     public void updateMap() {
