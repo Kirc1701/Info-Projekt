@@ -92,8 +92,9 @@ public class Main {
             anzahlMauern = karte.getLevel().getAnzahlMauern();
 
             // Creation of game windows
-            aktuelleGrafik = new StarteSpielBildschirm(); // Initial game startup screen
-            aktuelleGrafik = new HauptgrafikSpiel(karte); // Main game window with map
+            JFrame hauptgrafik = new HauptgrafikSpiel(karte); // Main game window with map
+            new StarteSpielBildschirm(hauptgrafik.getWidth());
+            aktuelleGrafik = hauptgrafik;
             TimeUnit.MILLISECONDS.sleep(500);
             aktuelleGrafik.repaint();
             laufendeKosten = 0;

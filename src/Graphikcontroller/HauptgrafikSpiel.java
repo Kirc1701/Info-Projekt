@@ -125,12 +125,14 @@ public class HauptgrafikSpiel extends JFrame{
             );
 
             // Darstellung der verbleibenden Leben
-            double lifeInPercent = ((double) karte.getBasis().getHealth()) / ((double) karte.getBasis().getMaxHealth());
-            int widthOfLifeline = (int) (lifeInPercent * (spaceBetweenLinesPixels - 2));
-            Graphics2D graphics2D = (Graphics2D) g;
-            graphics2D.setStroke(new BasicStroke(3));
-            graphics2D.setColor(Color.red);
-            graphics2D.drawLine(basisXCoordinate + 1, basisYCoordinate, basisXCoordinate + widthOfLifeline, basisYCoordinate);
+            if(!(karte.getBasis().getHealth() == karte.getBasis().getMaxHealth())) {
+                double lifeInPercent = ((double) karte.getBasis().getHealth()) / ((double) karte.getBasis().getMaxHealth());
+                int widthOfLifeline = (int) (lifeInPercent * (spaceBetweenLinesPixels - 2));
+                Graphics2D graphics2D = (Graphics2D) g;
+                graphics2D.setStroke(new BasicStroke(3));
+                graphics2D.setColor(Color.red);
+                graphics2D.drawLine(basisXCoordinate + 1, basisYCoordinate, basisXCoordinate + widthOfLifeline, basisYCoordinate);
+            }
         }
 
         // Darstellen aller Gebäude, in der buildings-Liste in der Game-Logik
@@ -155,7 +157,9 @@ public class HauptgrafikSpiel extends JFrame{
                         null
                 );
 
-                setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
+                if(!(building.getHealth() == building.getMaxHealth())) {
+                    setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
+                }
             }else if(building.getType().equals("DefaultTurm")){
                 // Zeichnen des Turms
                 g.setColor(Color.black);
@@ -167,8 +171,9 @@ public class HauptgrafikSpiel extends JFrame{
                         spaceBetweenLinesPixels -2,
                         null
                 );
-                setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
-            }
+                if(!(building.getHealth() == building.getMaxHealth())) {
+                    setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
+                }            }
         }
 
         // Zeichnen der Monster
@@ -252,19 +257,6 @@ public class HauptgrafikSpiel extends JFrame{
         g.setColor(Color.WHITE);
         g.setFont(new Font("Helvetica", Font.BOLD, 20));
         g.drawString("Design laden", 490, titelbalkenSizePixels - 5);
-
-//        JButton save = new JButton("Design speichern");
-//        save.addActionListener(
-//                e -> new Save()
-//        );
-//        save.setBounds(300, 0, 150, 25);
-//        JButton load = new JButton("Design laden");
-//        load.addActionListener(
-//                e -> new Load()
-//        );
-//        load.setBounds(500, 0, 150, 25);
-//        add(load);
-//        add(save);
 
 
         // Hinzufügen des MouseListeners

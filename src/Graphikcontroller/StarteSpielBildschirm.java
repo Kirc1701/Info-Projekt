@@ -9,7 +9,7 @@ import static src.Main.gameHasStarted;
 import static src.Main.screenSelection;
 
 public class StarteSpielBildschirm extends JFrame {
-    public StarteSpielBildschirm(){
+    public StarteSpielBildschirm(int x){
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
@@ -29,7 +29,7 @@ public class StarteSpielBildschirm extends JFrame {
         });
         add(button);
         setSize(100, 100);
-        setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - 100, 0);
+        setLocation(x + 30, 0);
         setLayout(new FlowLayout());
         setVisible(true);
     }
