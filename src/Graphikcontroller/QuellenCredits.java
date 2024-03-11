@@ -29,7 +29,7 @@ public class QuellenCredits extends JFrame {
                 Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 225,
                 Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 150
         );
-        setLayout(new FlowLayout());
+        setLayout(new GridLayout(10, 1));
         setVisible(true);
     }
 }
