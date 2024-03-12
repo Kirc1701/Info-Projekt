@@ -24,4 +24,9 @@ public class Einstellungen extends JFrame {
         setLayout(null);
         setVisible(true);
     }
+
+    public static boolean musicmute = false;
+    public static boolean soundmute = false;
+
+    //Muss noch Button für die beiten bools adden lol
 }

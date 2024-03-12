@@ -321,15 +321,25 @@ public class Main {
         }
     }
     public static void playMusic(int i) {
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+        if (Einstellungen.musicmute) {
+            return;
+        } else {
+            sound.setFile(i);
+            sound.play();
+            sound.loop();
+        }
     }
     public static void stopMusic() {
-        sound.stop();
+        if (Einstellungen.musicmute) {
+        } else {
+            sound.stop();
+        }
     }
     public static void playSFX(int i) {
-        sound.setFile(i);
-        sound.play();
+        if (Einstellungen.soundmute) {
+        } else {
+            sound.setFile(i);
+            sound.play();
+        }
     }
 }
