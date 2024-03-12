@@ -183,8 +183,8 @@ public class HauptgrafikSpiel extends JFrame{
                 int monsterX = monster.getPosition().x()* spaceBetweenLinesPixels +1;
                 int monsterY = monster.getPosition().y()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
                 g.setColor(Color.black);
-                if(monster.getType().equals("Default")) {
-                    g.drawImage(
+                switch (monster.getType()) {
+                    case "Default" -> g.drawImage(
                             defaultMonsterImage,
                             monsterX,
                             monsterY,
@@ -192,8 +192,7 @@ public class HauptgrafikSpiel extends JFrame{
                             spaceBetweenLinesPixels - 2,
                             null
                     );
-                } else if (monster.getType().equals("Lakai")) {
-                    g.drawImage(
+                    case "Lakai" -> g.drawImage(
                             lakaiImage,
                             monsterX,
                             monsterY,
@@ -201,8 +200,7 @@ public class HauptgrafikSpiel extends JFrame{
                             spaceBetweenLinesPixels - 2,
                             null
                     );
-                } else if (monster.getType().equals("Boss1")) {
-                    g.drawImage(
+                    case "Boss1" -> g.drawImage(
                             bossImage,
                             monsterX,
                             monsterY,
@@ -261,9 +259,7 @@ public class HauptgrafikSpiel extends JFrame{
 
         // Hinzufügen des MouseListeners
         this.addMouseListener(
-                new MouseListener() {
-                    // Wird aufgerufen, wenn die Maus gedrückt oder losgelassen wird
-                    public void mouseClicked(MouseEvent e) {}
+                new MouseAdapter() {
                     // Wird aufgerufen, wenn die Maus gedrückt wird
                     public void mousePressed(MouseEvent e) {
                         if(e.getY() <= titelbalkenSizePixels) {
@@ -295,15 +291,6 @@ public class HauptgrafikSpiel extends JFrame{
                                 new PopupSetzen(mauerIcon, turmIcon, x, y, e.getX(), e.getY());
                             }
                         }
-                    }
-                    //Wird aufgerufen, wenn die Maus losgelassen wird
-                    public void mouseReleased(MouseEvent e) {
-                    }
-                    //Wird aufgerufen, wenn die Maus in den Frame kommt
-                    public void mouseEntered(MouseEvent e) {
-                    }
-                    //Wird aufgerufen, wenn die Maus den Frame verlässt
-                    public void mouseExited(MouseEvent e) {
                     }
                 }
         );
