@@ -16,6 +16,7 @@ public class Einstellungen extends JFrame {
                     public void windowClosing(WindowEvent e) {
                         setVisible(false);
                         dispose();
+                        System.exit(0);
                     }
                 }
         );
@@ -57,9 +58,9 @@ public class Einstellungen extends JFrame {
         add(sound);
 
         add(menu);
-        setSize(450, 300);
+        setSize(300, 300);
         setLocation(
-                Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 225,
+                Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 150,
                 Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 150
         );
         setLayout(new FlowLayout());
