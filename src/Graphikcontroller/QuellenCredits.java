@@ -30,6 +30,12 @@ public class QuellenCredits extends JFrame {
         add(new JLabel("    External Design Artist"));
         add(new JLabel("Maya R."));
 
+        add(new JLabel("    Level Design/Balancing"));
+        add(new JLabel("Marius P."));
+
+        add(new JLabel("    Lead Technical Development"));
+        add(new JLabel("Samuel S."));
+
         add(new JLabel("    Hintergrundbild Level-Auswahl"));
         JLabel levelAuswahl = new JLabel("dreamstime.com");
         levelAuswahl.setForeground(Color.BLUE.darker());
@@ -126,10 +132,10 @@ public class QuellenCredits extends JFrame {
         });
         add(mainMenu);
 
-        setSize(550, 300);
+        setSize(550, 350);
         setLocation(
                 Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 275,
-                Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 150
+                Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 175
         );
         setLayout(new GridLayout(0, 2));
         setVisible(true);
