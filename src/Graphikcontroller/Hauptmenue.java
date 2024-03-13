@@ -17,6 +17,7 @@ public class Hauptmenue extends JFrame implements MouseListener {
     public static int chosenLevel = 1;
     private BufferedImage bufferedImage = null;
     public Hauptmenue(){
+        Main.playMusic(0);
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {

@@ -11,6 +11,7 @@ public class Sound {
 
     public Sound() {
         soundURL[0] = getClass().getResource("/sounds/soundtrack.wav");
+        soundURL[1] = getClass().getResource("/sounds/bloop-1.wav");
     }
 
     public void setFile(int i) {

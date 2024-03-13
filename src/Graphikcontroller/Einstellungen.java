@@ -1,5 +1,7 @@
 package src.Graphikcontroller;
 
+import src.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -23,8 +25,10 @@ public class Einstellungen extends JFrame {
         mute.addActionListener(actionEvent -> {
             musicmute = !musicmute;
             if (musicmute) {
+                Main.stopMusic();
                 mute.setText("Musik: aus");
             } else {
+                Main.playMusic(0);
                 mute.setText("Musik: an");
             }
         });
@@ -35,6 +39,7 @@ public class Einstellungen extends JFrame {
                 sound.setText("SFX: aus");
             } else {
                 sound.setText("SFX: an");
+                Main.playSFX(1);
             }
         });
 

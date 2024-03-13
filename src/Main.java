@@ -332,7 +332,6 @@ public class Main {
     }
     public static void playMusic(int i) {
         if (Einstellungen.musicmute) {
-            return;
         } else {
             sound.setFile(i);
             sound.play();
