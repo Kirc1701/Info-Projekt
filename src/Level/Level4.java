@@ -14,8 +14,8 @@ public class Level4 extends Level{
         super(
                 3,
                 39,
-                19,
-                new Coords(19, 9),
+                21,
+                new Coords(19, 10),
                 basis,
                 new ArrayList<>(),
                 140,
@@ -34,6 +34,6 @@ public class Level4 extends Level{
         monstersToSpawn.add(new Bombenschiff(new Coords(-1, -1)));
         monstersToSpawn.add(new Bombenschiff(new Coords(-1, -1)));
         basis.setHealth(basis.getMaxHealth());
-        basis.setPosition(new Coords(19, 9));
+        basis.setPosition(new Coords(19, 10));
     }
 }

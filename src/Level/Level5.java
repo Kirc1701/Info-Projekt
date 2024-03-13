@@ -15,8 +15,8 @@ public class Level5 extends Level{
         super(
                 3,
                 39,
-                19,
-                new Coords(19, 9),
+                21,
+                new Coords(19, 10),
                 basis,
                 new ArrayList<>(),
                 80,
@@ -37,6 +37,6 @@ public class Level5 extends Level{
         monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
         monstersToSpawn.add(new Boss1(new Coords(-1, -1)));
         basis.setHealth(basis.getMaxHealth());
-        basis.setPosition(new Coords(19, 9));
+        basis.setPosition(new Coords(19, 10));
     }
 }

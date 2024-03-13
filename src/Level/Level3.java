@@ -15,7 +15,7 @@ public class Level3 extends Level{
         super(
                 3,
                 39,
-                19,
+                21,
                 new Coords(19, 9),
                 basis,
                 new ArrayList<>(),

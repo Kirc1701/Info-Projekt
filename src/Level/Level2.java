@@ -13,8 +13,8 @@ public class Level2 extends Level{
         super(
                 3,
                 39,
-                19,
-                new Coords(19, 9),
+                21,
+                new Coords(19, 10),
                 basis,
                 new ArrayList<>(),
                 80,
@@ -48,7 +48,7 @@ public class Level2 extends Level{
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
-        basis.setPosition(new Coords(19, 9));
+        basis.setPosition(new Coords(19, 10));
         basis.setHealth(basis.getMaxHealth());
     }
 }
