@@ -9,6 +9,7 @@ import src.Objekte.Baubar.Basis.DefaultBasis;
 import src.Objekte.Baubar.Baubar;
 import src.Objekte.Baubar.Mauer.DefaultMauer;
 import src.Objekte.Baubar.Turm.DefaultTurm;
+import src.Objekte.Monster.Boss1;
 import src.Objekte.Monster.Monster;
 import src.Objekte.Objekt;
 import src.Objekte.Baubar.Turm.Turm;
@@ -173,6 +174,9 @@ public class Main {
                                         if (!karte.getMonsterList().contains(monster)) {
                                             laufendeKosten -= monster.getKopfgeld();
                                             System.out.println("Money " + money);
+                                            if (monster.getType().equals("Boss1")) {
+                                                playSFX(4);
+                                            } else playSFX(1);
                                         }
                                     }
                                 }
@@ -192,7 +196,6 @@ public class Main {
                     time++;
                     TimeUnit.MILLISECONDS.sleep(500);
                 }
-                stopMusic();
                 aktuelleGrafik.setVisible(false);
                 aktuelleGrafik.dispose();
                 if (aktuellesLevel == 4) {
@@ -208,6 +211,7 @@ public class Main {
                 int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
                 int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
                 screenSelection = 0;
+                stopMusic();
                 if (karte.playerWins()) {
                     aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
                 } else {

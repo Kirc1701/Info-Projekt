@@ -14,7 +14,7 @@ public class EndbildschirmVerloren extends JFrame {
     // xCoordinateUpperLeftCorner: x-Koordinate der linken oberen Ecke
     // yCoordinateUpperLeftCorner: y-Koordinate der linken oberen Ecke
     public EndbildschirmVerloren(int x, int y){
-        Main.playMusic(6);
+        Main.playSFX(6);
         // WindowListener, der bei Betätigung des Schließen-Buttons das Endfenster beendet
         addWindowListener(
                 new WindowAdapter() {
