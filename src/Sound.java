@@ -18,6 +18,7 @@ public class Sound {
         soundURL[5] = getClass().getResource("/sounds/boss.wav");
         soundURL[6] = getClass().getResource("/sounds/boom.wav");
         soundURL[7] = getClass().getResource("/sounds/win.wav");
+        soundURL[8] = getClass().getResource("/sounds/placed.wav");
     }
 
     public void setFile(int i) {

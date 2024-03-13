@@ -330,6 +330,7 @@ public class Main {
             for(Monster monster : karte.getMonsterList()){
                 monster.updateMonsterPath(karte);
             }
+            playSFX(8);
         }
         if(laufendeKosten != 0){
             money -= laufendeKosten;
