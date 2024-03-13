@@ -1,6 +1,8 @@
 package src.Graphikcontroller;
 
 // Import anderer Klassen von außerhalb des Projekts
+import src.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -12,6 +14,7 @@ public class EndbildschirmGewonnen extends JFrame {
     // xCoordinateUpperLeftCorner: x-Koordinate der linken oberen Ecke
     // yCoordinateUpperLeftCorner: y-Koordinate der linken oberen Ecke
     public EndbildschirmGewonnen(int xCoordinateUpperLeftCorner, int yCoordinateUpperLeftCorner){
+        Main.playSFX(7);
         // WindowListener, der bei Betätigung des Schließen-Buttons das Endfenster beendet
         addWindowListener(
                 new WindowAdapter() {
