@@ -12,7 +12,7 @@ import static java.util.Collections.min;
 
 public class Schnellschussgeschuetz extends Turm{
     public Schnellschussgeschuetz(Coords position){
-        super(2, 25, position, 5, 2, 20, "Schnellschussgeschuetz");
+        super(2, 25, position, 5, 2, 40, "Schnellschussgeschuetz");
     }
 
     @Override

@@ -12,7 +12,7 @@ import static java.util.Collections.min;
 
 public class Scharfschuetzenturm extends Turm{
     public Scharfschuetzenturm(Coords position){
-        super(20, 25, position, 10, 10, 20, "Scharfschuetzenturm");
+        super(20, 25, position, 8, 10, 50, "Scharfschuetzenturm");
     }
 
     @Override

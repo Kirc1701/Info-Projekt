@@ -5,7 +5,7 @@ import src.Karte;
 
 public class DefaultMonster extends Monster{
     public DefaultMonster(Coords position) {
-        super(10, 20, position, 2, 4, 10, "Default");
+        super(10, 20, position, 2, 4, 8, "Default");
     }
 
     @Override

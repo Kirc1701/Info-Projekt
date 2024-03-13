@@ -5,7 +5,7 @@ import src.Karte;
 
 public class Golem extends Monster{
     public Golem(Coords position) {
-        super(20, 40, position, 4, 1, 20, "Golem");
+        super(20, 60, position, 4, 1, 20, "Golem");
     }
 
     @Override

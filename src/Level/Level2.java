@@ -29,6 +29,18 @@ public class Level2 extends Level{
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new DefaultMonster(new Coords(-1, -1)));
+        monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
+        monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
+        monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
+        monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         basis.setPosition(new Coords(9, 4));
         basis.setHealth(basis.getMaxHealth());
     }
