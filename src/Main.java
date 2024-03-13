@@ -225,7 +225,7 @@ public class Main {
                                     aktuellesLevel == 2 ?
                                             new Level3(karte.getBasis()) :
                                             aktuellesLevel == 3 ?
-                                                    new Level4(karte.getBasis()) :
+                                                    new Level4(karte.getBasis()):
                                                     new Level5(karte.getBasis());
                 }
         }

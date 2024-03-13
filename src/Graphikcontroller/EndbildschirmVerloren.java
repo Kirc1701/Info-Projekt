@@ -1,6 +1,8 @@
 package src.Graphikcontroller;
 
 // Import anderer Klassen von außerhalb des Projekts
+import src.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -12,6 +14,7 @@ public class EndbildschirmVerloren extends JFrame {
     // xCoordinateUpperLeftCorner: x-Koordinate der linken oberen Ecke
     // yCoordinateUpperLeftCorner: y-Koordinate der linken oberen Ecke
     public EndbildschirmVerloren(int x, int y){
+        Main.playMusic(6);
         // WindowListener, der bei Betätigung des Schließen-Buttons das Endfenster beendet
         addWindowListener(
                 new WindowAdapter() {
@@ -33,6 +36,7 @@ public class EndbildschirmVerloren extends JFrame {
         JButton mainMenu = new JButton("Hauptmenü");
         mainMenu.addActionListener(
                 e -> {
+                    Main.stopMusic();
                     new Hauptmenue();
                     setVisible(false);
                     dispose();
