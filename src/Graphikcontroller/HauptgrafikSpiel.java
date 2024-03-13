@@ -40,6 +40,9 @@ public class HauptgrafikSpiel extends JFrame{
     public static BufferedImage schnellschussTurmImage = null;
     public static BufferedImage scharfschuetzenTurmImage = null;
     private BufferedImage defaultMonsterImage = null;
+    private BufferedImage golemImage = null;
+    private BufferedImage sprinterImage = null;
+    private BufferedImage bombenschiffImage = null;
     private BufferedImage lakaiImage = null;
     private BufferedImage basisImage = null;
     private BufferedImage bossImage = null;
@@ -77,13 +80,16 @@ public class HauptgrafikSpiel extends JFrame{
         File fScharfschuetzenTurm = new File("images/ScharfschuetzenTurm.png");
         File fBasis = new File("images/Basis.png");
         File fDefaultMonster = new File("images/DefaultMonster.png");
+        File fGolem = new File("images/Golem.png");
+        File fSprinter = new File("images/Sprinter.png");
+        File fBombenschiff = new File("images/Bombenschiff.png");
         File fLakai = new File("images/Lakai.png");
         File fBoss = new File("images/Boss.png");
         File fBackgroundLevel1 = new File("images/BackgroundLevel1.png");
         File fBackgroundLevel2 = new File("images/BackgroundLevel2.jpg");
         File fBackgroundLevel3 = new File("images/BackgroundLevel3.jpg");
-        File fBackgroundLevel4 = new File("images/BackgroundLevel4.png");
-        File fBackgroundLevel5 = new File("images/BackgroundLevel5.png");
+        File fBackgroundLevel4 = new File("images/BackgroundLevel4.jpg");
+        File fBackgroundLevel5 = new File("images/BackgroundLevel5.jpg");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
@@ -93,6 +99,9 @@ public class HauptgrafikSpiel extends JFrame{
             scharfschuetzenTurmImage = ImageIO.read(fScharfschuetzenTurm);
             basisImage = ImageIO.read(fBasis);
             defaultMonsterImage = ImageIO.read(fDefaultMonster);
+            golemImage = ImageIO.read(fGolem);
+            sprinterImage = ImageIO.read(fSprinter);
+//            bombenschiffImage = ImageIO.read(fBombenschiff);
             lakaiImage = ImageIO.read(fLakai);
             bossImage = ImageIO.read(fBoss);
             backgroundImageLevel1 = ImageIO.read(fBackgroundLevel1);
@@ -111,6 +120,7 @@ public class HauptgrafikSpiel extends JFrame{
     // paint()-Methode
     public void paint(Graphics g) {
         if (karte.getLevel().getClass().equals(Level1.class)) {
+            System.out.println(karte.getLevel().getClass());
             g.drawImage(
                     backgroundImageLevel1,
                     0,
@@ -259,6 +269,30 @@ public class HauptgrafikSpiel extends JFrame{
                 switch (monster.getType()) {
                     case "Default" -> g.drawImage(
                             defaultMonsterImage,
+                            monsterX,
+                            monsterY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                    case "Golem" -> g.drawImage(
+                            golemImage,
+                            monsterX,
+                            monsterY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                    case "Sprinter" -> g.drawImage(
+                            sprinterImage,
+                            monsterX,
+                            monsterY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                    case "Bombenschiff" -> g.drawImage(
+                            bombenschiffImage,
                             monsterX,
                             monsterY,
                             spaceBetweenLinesPixels - 2,
