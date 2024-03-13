@@ -14,9 +14,11 @@ public class Einstellungen extends JFrame {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
+                        if(Main.screenSelection == 0){
+                            new Hauptmenue();
+                        }
                         setVisible(false);
                         dispose();
-                        System.exit(0);
                     }
                 }
         );

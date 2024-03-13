@@ -362,6 +362,8 @@ public class HauptgrafikSpiel extends JFrame{
                                     new Save();
                                 } else if(e.getX() >= 490 && e.getX() <= 660){
                                     new Load();
+                                } else if(e.getX() >= windowWidthPixels - 130){
+                                    new Einstellungen();
                                 }
 
                             }
