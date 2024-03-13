@@ -35,9 +35,9 @@ public class LevelAuswahl extends JFrame implements MouseListener {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
+                        new Hauptmenue();
                         setVisible(false);
                         dispose();
-                        System.exit(0);
                     }
                 }
         );

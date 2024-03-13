@@ -36,6 +36,9 @@ public class Einstellungen extends JFrame {
             }
         });
         JButton sound = new JButton("SFX: an");
+        if (soundmute) {
+            mute.setText("SFX: aus");
+        }
         sound.addActionListener(actionEvent -> {
             soundmute = !soundmute;
             if (soundmute) {
