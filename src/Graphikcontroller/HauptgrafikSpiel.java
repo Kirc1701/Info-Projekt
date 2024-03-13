@@ -344,6 +344,11 @@ public class HauptgrafikSpiel extends JFrame{
         g.setFont(new Font("Helvetica", Font.BOLD, 20));
         g.drawString("Design laden", 490, titelbalkenSizePixels - 5);
 
+        g.setColor(Color.BLACK);
+        g.fillRect(windowWidthPixels - 132, titelbalkenSizePixels/2, 132, 27);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Helvetica", Font.BOLD, 20));
+        g.drawString("Einstellungen", windowWidthPixels - 130, titelbalkenSizePixels - 5);
 
         // Hinzufügen des MouseListeners
         this.addMouseListener(

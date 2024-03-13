@@ -62,6 +62,7 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         aktuelleGrafik = new Hauptmenue();
+        playMusic(0);
         Main.screenSelection = 0;
         int aktuellesLevel;
         while(screenSelection == 0) {
@@ -234,7 +235,7 @@ public class Main {
         Basis newBasis = new DefaultBasis(new Coords(0,0));
 
         // Player's starting balance is set according to the level's starting capital
-        Level level = aktuellesLevel == 0 ?
+        return aktuellesLevel == 0 ?
                 new Level1(newBasis) :
                 aktuellesLevel == 1 ?
                         new Level2(newBasis) :
@@ -243,7 +244,6 @@ public class Main {
                                 aktuellesLevel == 3 ?
                                         new Level4(newBasis) :
                                         new Level5(newBasis);
-        return level;
     }
 
     private static void loadDesign() throws IOException {
