@@ -34,7 +34,7 @@ public class Einstellungen extends JFrame {
                 Main.stopMusic();
                 mute.setText("Musik: aus");
             } else {
-                Main.playMusic(0);
+                Main.playMusic(3);
                 mute.setText("Musik: an");
             }
         });
