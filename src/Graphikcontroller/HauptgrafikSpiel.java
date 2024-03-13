@@ -46,10 +46,10 @@ public class HauptgrafikSpiel extends JFrame{
     private BufferedImage lakaiImage = null;
     private BufferedImage basisImage = null;
     private BufferedImage bossImage = null;
-    private BufferedImage backgroundImageLevel1 = null;
-    private BufferedImage backgroundImageLevel2 = null;
+//    private BufferedImage backgroundImageLevel1 = null;
+//    private BufferedImage backgroundImageLevel2 = null;
     private BufferedImage backgroundImageLevel3 = null;
-    private BufferedImage backgroundImageLevel4 = null;
+//    private BufferedImage backgroundImageLevel4 = null;
     private BufferedImage backgroundImageLevel5 = null;
 
     // Konstruktor für die Klasse HauptgrafikSpiel
@@ -85,10 +85,10 @@ public class HauptgrafikSpiel extends JFrame{
         File fBombenschiff = new File("images/Bombenschiff.png");
         File fLakai = new File("images/Lakai.png");
         File fBoss = new File("images/Boss.png");
-        File fBackgroundLevel1 = new File("images/BackgroundLevel1.png");
-        File fBackgroundLevel2 = new File("images/BackgroundLevel2.jpg");
+//        File fBackgroundLevel1 = new File("images/BackgroundLevel1.png");
+//        File fBackgroundLevel2 = new File("images/BackgroundLevel2.jpg");
         File fBackgroundLevel3 = new File("images/BackgroundLevel3.jpg");
-        File fBackgroundLevel4 = new File("images/BackgroundLevel4.jpg");
+//        File fBackgroundLevel4 = new File("images/BackgroundLevel4.jpg");
         File fBackgroundLevel5 = new File("images/BackgroundLevel5.jpg");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
@@ -101,13 +101,13 @@ public class HauptgrafikSpiel extends JFrame{
             defaultMonsterImage = ImageIO.read(fDefaultMonster);
             golemImage = ImageIO.read(fGolem);
             sprinterImage = ImageIO.read(fSprinter);
-//            bombenschiffImage = ImageIO.read(fBombenschiff);
+            bombenschiffImage = ImageIO.read(fBombenschiff);
             lakaiImage = ImageIO.read(fLakai);
             bossImage = ImageIO.read(fBoss);
-            backgroundImageLevel1 = ImageIO.read(fBackgroundLevel1);
-            backgroundImageLevel2 = ImageIO.read(fBackgroundLevel2);
+//            backgroundImageLevel1 = ImageIO.read(fBackgroundLevel1);
+//            backgroundImageLevel2 = ImageIO.read(fBackgroundLevel2);
             backgroundImageLevel3 = ImageIO.read(fBackgroundLevel3);
-            backgroundImageLevel4 = ImageIO.read(fBackgroundLevel4);
+//            backgroundImageLevel4 = ImageIO.read(fBackgroundLevel4);
             backgroundImageLevel5 = ImageIO.read(fBackgroundLevel5);
         } catch (IOException ignored) {}
 
