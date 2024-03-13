@@ -5,6 +5,7 @@ import src.Objekte.Baubar.Basis.Basis;
 import src.Objekte.Monster.DefaultMonster;
 import src.Objekte.Monster.Golem;
 import src.Objekte.Monster.Lakai;
+import src.Objekte.Monster.Sprinter;
 
 public class Level3 extends Level{
     public Level3(Basis basis){
@@ -34,6 +35,12 @@ public class Level3 extends Level{
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
         monstersToSpawn.add(new Lakai(new Coords(-1, -1)));
+        monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
+        monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
+        monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
+        monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
+        monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
+        monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
         basis.setPosition(new Coords(9, 4));
     }
 }
