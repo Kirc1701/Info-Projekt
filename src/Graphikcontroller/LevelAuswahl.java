@@ -1,5 +1,7 @@
 package src.Graphikcontroller;
 
+import src.Main;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +35,7 @@ public class LevelAuswahl extends JFrame implements MouseListener {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
+                        Main.stopMusic();
                         setVisible(false);
                         dispose();
                         System.exit(0);

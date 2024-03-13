@@ -1,5 +1,7 @@
 package src.Graphikcontroller;
 
+import src.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,6 +14,7 @@ public class QuellenCredits extends JFrame {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
+                        Main.stopMusic();
                         new Hauptmenue();
                         setVisible(false);
                         dispose();

@@ -14,6 +14,7 @@ public class Einstellungen extends JFrame {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
+                        Main.stopMusic();
                         new Hauptmenue();
                         setVisible(false);
                         dispose();
@@ -39,8 +40,8 @@ public class Einstellungen extends JFrame {
                 sound.setText("SFX: aus");
             } else {
                 sound.setText("SFX: an");
-                Main.playSFX(1);
             }
+            Main.playSFX(1);
         });
 
         add(mute);

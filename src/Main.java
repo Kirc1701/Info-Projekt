@@ -339,10 +339,7 @@ public class Main {
         }
     }
     public static void stopMusic() {
-        if (Einstellungen.musicmute) {
-        } else {
             sound.stop();
-        }
     }
     public static void playSFX(int i) {
         if (Einstellungen.soundmute) {
