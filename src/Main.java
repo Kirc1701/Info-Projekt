@@ -125,6 +125,10 @@ public class Main {
                         monster_update_place = karte.spawnMonster(time);
                         aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
                     }
+                    if (karte.getLevel().getMonstersToSpawn().isEmpty() && aktuellesLevel == 5) {
+                        stopMusic();
+                        playMusic(5);
+                    }
 
                     for (Map<String, Integer> shot : oldShots) {
                         int timeFired = shot.get("TimeFired");
