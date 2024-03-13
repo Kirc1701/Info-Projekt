@@ -54,26 +54,50 @@ public class QuellenCredits extends JFrame {
         });
         add(levelAuswahl);
 
-        add(new JLabel("    Hintergrundbild Level 1"));
-        JLabel level1 = new JLabel("europosters.de");
-        level1.setForeground(Color.BLUE.darker());
-        level1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        level1.addMouseListener(new MouseAdapter() {
+        add(new JLabel("    Hintergrundbild Level 1/2/3/4"));
+        JLabel level1234 = new JLabel("stock.adobe.com");
+        level1234.setForeground(Color.BLUE.darker());
+        level1234.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        level1234.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(new URI("https://shorturl.at/kmJL9"));
+                    Desktop.getDesktop().browse(new URI("https://shorturl.at/bluvU"));
                 } catch (IOException | URISyntaxException e1) {
                     e1.printStackTrace();
                 }
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-                level1.setText("<html><a href=''>europosters.de</a></html>");
+                level1234.setText("<html><a href=''>stock.adobe.com</a></html>");
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                level1.setText("europosters.de");
+                level1234.setText("stock.adobe.com");
+            }
+        });
+        add(level1234);
+
+        add(new JLabel("    Hintergrundbild Level 5"));
+        JLabel level1 = new JLabel("stock.adobe.com");
+        level1.setForeground(Color.BLUE.darker());
+        level1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        level1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://shorturl.at/enBTV"));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                level1.setText("<html><a href=''>stock.adobe.com</a></html>");
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                level1.setText("stock.adobe.com");
             }
         });
         add(level1);
