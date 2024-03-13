@@ -31,7 +31,9 @@ public class LevelAuswahl extends JFrame implements MouseListener {
     private BufferedImage bufferedImage = null;
     private final int width = 800;
     private final int height = 533;
+    private static boolean hauptmenue_entered;
     public LevelAuswahl(){
+        hauptmenue_entered = false;
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
@@ -99,31 +101,34 @@ public class LevelAuswahl extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(level1Bounds.contains(e.getX(), e.getY())){
-            Hauptmenue.chosenLevel = 1;
-            new Hauptmenue();
-            setVisible(false);
-            dispose();
-        }else if(level2Bounds.contains(e.getX(), e.getY())){
-            Hauptmenue.chosenLevel = 2;
-            new Hauptmenue();
-            setVisible(false);
-            dispose();
-        }else if(level3Bounds.contains(e.getX(), e.getY())){
-            Hauptmenue.chosenLevel = 3;
-            new Hauptmenue();
-            setVisible(false);
-            dispose();
-        }else if(level4Bounds.contains(e.getX(), e.getY())){
-            Hauptmenue.chosenLevel = 4;
-            new Hauptmenue();
-            setVisible(false);
-            dispose();
-        }else if(level5Bounds.contains(e.getX(), e.getY())){
-            Hauptmenue.chosenLevel = 5;
-            new Hauptmenue();
-            setVisible(false);
-            dispose();
+        if(!hauptmenue_entered) {
+            hauptmenue_entered = true;
+            if (level1Bounds.contains(e.getX(), e.getY())) {
+                Hauptmenue.chosenLevel = 1;
+                new Hauptmenue();
+                setVisible(false);
+                dispose();
+            } else if (level2Bounds.contains(e.getX(), e.getY())) {
+                Hauptmenue.chosenLevel = 2;
+                new Hauptmenue();
+                setVisible(false);
+                dispose();
+            } else if (level3Bounds.contains(e.getX(), e.getY())) {
+                Hauptmenue.chosenLevel = 3;
+                new Hauptmenue();
+                setVisible(false);
+                dispose();
+            } else if (level4Bounds.contains(e.getX(), e.getY())) {
+                Hauptmenue.chosenLevel = 4;
+                new Hauptmenue();
+                setVisible(false);
+                dispose();
+            } else if (level5Bounds.contains(e.getX(), e.getY())) {
+                Hauptmenue.chosenLevel = 5;
+                new Hauptmenue();
+                setVisible(false);
+                dispose();
+            }
         }
     }
 
