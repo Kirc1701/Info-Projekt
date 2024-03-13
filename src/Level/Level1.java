@@ -12,17 +12,17 @@ public class Level1 extends Level{
 
     public Level1(Basis basis){
         super(3,
-                40,
-                25,
-                new Coords(20, 12),
+                39,
+                19,
+                new Coords(19, 9),
                 basis,
                 new ArrayList<>(),
                 80,
                 20
         );
-        int height = 25;
-        int width = 40;
-        basis.setPosition(new Coords(20, 12));
+        int height = 19;
+        int width = 39;
+        basis.setPosition(new Coords(19, 9));
         basis.setHealth(basis.getMaxHealth());
         addSpawnArea(new Pair<>(new Coords(0, 0), new Coords(0, height - 1)));
         addSpawnArea(new Pair<>(new Coords(0, height - 1), new Coords(width - 1, height - 1)));

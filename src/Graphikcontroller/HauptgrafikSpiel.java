@@ -23,7 +23,7 @@ import java.util.Map;
 // Das Hauptfenster, auf dem das Spiel abläuft.
 public class HauptgrafikSpiel extends JFrame{
     // Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
-    public final static int spaceBetweenLinesPixels = 27;
+    public final static int spaceBetweenLinesPixels = 30;
     public final static int titelbalkenSizePixels = 27 + 27;
 
     // Höhe und Breite des geöffneten Fensters in Pixeln
@@ -119,54 +119,55 @@ public class HauptgrafikSpiel extends JFrame{
 
     // paint()-Methode
     public void paint(Graphics g) {
-        if (karte.getLevel().getClass().equals(Level1.class)) {
-            System.out.println(karte.getLevel().getClass());
-            g.drawImage(
-                    backgroundImageLevel1,
-                    0,
-                    0,
-                    windowWidthPixels,
-                    windowHeightPixels,
-                    null
-            );
-        } else if (karte.getLevel().getClass().equals(Level2.class)) {
-            g.drawImage(
-                    backgroundImageLevel2,
-                    0,
-                    0,
-                    windowWidthPixels,
-                    windowHeightPixels,
-                    null
-            );
-        } else if (karte.getLevel().getClass().equals(Level3.class)) {
-            g.drawImage(
-                    backgroundImageLevel3,
-                    0,
-                    0,
-                    windowWidthPixels,
-                    windowHeightPixels,
-                    null
-            );
-        } else if (karte.getLevel().getClass().equals(Level4.class)) {
-            g.drawImage(
-                    backgroundImageLevel4,
-                    0,
-                    0,
-                    windowWidthPixels,
-                    windowHeightPixels,
-                    null
-            );
-        } else if (karte.getLevel().getClass().equals(Level5.class)) {
-            g.drawImage(
-                    backgroundImageLevel5,
-                    0,
-                    0,
-                    windowWidthPixels,
-                    windowHeightPixels,
-                    null
-            );
+        {
+            if (karte.getLevel().getClass().equals(Level1.class)) {
+                System.out.println(karte.getLevel().getClass());
+                g.drawImage(
+                        backgroundImageLevel1,
+                        0,
+                        0,
+                        windowWidthPixels,
+                        windowHeightPixels,
+                        null
+                );
+            } else if (karte.getLevel().getClass().equals(Level2.class)) {
+                g.drawImage(
+                        backgroundImageLevel2,
+                        0,
+                        0,
+                        windowWidthPixels,
+                        windowHeightPixels,
+                        null
+                );
+            } else if (karte.getLevel().getClass().equals(Level3.class)) {
+                g.drawImage(
+                        backgroundImageLevel3,
+                        0,
+                        0,
+                        windowWidthPixels,
+                        windowHeightPixels,
+                        null
+                );
+            } else if (karte.getLevel().getClass().equals(Level4.class)) {
+                g.drawImage(
+                        backgroundImageLevel4,
+                        0,
+                        0,
+                        windowWidthPixels,
+                        windowHeightPixels,
+                        null
+                );
+            } else if (karte.getLevel().getClass().equals(Level5.class)) {
+                g.drawImage(
+                        backgroundImageLevel5,
+                        0,
+                        0,
+                        windowWidthPixels,
+                        windowHeightPixels,
+                        null
+                );
+            }
         }
-
         // Darstellung der Basis, wenn vorhanden
         if(karte.getBasis() != null) {
             //Position der linken oberen Ecke der Basis
@@ -336,6 +337,8 @@ public class HauptgrafikSpiel extends JFrame{
 
         //Darstellen des Geldes
         double geld = Main.money;
+        g.setColor(Color.BLACK);
+        g.drawRect(8, titelbalkenSizePixels - 7, 50, 24);
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 5);
@@ -355,6 +358,7 @@ public class HauptgrafikSpiel extends JFrame{
                 graphics2D.drawLine(turmX, turmY, monsterX, monsterY);
             }
         }
+
         g.setColor(Color.WHITE);
         g.setFont(new Font("Helvetica", Font.BOLD, 20));
         g.drawString("Design speichern", 300, titelbalkenSizePixels - 5);
