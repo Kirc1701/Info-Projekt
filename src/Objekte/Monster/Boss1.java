@@ -2,6 +2,7 @@ package src.Objekte.Monster;
 
 import src.Coords;
 import src.Karte;
+import src.Main;
 
 public class Boss1 extends Monster{
     public Boss1(Coords position) {

@@ -62,7 +62,7 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException, IOException {
         aktuelleGrafik = new Hauptmenue();
-        playMusic(0);
+        playMusic(3);
         Main.screenSelection = 0;
         int aktuellesLevel;
         while(screenSelection == 0) {
