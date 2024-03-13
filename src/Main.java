@@ -102,132 +102,132 @@ public class Main {
             playMusic(0);
 
             while (!karte.gameOver()) {
-                shotMonster = new HashMap[0];
-                if (!karte.getMonsterList().isEmpty()) {
-                    for (Monster monster : karte.getMonsterList()) {
-                        if (monster.getSchritteBisZiel() > 1) {
-                            if (time % monster.getMovingSpeed() == monster.getSpawntime() % monster.getMovingSpeed()) {
-                                monster_update_place = monster.makeMove(karte);
-                                aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
-                            }
-                        } else {
-                            if (time % monster.getAttackSpeed() == 0) {
-                                Basis basis = karte.getBasis();
-                                monster.attack(basis);
-                                aktuelleGrafik.repaint(basis.getPosition().x() * spaceBetweenLinesPixels, basis.getPosition().y() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                    shotMonster = new HashMap[0];
+                    if (!karte.getMonsterList().isEmpty()) {
+                        for (Monster monster : karte.getMonsterList()) {
+                            if (monster.getSchritteBisZiel() > 1) {
+                                if (time % monster.getMovingSpeed() == monster.getSpawntime() % monster.getMovingSpeed()) {
+                                    monster_update_place = monster.makeMove(karte);
+                                    aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
+                                }
+                            } else {
+                                if (time % monster.getAttackSpeed() == 0) {
+                                    Basis basis = karte.getBasis();
+                                    monster.attack(basis);
+                                    aktuelleGrafik.repaint(basis.getPosition().x() * spaceBetweenLinesPixels, basis.getPosition().y() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                                }
                             }
                         }
                     }
-                }
 
-                if ((time % karte.getLevel().getSpawnTime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
-                    monster_update_place = karte.spawnMonster(time);
-                    aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
-                }
-
-                for (Map<String, Integer> shot : oldShots) {
-                    int timeFired = shot.get("TimeFired");
-                    if (time == timeFired + 1) {
-                        int monsterX = shot.get("MonsterX");
-                        int monsterY = shot.get("MonsterY");
-                        int turmX = shot.get("TurmX");
-                        int turmY = shot.get("TurmY");
-
-                        paintShot(monsterX, monsterY, turmX, turmY);
-                        List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
-                        temp.remove(shot);
-                        Map<String, Integer>[] arr = new Map[temp.size()];
-                        oldShots = temp.toArray(arr);
+                    if ((time % karte.getLevel().getSpawnTime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
+                        monster_update_place = karte.spawnMonster(time);
+                        aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
                     }
-                }
 
-                int shotCounter = 0;
-                for (Objekt building : karte.getBuildings().values()) {
-                    if (building.getType().equals("DefaultTurm") ||
-                            building.getType().equals("Schnellschussgeschuetz") ||
-                            building.getType().equals("Scharfschuetzenturm")) {
-                        Turm turm = (Turm) building;
-                        if (time % turm.getSpeed() == turm.getSpawntime() % turm.getSpeed()) {
-                            List<Map<String, Integer>> tempShot = new ArrayList<>(List.of(shotMonster));
-                            tempShot.add(turm.shoot(karte.getMonsterList()));
-                            Map<String, Integer>[] arr = new Map[tempShot.size()];
-                            shotMonster = tempShot.toArray(arr);
-                            if (!shotMonster[shotCounter].isEmpty()) {
-                                int monsterX = shotMonster[shotCounter].get("MonsterX");
-                                int monsterY = shotMonster[shotCounter].get("MonsterY");
-                                int turmX = shotMonster[shotCounter].get("TurmX");
-                                int turmY = shotMonster[shotCounter].get("TurmY");
+                    for (Map<String, Integer> shot : oldShots) {
+                        int timeFired = shot.get("TimeFired");
+                        if (time == timeFired + 1) {
+                            int monsterX = shot.get("MonsterX");
+                            int monsterY = shot.get("MonsterY");
+                            int turmX = shot.get("TurmX");
+                            int turmY = shot.get("TurmY");
 
-                                paintShot(monsterX, monsterY, turmX, turmY);
-                                aktuelleGrafik.repaint(monsterX * spaceBetweenLinesPixels, monsterY * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
-                                shotMonster[shotCounter].put("TimeFired", time);
+                            paintShot(monsterX, monsterY, turmX, turmY);
+                            List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
+                            temp.remove(shot);
+                            Map<String, Integer>[] arr = new Map[temp.size()];
+                            oldShots = temp.toArray(arr);
+                        }
+                    }
 
-                                List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
-                                temp.add(shotMonster[shotCounter]);
-                                arr = new Map[temp.size()];
-                                oldShots = temp.toArray(arr);
-                                shotCounter++;
-                                Monster[] tempList = karte.getMonsterList().toArray(new Monster[karte.getMonsterList().size()]);
-                                karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
-                                for(Monster monster : tempList){
-                                    if(!karte.getMonsterList().contains(monster)){
-                                        laufendeKosten -= monster.getKopfgeld();
-                                        System.out.println("Money "+money);
+                    int shotCounter = 0;
+                    for (Objekt building : karte.getBuildings().values()) {
+                        if (building.getType().equals("DefaultTurm") ||
+                                building.getType().equals("Schnellschussgeschuetz") ||
+                                building.getType().equals("Scharfschuetzenturm")) {
+                            Turm turm = (Turm) building;
+                            if (time % turm.getSpeed() == turm.getSpawntime() % turm.getSpeed()) {
+                                List<Map<String, Integer>> tempShot = new ArrayList<>(List.of(shotMonster));
+                                tempShot.add(turm.shoot(karte.getMonsterList()));
+                                Map<String, Integer>[] arr = new Map[tempShot.size()];
+                                shotMonster = tempShot.toArray(arr);
+                                if (!shotMonster[shotCounter].isEmpty()) {
+                                    int monsterX = shotMonster[shotCounter].get("MonsterX");
+                                    int monsterY = shotMonster[shotCounter].get("MonsterY");
+                                    int turmX = shotMonster[shotCounter].get("TurmX");
+                                    int turmY = shotMonster[shotCounter].get("TurmY");
+
+                                    paintShot(monsterX, monsterY, turmX, turmY);
+                                    aktuelleGrafik.repaint(monsterX * spaceBetweenLinesPixels, monsterY * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                                    shotMonster[shotCounter].put("TimeFired", time);
+
+                                    List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
+                                    temp.add(shotMonster[shotCounter]);
+                                    arr = new Map[temp.size()];
+                                    oldShots = temp.toArray(arr);
+                                    shotCounter++;
+                                    Monster[] tempList = karte.getMonsterList().toArray(new Monster[karte.getMonsterList().size()]);
+                                    karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
+                                    for (Monster monster : tempList) {
+                                        if (!karte.getMonsterList().contains(monster)) {
+                                            laufendeKosten -= monster.getKopfgeld();
+                                            System.out.println("Money " + money);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                for (Objekt building : karte.getBuildings().values().stream().toList()) {
-                    if (building.getHealth() <= 0) {
-                        int x = building.getPosition().x();
-                        int y = building.getPosition().y();
-                        karte.getBuildings().remove(new Coords(x, y));
+                    for (Objekt building : karte.getBuildings().values().stream().toList()) {
+                        if (building.getHealth() <= 0) {
+                            int x = building.getPosition().x();
+                            int y = building.getPosition().y();
+                            karte.getBuildings().remove(new Coords(x, y));
+                        }
+                    }
+                    updateBuildings();
+                    loadDesign();
+                    time++;
+                    TimeUnit.MILLISECONDS.sleep(500);
+                }
+                stopMusic();
+                aktuelleGrafik.setVisible(false);
+                aktuelleGrafik.dispose();
+                if (aktuellesLevel == 4) {
+                    Hauptmenue.chosenLevel = 1;
+                } else {
+                    if (karte.playerWins()) {
+                        aktuellesLevel++;
+                        Hauptmenue.chosenLevel = aktuellesLevel + 1;
                     }
                 }
-                updateBuildings();
-                loadDesign();
-                time++;
-                TimeUnit.MILLISECONDS.sleep(500);
-            }
-            stopMusic();
-            aktuelleGrafik.setVisible(false);
-            aktuelleGrafik.dispose();
-            if(aktuellesLevel == 4){
-                Hauptmenue.chosenLevel = 1;
-            }else{
-                if(karte.playerWins()) {
-                    aktuellesLevel++;
-                    Hauptmenue.chosenLevel = aktuellesLevel + 1;
-                }
-            }
 //            karte.getBasis().setHealth(karte.getBasis().getMaxHealth())
 
-            int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
-            int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
-            screenSelection = 0;
-            if(karte.playerWins()){
-                aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
-            }else {
-                aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
-            }
-            while(screenSelection == 0){
-                TimeUnit.MILLISECONDS.sleep(500);
-            }
-            if(aktuellesLevel != Hauptmenue.chosenLevel){
-                aktuellesLevel = Hauptmenue.chosenLevel -1;
-                level = aktuellesLevel == 0 ?
-                        new Level1(karte.getBasis()) :
-                        aktuellesLevel == 1 ?
-                                new Level2(karte.getBasis()) :
-                                aktuellesLevel == 2 ?
-                                        new Level3(karte.getBasis()) :
-                                        aktuellesLevel == 3 ?
-                                                new Level4(karte.getBasis()) :
-                                                new Level5(karte.getBasis());
-            }
+                int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
+                int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
+                screenSelection = 0;
+                if (karte.playerWins()) {
+                    aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
+                } else {
+                    aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
+                }
+                while (screenSelection == 0) {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                }
+                if (aktuellesLevel != Hauptmenue.chosenLevel) {
+                    aktuellesLevel = Hauptmenue.chosenLevel - 1;
+                    level = aktuellesLevel == 0 ?
+                            new Level1(karte.getBasis()) :
+                            aktuellesLevel == 1 ?
+                                    new Level2(karte.getBasis()) :
+                                    aktuellesLevel == 2 ?
+                                            new Level3(karte.getBasis()) :
+                                            aktuellesLevel == 3 ?
+                                                    new Level4(karte.getBasis()) :
+                                                    new Level5(karte.getBasis());
+                }
         }
     }
 
