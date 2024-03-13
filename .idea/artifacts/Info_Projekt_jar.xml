@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="Info-Projekt:jar">
+  <artifact type="jar" name="Info-Projekt:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Info_Projekt_jar</output-path>
     <root id="archive" name="Info-Projekt.jar">
       <element id="directory" name="META-INF">
