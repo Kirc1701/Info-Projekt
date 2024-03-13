@@ -11,12 +11,13 @@ public class Einstellungen extends JFrame {
     public static boolean musicmute = false;
     public static boolean soundmute = false;
     public Einstellungen(){
-        HauptgrafikSpiel.pressed[1] = false;
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
                         if(Main.screenSelection == 0){
                             new Hauptmenue();
+                        }else{
+                            HauptgrafikSpiel.pressed[1] = false;
                         }
                         setVisible(false);
                         dispose();
