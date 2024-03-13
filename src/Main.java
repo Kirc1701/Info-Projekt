@@ -69,18 +69,7 @@ public class Main {
         }
         aktuellesLevel = Hauptmenue.chosenLevel - 1;
         //Neue Basis
-        Basis newBasis = new DefaultBasis(new Coords(0,0));
-
-        // Player's starting balance is set according to the level's starting capital
-        Level level = aktuellesLevel == 0 ?
-                new Level1(newBasis) :
-                aktuellesLevel == 1 ?
-                        new Level2(newBasis) :
-                        aktuellesLevel == 2 ?
-                                new Level3(newBasis) :
-                                aktuellesLevel == 3 ?
-                                        new Level4(newBasis) :
-                                        new Level5(newBasis);
+        Level level = getLevel(aktuellesLevel);
         money = level.getStartKapital();
         while(true) {
 
@@ -153,7 +142,9 @@ public class Main {
 
                 int shotCounter = 0;
                 for (Objekt building : karte.getBuildings().values()) {
-                    if (building.getType().equals("DefaultTurm")) {
+                    if (building.getType().equals("DefaultTurm") ||
+                            building.getType().equals("Schnellschussgeschuetz") ||
+                            building.getType().equals("Scharfschuetzenturm")) {
                         Turm turm = (Turm) building;
                         if (time % turm.getSpeed() == turm.getSpawntime() % turm.getSpeed()) {
                             List<Map<String, Integer>> tempShot = new ArrayList<>(List.of(shotMonster));
@@ -211,16 +202,7 @@ public class Main {
                     Hauptmenue.chosenLevel = aktuellesLevel + 1;
                 }
             }
-//            karte.getBasis().setHealth(karte.getBasis().getMaxHealth());
-            level = aktuellesLevel == 0 ?
-                    new Level1(karte.getBasis()) :
-                    aktuellesLevel == 1 ?
-                            new Level2(karte.getBasis()) :
-                            aktuellesLevel == 2 ?
-                                    new Level3(karte.getBasis()) :
-                                    aktuellesLevel == 3 ?
-                                            new Level4(karte.getBasis()) :
-                                            new Level5(karte.getBasis());
+//            karte.getBasis().setHealth(karte.getBasis().getMaxHealth())
 
             int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
             int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
@@ -233,7 +215,35 @@ public class Main {
             while(screenSelection == 0){
                 TimeUnit.MILLISECONDS.sleep(500);
             }
+            if(aktuellesLevel != Hauptmenue.chosenLevel){
+                aktuellesLevel = Hauptmenue.chosenLevel -1;
+                level = aktuellesLevel == 0 ?
+                        new Level1(karte.getBasis()) :
+                        aktuellesLevel == 1 ?
+                                new Level2(karte.getBasis()) :
+                                aktuellesLevel == 2 ?
+                                        new Level3(karte.getBasis()) :
+                                        aktuellesLevel == 3 ?
+                                                new Level4(karte.getBasis()) :
+                                                new Level5(karte.getBasis());
+            }
         }
+    }
+
+    private static Level getLevel(int aktuellesLevel) {
+        Basis newBasis = new DefaultBasis(new Coords(0,0));
+
+        // Player's starting balance is set according to the level's starting capital
+        Level level = aktuellesLevel == 0 ?
+                new Level1(newBasis) :
+                aktuellesLevel == 1 ?
+                        new Level2(newBasis) :
+                        aktuellesLevel == 2 ?
+                                new Level3(newBasis) :
+                                aktuellesLevel == 3 ?
+                                        new Level4(newBasis) :
+                                        new Level5(newBasis);
+        return level;
     }
 
     private static void loadDesign() throws IOException {

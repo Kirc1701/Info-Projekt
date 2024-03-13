@@ -3,6 +3,7 @@ package src.Graphikcontroller;
 // Import anderer Klassen innerhalb des Projekts
 import src.Coords;
 import src.Karte;
+import src.Level.*;
 import src.Main;
 import src.Objekte.Baubar.Baubar;
 import src.Objekte.Monster.Monster;
@@ -34,15 +35,19 @@ public class HauptgrafikSpiel extends JFrame{
 
     // boolean der eine häufigere Öffnung des popups verhindert
     public final static boolean[] pressed = {false, false};
-    private BufferedImage mauerImage = null;
-    private BufferedImage turmImage = null;
+    public static BufferedImage mauerImage = null;
+    public static BufferedImage defaultTurmImage = null;
+    public static BufferedImage schnellschussTurmImage = null;
+    public static BufferedImage scharfschuetzenTurmImage = null;
     private BufferedImage defaultMonsterImage = null;
     private BufferedImage lakaiImage = null;
     private BufferedImage basisImage = null;
     private BufferedImage bossImage = null;
-    private BufferedImage backgroundImage = null;
-    private final ImageIcon mauerIcon;
-    private final ImageIcon turmIcon;
+    private BufferedImage backgroundImageLevel1 = null;
+    private BufferedImage backgroundImageLevel2 = null;
+    private BufferedImage backgroundImageLevel3 = null;
+    private BufferedImage backgroundImageLevel4 = null;
+    private BufferedImage backgroundImageLevel5 = null;
 
     // Konstruktor für die Klasse HauptgrafikSpiel
     public HauptgrafikSpiel(Karte karte){
@@ -67,26 +72,35 @@ public class HauptgrafikSpiel extends JFrame{
 
         // Zugriff auf die Bilddateien
         File fMauer = new File("images/Mauer.png");
-        File fTurm = new File("images/Turm.png");
+        File fDefaultTurm = new File("images/DefaultTurm.png");
+        File fSchnellschussTurm = new File("images/SchnellschussTurm.png");
+        File fScharfschuetzenTurm = new File("images/ScharfschuetzenTurm.png");
         File fBasis = new File("images/Basis.png");
         File fDefaultMonster = new File("images/DefaultMonster.png");
         File fLakai = new File("images/Lakai.png");
         File fBoss = new File("images/Boss.png");
-        File fBackground = new File("images/Background.png");
+        File fBackgroundLevel1 = new File("images/BackgroundLevel1.png");
+        File fBackgroundLevel2 = new File("images/BackgroundLevel2.jpg");
+        File fBackgroundLevel3 = new File("images/BackgroundLevel3.jpg");
+        File fBackgroundLevel4 = new File("images/BackgroundLevel4.png");
+        File fBackgroundLevel5 = new File("images/BackgroundLevel5.png");
 
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
             mauerImage = ImageIO.read(fMauer);
-            turmImage = ImageIO.read(fTurm);
+            defaultTurmImage = ImageIO.read(fDefaultTurm);
+            schnellschussTurmImage = ImageIO.read(fSchnellschussTurm);
+            scharfschuetzenTurmImage = ImageIO.read(fScharfschuetzenTurm);
             basisImage = ImageIO.read(fBasis);
             defaultMonsterImage = ImageIO.read(fDefaultMonster);
             lakaiImage = ImageIO.read(fLakai);
             bossImage = ImageIO.read(fBoss);
-            backgroundImage = ImageIO.read(fBackground);
+            backgroundImageLevel1 = ImageIO.read(fBackgroundLevel1);
+            backgroundImageLevel2 = ImageIO.read(fBackgroundLevel2);
+            backgroundImageLevel3 = ImageIO.read(fBackgroundLevel3);
+            backgroundImageLevel4 = ImageIO.read(fBackgroundLevel4);
+            backgroundImageLevel5 = ImageIO.read(fBackgroundLevel5);
         } catch (IOException ignored) {}
-
-        turmIcon = new ImageIcon(turmImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
-        mauerIcon = new ImageIcon(mauerImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH));
 
         // Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setSize(windowWidthPixels, windowHeightPixels);
@@ -96,16 +110,52 @@ public class HauptgrafikSpiel extends JFrame{
 
     // paint()-Methode
     public void paint(Graphics g) {
-        // Aufruf der super.paint()-Methode
-//        super.paint(g);
-        g.drawImage(
-                backgroundImage,
-                0,
-                0,
-                windowWidthPixels,
-                windowHeightPixels,
-                null
-        );
+        if (karte.getLevel().getClass().equals(Level1.class)) {
+            g.drawImage(
+                    backgroundImageLevel1,
+                    0,
+                    0,
+                    windowWidthPixels,
+                    windowHeightPixels,
+                    null
+            );
+        } else if (karte.getLevel().getClass().equals(Level2.class)) {
+            g.drawImage(
+                    backgroundImageLevel2,
+                    0,
+                    0,
+                    windowWidthPixels,
+                    windowHeightPixels,
+                    null
+            );
+        } else if (karte.getLevel().getClass().equals(Level3.class)) {
+            g.drawImage(
+                    backgroundImageLevel3,
+                    0,
+                    0,
+                    windowWidthPixels,
+                    windowHeightPixels,
+                    null
+            );
+        } else if (karte.getLevel().getClass().equals(Level4.class)) {
+            g.drawImage(
+                    backgroundImageLevel4,
+                    0,
+                    0,
+                    windowWidthPixels,
+                    windowHeightPixels,
+                    null
+            );
+        } else if (karte.getLevel().getClass().equals(Level5.class)) {
+            g.drawImage(
+                    backgroundImageLevel5,
+                    0,
+                    0,
+                    windowWidthPixels,
+                    windowHeightPixels,
+                    null
+            );
+        }
 
         // Darstellung der Basis, wenn vorhanden
         if(karte.getBasis() != null) {
@@ -145,35 +195,58 @@ public class HauptgrafikSpiel extends JFrame{
             int buildingY = buildingCoords.y()* spaceBetweenLinesPixels +1 + titelbalkenSizePixels;
 
             // Unterscheidung zwischen unterschiedlichen Arten von Gebäuden
-            if(building.getType().equals("DefaultMauer")){
-                // Zeichnen der Mauer
-                g.setColor(Color.black);
-                g.drawImage(
-                        mauerImage,
-                        buildingX,
-                        buildingY,
-                        spaceBetweenLinesPixels -2,
-                        spaceBetweenLinesPixels -2,
-                        null
-                );
-
-                if(!(building.getHealth() == building.getMaxHealth())) {
-                    setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
+            switch (building.getType()) {
+                case "DefaultMauer" -> {
+                    // Zeichnen der Mauer
+                    g.setColor(Color.black);
+                    g.drawImage(
+                            mauerImage,
+                            buildingX,
+                            buildingY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
                 }
-            }else if(building.getType().equals("DefaultTurm")){
-                // Zeichnen des Turms
-                g.setColor(Color.black);
-                g.drawImage(
-                        turmImage,
-                        buildingX,
-                        buildingY,
-                        spaceBetweenLinesPixels -2,
-                        spaceBetweenLinesPixels -2,
-                        null
-                );
-                if(!(building.getHealth() == building.getMaxHealth())) {
-                    setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
-                }            }
+                case "DefaultTurm" -> {
+                    // Zeichnen des Turms
+                    g.setColor(Color.black);
+                    g.drawImage(
+                            defaultTurmImage,
+                            buildingX,
+                            buildingY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+
+                }
+                case "Schnellschussgeschuetz" -> {
+                    g.setColor(Color.black);
+                    g.drawImage(
+                            schnellschussTurmImage,
+                            buildingX,
+                            buildingY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                }
+                case "Scharfschuetzenturm" -> {
+                    g.setColor(Color.black);
+                    g.drawImage(
+                            scharfschuetzenTurmImage,
+                            buildingX,
+                            buildingY,
+                            spaceBetweenLinesPixels - 2,
+                            spaceBetweenLinesPixels - 2,
+                            null
+                    );
+                }
+            }
+            if (!(building.getHealth() == building.getMaxHealth())) {
+                setLifeBar((Graphics2D) g, buildingX, buildingY, building.getHealth(), building.getMaxHealth());
+            }
         }
 
         // Zeichnen der Monster
@@ -288,7 +361,7 @@ public class HauptgrafikSpiel extends JFrame{
                                     new PopupRemoveBuilding(x, y, e.getX(), e.getY());
                                 } catch (IOException ignored) {}
                             }else {
-                                new PopupSetzen(mauerIcon, turmIcon, x, y, e.getX(), e.getY());
+                                new PopupSetzen(x, y, e.getX(), e.getY());
                             }
                         }
                     }

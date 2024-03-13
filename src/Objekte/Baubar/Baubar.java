@@ -3,6 +3,8 @@ package src.Objekte.Baubar;
 import src.Coords;
 import src.Objekte.Baubar.Mauer.DefaultMauer;
 import src.Objekte.Baubar.Turm.DefaultTurm;
+import src.Objekte.Baubar.Turm.Scharfschuetzenturm;
+import src.Objekte.Baubar.Turm.Schnellschussgeschuetz;
 import src.Objekte.Objekt;
 
 public abstract class Baubar extends Objekt {
@@ -29,6 +31,10 @@ public abstract class Baubar extends Objekt {
             return new DefaultTurm(position);
         }else if(name.equals("DefaultMauer")){
             return new DefaultMauer(position);
+        }else if(name.equals("SchnellschussTurm")){
+            return new Schnellschussgeschuetz(position);
+        }else if(name.equals("ScharfschuetzenTurm")){
+            return new Scharfschuetzenturm(position);
         }else{
             return null;
         }

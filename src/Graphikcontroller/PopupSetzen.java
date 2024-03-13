@@ -5,21 +5,17 @@ import src.Objekte.Baubar.Baubar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
-import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
-import static src.Graphikcontroller.HauptgrafikSpiel.pressed;
+import static src.Graphikcontroller.HauptgrafikSpiel.*;
 import static src.Main.*;
 import static src.Objekte.Baubar.Baubar.getBaubar;
 
-public class PopupSetzen extends JFrame implements ActionListener {
+public class PopupSetzen extends JFrame implements MouseListener, ActionListener {
     private final int x;
     private final int y;
 
-    public PopupSetzen(ImageIcon mauerIcon, ImageIcon turmIcon, int x, int y, int locX, int locY){
+    public PopupSetzen(int x, int y, int locX, int locY){
         this.x = x;
         this.y = y;
         addWindowListener(
@@ -32,49 +28,128 @@ public class PopupSetzen extends JFrame implements ActionListener {
                     }
                 }
         );
-        //Erstellung der Buttons
-        JButton m = new JButton(mauerIcon);
-        m.setActionCommand("DefaultMauer");
-        m.addActionListener(this);
-
-        JButton t = new JButton(turmIcon);
-        t.setActionCommand("DefaultTurm");
-        t.addActionListener(this);
 
         JButton c = new JButton("Cancel");
-        c.setActionCommand("Cancel");
+        c.setBounds(100, 127, 100, 30);
         c.addActionListener(this);
 
         //Hinzufügen der Buttons
-        add(m);
-        add(t);
         add(c);
+        addMouseListener(this);
         //Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setBackground(Color.white);
-        setSize(150, 100);
-        setLocation(locX - 75, locY - 50);
-        setLayout(new FlowLayout());
+        setSize(300, 200);
+        setLocation(locX - 150, locY - 100);
+        setLayout(null);
         setVisible(true);
     }
 
     @Override
+    public void paint(Graphics g) {
+        if(defaultTurmImage != null) {
+            g.drawImage(
+                    defaultTurmImage,
+                    40,
+                    67,
+                    2*(spaceBetweenLinesPixels - 2),
+                    2*(spaceBetweenLinesPixels - 2),
+                    null
+            );
+        }
+        if(schnellschussTurmImage != null) {
+            g.drawImage(
+                    schnellschussTurmImage,
+                    100,
+                    67,
+                    2*(spaceBetweenLinesPixels - 2),
+                    2*(spaceBetweenLinesPixels - 2),
+                    null
+            );
+        }
+        if(scharfschuetzenTurmImage != null) {
+            g.drawImage(
+                    scharfschuetzenTurmImage,
+                    160,
+                    67,
+                    2*(spaceBetweenLinesPixels - 2),
+                    2*(spaceBetweenLinesPixels - 2),
+                    null
+            );
+        }
+        if(mauerImage != null) {
+            g.drawImage(
+                    mauerImage,
+                    220,
+                    67,
+                    2*(spaceBetweenLinesPixels - 2),
+                    2*(spaceBetweenLinesPixels - 2),
+                    null
+            );
+        }
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e1) {
-        if (!e1.getActionCommand().equals("Cancel")) {
-            Baubar newBaubar = getBaubar(e1.getActionCommand(), new Coords(x, y));
-            assert newBaubar != null;
-            if (newBaubar.getKosten() <= money) {
-                if (karte.addBuilding(newBaubar.getPosition(), newBaubar) == null) {
-                    System.out.println("Something went wrong");
-                } else {
-                    laufendeKosten += newBaubar.getKosten();
-//                    System.out.println("Laufende Kosten " + laufendeKosten);
-                    building_update_place = new Rectangle(x, y, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
-                    building_update = true;
-                }
+        setVisible(false);
+        pressed[0] = false;
+        dispose();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getY() >= 67 && e.getY() <= 117) {
+            if(e.getX()>= 40 && e.getX() <= 90) {
+                Baubar newBaubar = getBaubar("DefaultTurm", new Coords(x, y));
+                assert newBaubar != null;
+                build(newBaubar);
+            } else if(e.getX()>= 100 && e.getX() <= 150) {
+                Baubar newBaubar = getBaubar("SchnellschussTurm", new Coords(x, y));
+                assert newBaubar != null;
+                build(newBaubar);
+            } else if(e.getX()>= 160 && e.getX() <= 210) {
+                Baubar newBaubar = getBaubar("ScharfschuetzenTurm", new Coords(x, y));
+                assert newBaubar != null;
+                build(newBaubar);
+            } else if(e.getX()>= 220 && e.getX() <= 270) {
+                Baubar newBaubar = getBaubar("DefaultMauer", new Coords(x, y));
+                assert newBaubar != null;
+                build(newBaubar);
+            }
+        }
+    }
+
+    private void build(Baubar newBaubar) {
+        if (newBaubar.getKosten() <= money) {
+            if (karte.addBuilding(newBaubar.getPosition(), newBaubar) == null) {
+                System.out.println("Something went wrong");
+            } else {
+                laufendeKosten += newBaubar.getKosten();
+                building_update_place = new Rectangle(x, y, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                building_update = true;
             }
         }
         setVisible(false);
         pressed[0] = false;
         dispose();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

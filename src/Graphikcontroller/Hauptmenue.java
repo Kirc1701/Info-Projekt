@@ -30,10 +30,10 @@ public class Hauptmenue extends JFrame implements MouseListener {
         try {
             bufferedImage = ImageIO.read(file);
         } catch (IOException ignored) {}
-        setSize(450, 300);
+        setSize(900, 600);
         setLocation(
-                Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 225,
-                Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 150
+                Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 450,
+                Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 300
         );
         addMouseListener(this);
         setLayout(null);
@@ -46,15 +46,15 @@ public class Hauptmenue extends JFrame implements MouseListener {
                 bufferedImage,
                 0,
                 0,
-                450,
-                300,
+                900,
+                600,
                 null
         );
-        g.setFont(new Font("Helvetica", Font.BOLD, 18));
-        g.drawString("Starte Spiel | Gewähltes Level: Level " + chosenLevel, 59, 78);
-        g.drawString("-> Levelauswahl", 152, 121);
-        g.drawString("Einstellungen",170, 164);
-        g.drawString("Credits/Quellen",160, 207);
+        g.setFont(new Font("Helvetica", Font.BOLD, 36));
+        g.drawString("Starte Spiel | Gewähltes Level: Level " + chosenLevel, 118, 156);
+        g.drawString("-> Levelauswahl", 304, 242);
+        g.drawString("Einstellungen",340, 328);
+        g.drawString("Credits/Quellen",320, 414);
     }
 
     @Override
@@ -64,19 +64,19 @@ public class Hauptmenue extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(e.getX() >= 52 && e.getX() <= 399 && e.getY() >= 52 && e.getY() <= 89){
+        if(e.getX() >= 104 && e.getX() <= 798 && e.getY() >= 104 && e.getY() <= 178){
             Main.screenSelection = 1;
             setVisible(false);
             dispose();
-        }else if(e.getX() >= 147 && e.getX() <= 299 && e.getY() >= 95 && e.getY() <= 132){
+        }else if(e.getX() >= 294 && e.getX() <= 598 && e.getY() >= 190 && e.getY() <= 264){
             new LevelAuswahl();
             setVisible(false);
             dispose();
-        }else if(e.getX() >= 165 && e.getX() <= 299 && e.getY() >= 138 && e.getY() <= 175){
+        }else if(e.getX() >= 330 && e.getX() <= 598 && e.getY() >= 276 && e.getY() <= 350){
             new Einstellungen();
             setVisible(false);
             dispose();
-        }else if(e.getX() >= 155 && e.getX() <= 299 && e.getY() >= 181 && e.getY() <= 218){
+        }else if(e.getX() >= 310 && e.getX() <= 598 && e.getY() >= 362 && e.getY() <= 436){
             new QuellenCredits();
             setVisible(false);
             dispose();
