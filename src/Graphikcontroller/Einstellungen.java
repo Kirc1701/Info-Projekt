@@ -14,7 +14,6 @@ public class Einstellungen extends JFrame {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
-                        new Hauptmenue();
                         setVisible(false);
                         dispose();
                     }
@@ -46,9 +45,18 @@ public class Einstellungen extends JFrame {
             Main.playSFX(1);
         });
 
+        JButton menu = new JButton("Hauptmenu");
+        menu.addActionListener(actionEvent -> {
+            new Hauptmenue();
+            setVisible(false);
+            dispose();
+        });
+
+
         add(mute);
         add(sound);
 
+        add(menu);
         setSize(450, 300);
         setLocation(
                 Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 225,

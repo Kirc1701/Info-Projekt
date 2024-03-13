@@ -50,7 +50,7 @@ public class Main {
     public static int time = 0;
 //    public static boolean waitForStart = true;
     public static String loadDesign = "";
-    public static int screenSelection;
+    public static int screenSelection = 0;
     public static int anzahlMauern = 0;
     public static Sound sound = new Sound();
 
