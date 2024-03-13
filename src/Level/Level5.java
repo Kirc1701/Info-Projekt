@@ -30,6 +30,6 @@ public class Level5 extends Level{
         monstersToSpawn.add(new Sprinter(new Coords(-1, -1)));
         monstersToSpawn.add(new Boss1(new Coords(-1, -1)));
         basis.setHealth(basis.getMaxHealth());
-        basis.setPosition(new Coords(9, 4));
+        basis.setPosition(new Coords(20, 12));
     }
 }
