@@ -14,7 +14,6 @@ public class Einstellungen extends JFrame {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
-                        Main.stopMusic();
                         new Hauptmenue();
                         setVisible(false);
                         dispose();
@@ -23,6 +22,9 @@ public class Einstellungen extends JFrame {
         );
 
         JButton mute = new JButton("Musik: an");
+        if (musicmute) {
+            mute.setText("Musik: aus");
+        }
         mute.addActionListener(actionEvent -> {
             musicmute = !musicmute;
             if (musicmute) {

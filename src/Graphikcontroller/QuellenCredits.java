@@ -14,7 +14,6 @@ public class QuellenCredits extends JFrame {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
-                        Main.stopMusic();
                         new Hauptmenue();
                         setVisible(false);
                         dispose();
