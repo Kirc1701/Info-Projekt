@@ -275,6 +275,7 @@ public class Main {
                             for(Monster monster : karte.getMonsterList()){
                                 monster.updateMonsterPath(karte);
                             }
+                            playSFX(8);
                             money -= building.getKosten();
                             aktuelleGrafik.repaint(50, titelbalkenSizePixels / 2, 100, 30);
                         }
