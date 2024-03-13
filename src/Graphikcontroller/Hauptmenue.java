@@ -65,7 +65,7 @@ public class Hauptmenue extends JFrame implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         if(e.getX() >= 104 && e.getX() <= 798 && e.getY() >= 104 && e.getY() <= 178){
-            Main.stopMusic(); //evtl falls neuer song bei build mode
+            Main.stopMusic();
             Main.screenSelection = 1;
             setVisible(false);
             dispose();

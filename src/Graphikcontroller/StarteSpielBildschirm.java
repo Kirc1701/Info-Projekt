@@ -12,7 +12,6 @@ import static src.Main.screenSelection;
 
 public class StarteSpielBildschirm extends JFrame {
     public StarteSpielBildschirm(int x){
-        Main.playMusic(2);
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
@@ -28,7 +27,6 @@ public class StarteSpielBildschirm extends JFrame {
         button.addActionListener(e -> {
             setVisible(false);
             screenSelection = 2;
-            Main.stopMusic();
             dispose();
         });
         add(button);

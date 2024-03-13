@@ -85,6 +85,7 @@ public class Main {
             // Creation of game windows
             JFrame hauptgrafik = new HauptgrafikSpiel(karte); // Main game window with map
             new StarteSpielBildschirm(hauptgrafik.getWidth());
+            Main.playMusic(2);
             aktuelleGrafik = hauptgrafik;
             TimeUnit.MILLISECONDS.sleep(500);
             aktuelleGrafik.repaint();
@@ -100,8 +101,8 @@ public class Main {
                 // This can be used to control the pace of the game, reducing the processing load on the CPU.
                 TimeUnit.MILLISECONDS.sleep(500);
             }
-            playMusic(0);
-
+            stopMusic();
+//            playMusic(0);
             while (!karte.gameOver()) {
                     shotMonster = new HashMap[0];
                     if (!karte.getMonsterList().isEmpty()) {
@@ -124,10 +125,6 @@ public class Main {
                     if ((time % karte.getLevel().getSpawnTime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
                         monster_update_place = karte.spawnMonster(time);
                         aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
-                    }
-                    if (karte.getLevel().getMonstersToSpawn().isEmpty() && aktuellesLevel == 4) {
-                        stopMusic();
-                        playMusic(5);
                     }
 
                     for (Map<String, Integer> shot : oldShots) {
@@ -349,6 +346,7 @@ public class Main {
         }
     }
     public static void stopMusic() {
+        System.out.println("HEllo");
             sound.stop();
     }
     public static void playSFX(int i) {
