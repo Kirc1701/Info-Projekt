@@ -98,6 +98,7 @@ public class Main {
                 // Calls the method updateBuildings() which updates the state of the buildings in the game.
                 updateBuildings();
                 loadDesign();
+                time++;
 
                 // Sleeps the current thread for 500 milliseconds.
                 // This can be used to control the pace of the game, reducing the processing load on the CPU.
@@ -279,7 +280,7 @@ public class Main {
                             }
                             playSFX(8);
                             money -= building.getKosten();
-                            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 2, 100, 30);
+                            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 3, 100, 30);
                         }
                     }
                 }
@@ -338,7 +339,7 @@ public class Main {
         if (laufendeKosten != 0) {
             money -= laufendeKosten;
             laufendeKosten = 0;
-            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 2, 100, 30);
+            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 3, 100, 30);
             System.out.println("Money " + money);
         }
     }

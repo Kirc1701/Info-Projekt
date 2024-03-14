@@ -20,11 +20,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static src.Main.*;
+import static src.Objekte.Baubar.Baubar.getBaubar;
+
 // Das Hauptfenster, auf dem das Spiel abläuft.
 public class HauptgrafikSpiel extends JFrame{
     // Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
     public final static int spaceBetweenLinesPixels = 32;
-    public final static int titelbalkenSizePixels = 27 + 27;
+    public final static int titelbalkenSizePixels = 27 + 54;
 
     // Höhe und Breite des geöffneten Fensters in Pixeln
     private final int windowWidthPixels;
@@ -51,6 +54,7 @@ public class HauptgrafikSpiel extends JFrame{
     private BufferedImage backgroundImageLevel3 = null;
 //    private BufferedImage backgroundImageLevel4 = null;
     private BufferedImage backgroundImageLevel5 = null;
+    private int chosenBuilding = 0;
 
     public void closeWindow() {
         setVisible(false);
@@ -315,10 +319,10 @@ public class HauptgrafikSpiel extends JFrame{
         double geld = Main.money;
         g.setColor(Color.BLACK);
         int width = geld / 100 >= 1 ? 128 : 112;
-        g.fillRect(0, titelbalkenSizePixels/2, width, 27);
+        g.fillRect(0, titelbalkenSizePixels/3, width, 27);
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 5);
+        g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 32);
 
         // Zeichnen des Schusses
         Map<String, Integer>[] shots = Main.shotMonster.clone();
@@ -337,22 +341,99 @@ public class HauptgrafikSpiel extends JFrame{
         }
 
         g.setColor(Color.BLACK);
-        g.fillRect(298, titelbalkenSizePixels/2, 172, 27);
+        g.fillRect(298, titelbalkenSizePixels/3, 172, 27);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Helvetica", Font.BOLD, 20));
-        g.drawString("Design speichern", 300, titelbalkenSizePixels - 5);
+        g.drawString("Design speichern", 300, titelbalkenSizePixels - 32);
 
         g.setColor(Color.BLACK);
-        g.fillRect(488, titelbalkenSizePixels/2, 132, 27);
+        g.fillRect(488, titelbalkenSizePixels/3, 132, 27);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Helvetica", Font.BOLD, 20));
-        g.drawString("Design laden", 490, titelbalkenSizePixels - 5);
+        g.drawString("Design laden", 490, titelbalkenSizePixels - 32);
 
         g.setColor(Color.BLACK);
-        g.fillRect(windowWidthPixels - 132, titelbalkenSizePixels/2, 132, 27);
+        g.fillRect(windowWidthPixels - 132, titelbalkenSizePixels/3, 132, 27);
         g.setColor(Color.WHITE);
         g.setFont(new Font("Helvetica", Font.BOLD, 20));
-        g.drawString("Einstellungen", windowWidthPixels - 130, titelbalkenSizePixels - 5);
+        g.drawString("Einstellungen", windowWidthPixels - 130, titelbalkenSizePixels - 32);
+
+        g.setColor(Color.BLACK);
+        g.fillRect(628, titelbalkenSizePixels/3, 220, 54);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Helvetica", Font.BOLD, 13));
+        if(defaultTurmImage != null) {
+            g.fillRect(632, titelbalkenSizePixels/3 + 2, 37, 37);
+            g.drawImage(
+                    defaultTurmImage,
+                    630,
+                    titelbalkenSizePixels/3,
+                    41,
+                    41,
+                    null
+            );
+            if(chosenBuilding == 1){
+                g.setColor(Color.BLUE.brighter());
+            }
+            g.drawString("Turm", 630, titelbalkenSizePixels - 2); // Add text label for Default Turm
+            if(chosenBuilding == 1){
+                g.setColor(Color.WHITE);
+            }
+        }
+        if(schnellschussTurmImage != null) {
+            g.fillRect(691, titelbalkenSizePixels/3 + 2, 37, 37);
+            g.drawImage(
+                    schnellschussTurmImage,
+                    689,
+                    titelbalkenSizePixels/3,
+                    41,
+                    41,
+                    null
+            );
+            if(chosenBuilding == 2){
+                g.setColor(Color.BLUE.brighter());
+            }
+            g.drawString("Minigun", 687, titelbalkenSizePixels - 2); // Add text label for Schnellschuss Turm
+            if(chosenBuilding == 2){
+                g.setColor(Color.WHITE);
+            }
+        }
+        if(scharfschuetzenTurmImage != null) {
+            g.fillRect(750, titelbalkenSizePixels/3 + 2, 37, 37);
+            g.drawImage(
+                    scharfschuetzenTurmImage,
+                    748,
+                    titelbalkenSizePixels/3,
+                    41,
+                    41,
+                    null
+            );
+            if(chosenBuilding == 3){
+                g.setColor(Color.BLUE.brighter());
+            }
+            g.drawString("Sniper", 748, titelbalkenSizePixels - 2); // Add text label for Scharfschuetzen Turm
+            if(chosenBuilding == 3){
+                g.setColor(Color.WHITE);
+            }
+        }
+        if(mauerImage != null) {
+            g.fillRect(809, titelbalkenSizePixels/3 + 2, 37, 37);
+            g.drawImage(
+                    mauerImage,
+                    807,
+                    titelbalkenSizePixels/3,
+                    41,
+                    41,
+                    null
+            );
+            if(chosenBuilding == 0){
+                g.setColor(Color.BLUE.brighter());
+            }
+            g.drawString("Mauer", 807, titelbalkenSizePixels - 2); // Add text label for Default Mauer
+            if(chosenBuilding == 0){
+                g.setColor(Color.WHITE);
+            }
+        }
 
         // Hinzufügen des MouseListeners
         this.addMouseListener(
@@ -364,13 +445,28 @@ public class HauptgrafikSpiel extends JFrame{
                                 pressed[1] = true;
                                 if (e.getX() >= 300 && e.getX() <= 470) {
                                     new Save();
-                                } else if(e.getX() >= 490 && e.getX() <= 660){
+                                } else if(e.getX() >= 490 && e.getX() <= 620){
                                     new Load();
                                 } else if(e.getX() >= windowWidthPixels - 130){
                                     Main.source = true;
                                     new Einstellungen();
+                                } else if(e.getX() >= 630 && e.getX() <= 671){
+                                    chosenBuilding = 1;
+                                    repaint(628, titelbalkenSizePixels/3, 220, 54);
+                                    pressed[1] = false;
+                                } else if(e.getX() >= 689 && e.getX() <= 730){
+                                    chosenBuilding = 2;
+                                    repaint(628, titelbalkenSizePixels/3, 220, 54);
+                                    pressed[1] = false;
+                                } else if(e.getX() >= 748 && e.getX() <= 789){
+                                    chosenBuilding = 3;
+                                    repaint(628, titelbalkenSizePixels/3, 220, 54);
+                                    pressed[1] = false;
+                                } else if(e.getX() >= 807 && e.getX() <= 848){
+                                    chosenBuilding = 0;
+                                    repaint(628, titelbalkenSizePixels/3, 220, 54);
+                                    pressed[1] = false;
                                 }
-
                             }
                             return;
                         }
@@ -384,11 +480,37 @@ public class HauptgrafikSpiel extends JFrame{
                             // Wenn an der gewählten Position bereits ein Gebäude steht, so wird remove aufgerufen,
                             // sonst wird setzen aufgerufen
                             if(karte.getBuildings().containsKey(new Coords(x, y))){
-                                try {
-                                    new PopupRemoveBuilding(x, y, e.getX(), e.getY());
-                                } catch (IOException ignored) {}
+                                if(karte.getBuildings().get(new Coords(x, y)).getSpawntime() + 2 <= time) {
+                                    try {
+                                        new PopupRemoveBuilding(x, y, e.getX(), e.getY());
+                                    } catch (IOException ignored) {}
+                                }else {
+                                    pressed[0] = false;
+                                }
                             }else {
-                                new PopupSetzen(x, y, e.getX(), e.getY());
+                                switch(chosenBuilding){
+                                    case 0 -> {
+                                        Baubar newBaubar = getBaubar("DefaultMauer", new Coords(x, y));
+                                        assert newBaubar != null;
+                                        build(newBaubar, x, y);
+                                    }
+                                    case 1 -> {
+                                        Baubar newBaubar = getBaubar("DefaultTurm", new Coords(x, y));
+                                        assert newBaubar != null;
+                                        build(newBaubar, x, y);
+                                    }
+                                    case 2 -> {
+                                        Baubar newBaubar = getBaubar("SchnellschussTurm", new Coords(x, y));
+                                        assert newBaubar != null;
+                                        build(newBaubar, x, y);
+                                    }
+                                    case 3 -> {
+                                        Baubar newBaubar = getBaubar("ScharfschuetzenTurm", new Coords(x, y));
+                                        assert newBaubar != null;
+                                        build(newBaubar, x, y);
+                                    }
+                                }
+                                pressed[0] = false;
                             }
                         }
                     }
@@ -404,5 +526,18 @@ public class HauptgrafikSpiel extends JFrame{
         graphics2D.drawLine(monsterX + 1, monsterY, monsterX + width, monsterY);
     }
 
-
+    private void build(Baubar newBaubar, int x, int y) {
+        if (newBaubar.getKosten() <= money) {
+            if (karte.addBuilding(newBaubar.getPosition(), newBaubar) == null) {
+                System.out.println("Something went wrong");
+            } else {
+                laufendeKosten += newBaubar.getKosten();
+                building_update_place = new Rectangle(x, y, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
+                building_update = true;
+            }
+        }
+//        setVisible(false);
+        pressed[0] = false;
+//        dispose();
+    }
 }
