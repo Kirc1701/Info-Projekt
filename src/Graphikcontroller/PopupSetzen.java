@@ -49,42 +49,46 @@ public class PopupSetzen extends JFrame implements MouseListener, ActionListener
         if(defaultTurmImage != null) {
             g.drawImage(
                     defaultTurmImage,
-                    40,
+                    30,
                     67,
                     2*(spaceBetweenLinesPixels - 2),
                     2*(spaceBetweenLinesPixels - 2),
                     null
             );
+            g.drawString("Turm", 30, 140); // Add text label for Default Turm
         }
         if(schnellschussTurmImage != null) {
             g.drawImage(
                     schnellschussTurmImage,
-                    100,
+                    80,
                     67,
                     2*(spaceBetweenLinesPixels - 2),
                     2*(spaceBetweenLinesPixels - 2),
                     null
             );
+            g.drawString("Minigun", 85, 140); // Add text label for Schnellschuss Turm
         }
         if(scharfschuetzenTurmImage != null) {
             g.drawImage(
                     scharfschuetzenTurmImage,
-                    160,
+                    150,
                     67,
                     2*(spaceBetweenLinesPixels - 2),
                     2*(spaceBetweenLinesPixels - 2),
                     null
             );
+            g.drawString("Scharfschütze", 145, 140); // Add text label for Scharfschuetzen Turm
         }
         if(mauerImage != null) {
             g.drawImage(
                     mauerImage,
-                    220,
+                    225,
                     67,
                     2*(spaceBetweenLinesPixels - 2),
                     2*(spaceBetweenLinesPixels - 2),
                     null
             );
+            g.drawString("Mauer", 240, 140); // Add text label for Default Mauer
         }
     }
 
