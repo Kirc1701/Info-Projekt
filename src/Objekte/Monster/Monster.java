@@ -6,6 +6,7 @@ import org.jgrapht.graph.AsUnweightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import src.Coords;
 import src.Karte;
+import src.Main;
 import src.Objekte.Objekt;
 
 import java.awt.*;
@@ -81,6 +82,9 @@ public abstract class Monster extends Objekt {
 
     public void attack(Objekt objekt){
         objekt.setHealth(objekt.getHealth() - strength);
+        if (objekt.getType().equals("DefaultBasis")) {
+            Main.playSFX(10);
+        }
     }
 
     public int getMovingSpeed() {

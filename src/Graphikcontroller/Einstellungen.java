@@ -19,6 +19,7 @@ public class Einstellungen extends JFrame {
                         }else{
                             HauptgrafikSpiel.pressed[1] = false;
                         }
+                        Main.source = false;
                         setVisible(false);
                         dispose();
                     }
@@ -35,7 +36,9 @@ public class Einstellungen extends JFrame {
                 Main.stopMusic();
                 mute.setText("Musik: aus");
             } else {
-                Main.playMusic(3);
+                if (Main.source) {
+                    Main.playMusic(0);
+                } else Main.playMusic(3);
                 mute.setText("Musik: an");
             }
         });
@@ -53,11 +56,14 @@ public class Einstellungen extends JFrame {
             Main.playSFX(1);
         });
 
-        JButton menu = new JButton("Hauptmenu");
+        JButton menu = new JButton("Hauptmenü");
         menu.addActionListener(actionEvent -> {
             new Hauptmenue();
             setVisible(false);
             dispose();
+            if (Main.source) {
+                //HauptgrafikSpiel.closeWindow();
+            }
         });
 
 

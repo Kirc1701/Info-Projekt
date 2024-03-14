@@ -132,6 +132,55 @@ public class QuellenCredits extends JFrame {
         });
         add(mainMenu);
 
+        add(new JLabel("    SFX"));
+        JLabel sfx1 = new JLabel("pixabay.com");
+        sfx1.setForeground(Color.BLUE.darker());
+        sfx1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        sfx1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://pixabay.com/"));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                sfx1.setText("<html><a href=''>pixabay.com</a></html>");
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                sfx1.setText("pixabay.com");
+            }
+        });
+        add(sfx1);
+
+        add(new JLabel("    SFX"));
+        JLabel sfx = new JLabel("opengameart.org");
+        sfx.setForeground(Color.BLUE.darker());
+        sfx.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        sfx.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://opengameart.org/"));
+                } catch (IOException | URISyntaxException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                sfx.setText("<html><a href=''>opengameart.org</a></html>");
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                sfx.setText("opengameart.org");
+            }
+        });
+        add(sfx);
+
+
         setSize(550, 350);
         setLocation(
                 Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 275,

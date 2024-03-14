@@ -54,6 +54,7 @@ public class Main {
     public static int screenSelection = 0;
     public static int anzahlMauern = 0;
     public static Sound sound = new Sound();
+    public static Boolean source = false;
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
@@ -176,7 +177,7 @@ public class Main {
                                             laufendeKosten -= monster.getKopfgeld();
                                             System.out.println("Money " + money);
                                             if (monster.getType().equals("Boss1")) {
-                                                playSFX(4);
+                                                playSFX(9);
                                             } else playSFX(1);
                                         }
                                     }

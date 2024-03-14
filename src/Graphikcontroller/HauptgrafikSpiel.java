@@ -52,6 +52,10 @@ public class HauptgrafikSpiel extends JFrame{
 //    private BufferedImage backgroundImageLevel4 = null;
     private BufferedImage backgroundImageLevel5 = null;
 
+    public void closeWindow() {
+        setVisible(false);
+        dispose();
+    }
     // Konstruktor für die Klasse HauptgrafikSpiel
     public HauptgrafikSpiel(Karte karte){
         // Initialisierung der Karte
@@ -66,12 +70,12 @@ public class HauptgrafikSpiel extends JFrame{
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
-                        setVisible(false);
-                        dispose();
+                        closeWindow();
                         System.exit(0);
                     }
                 }
         );
+
 
         // Zugriff auf die Bilddateien
         File fMauer = new File("images/Mauer.png");
@@ -363,6 +367,7 @@ public class HauptgrafikSpiel extends JFrame{
                                 } else if(e.getX() >= 490 && e.getX() <= 660){
                                     new Load();
                                 } else if(e.getX() >= windowWidthPixels - 130){
+                                    Main.source = true;
                                     new Einstellungen();
                                 }
 
@@ -398,4 +403,6 @@ public class HauptgrafikSpiel extends JFrame{
         graphics2D.setColor(Color.red);
         graphics2D.drawLine(monsterX + 1, monsterY, monsterX + width, monsterY);
     }
+
+
 }
