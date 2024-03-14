@@ -55,6 +55,7 @@ public class Main {
     public static int screenSelection = 0;
     public static int anzahlMauern = 0;
     public static Sound sound = new Sound();
+    public static SFX sfx = new SFX();
     public static Boolean source = false;
 
     /**
@@ -292,7 +293,7 @@ public class Main {
     //    @NotNull
     private static String[] getArguments(File file) throws IOException {
         FileReader reader = new FileReader(file);
-        char[] input = new char[2000];
+        char[] input = new char[15000];
         reader.read(input);
         String inputString = String.copyValueOf(input);
         for (int i = 0; i < input.length; i++) {
@@ -361,8 +362,8 @@ public class Main {
     public static void playSFX(int i) {
         if (Einstellungen.soundmute) {
         } else {
-            sound.setFile(i);
-            sound.play();
+            sfx.setFile(i);
+            sfx.play();
         }
     }
 }
