@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class LevelAuswahl extends JFrame implements MouseListener {
     private final int levelWidth = 60;
@@ -43,9 +44,8 @@ public class LevelAuswahl extends JFrame implements MouseListener {
                     }
                 }
         );
-        File file = new File("images/BackgroundLevelAuswahl.png");
         try {
-            bufferedImage = ImageIO.read(file);
+            bufferedImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundLevelAuswahl.png")));
         } catch (IOException ignored) {}
         int systemWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         int systemHeight = Toolkit.getDefaultToolkit().getScreenSize().height;

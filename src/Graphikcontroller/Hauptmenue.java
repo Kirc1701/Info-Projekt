@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Hauptmenue extends JFrame implements MouseListener {
     public static int chosenLevel = 1;
@@ -28,7 +29,7 @@ public class Hauptmenue extends JFrame implements MouseListener {
         );
         File file = new File("images/BackgroundMenu.png");
         try {
-            bufferedImage = ImageIO.read(file);
+            bufferedImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundMenu.png")));
         } catch (IOException ignored) {}
         setSize(900, 600);
         setLocation(

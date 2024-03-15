@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static src.Main.*;
 import static src.Objekte.Baubar.Baubar.getBaubar;
@@ -80,44 +81,27 @@ public class HauptgrafikSpiel extends JFrame{
                 }
         );
 
-
-        // Zugriff auf die Bilddateien
-        File fMauer = new File("images/Mauer.png");
-        File fDefaultTurm = new File("images/DefaultTurm.png");
-        File fSchnellschussTurm = new File("images/SchnellschussTurm.png");
-        File fScharfschuetzenTurm = new File("images/ScharfschuetzenTurm.png");
-        File fBasis = new File("images/Basis.png");
-        File fDefaultMonster = new File("images/DefaultMonster.png");
-        File fGolem = new File("images/Golem.png");
-        File fSprinter = new File("images/Sprinter.png");
-        File fBombenschiff = new File("images/Bombenschiff.png");
-        File fLakai = new File("images/Lakai.png");
-        File fBoss = new File("images/Boss.png");
-//        File fBackgroundLevel1 = new File("images/BackgroundLevel1.png");
-//        File fBackgroundLevel2 = new File("images/BackgroundLevel2.jpg");
-        File fBackgroundLevel3 = new File("images/BackgroundLevel3.jpg");
-//        File fBackgroundLevel4 = new File("images/BackgroundLevel4.jpg");
-        File fBackgroundLevel5 = new File("images/BackgroundLevel5.jpg");
-
         // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
-            mauerImage = ImageIO.read(fMauer);
-            defaultTurmImage = ImageIO.read(fDefaultTurm);
-            schnellschussTurmImage = ImageIO.read(fSchnellschussTurm);
-            scharfschuetzenTurmImage = ImageIO.read(fScharfschuetzenTurm);
-            basisImage = ImageIO.read(fBasis);
-            defaultMonsterImage = ImageIO.read(fDefaultMonster);
-            golemImage = ImageIO.read(fGolem);
-            sprinterImage = ImageIO.read(fSprinter);
-            bombenschiffImage = ImageIO.read(fBombenschiff);
-            lakaiImage = ImageIO.read(fLakai);
-            bossImage = ImageIO.read(fBoss);
+            mauerImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Mauer.png")));
+            defaultTurmImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/DefaultTurm.png")));
+            schnellschussTurmImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/SchnellschussTurm.png")));
+            scharfschuetzenTurmImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/ScharfschuetzenTurm.png")));
+            basisImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Basis.png")));
+            defaultMonsterImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/DefaultMonster.png")));
+            golemImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Golem.png")));
+            sprinterImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Sprinter.png")));
+            bombenschiffImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Bombenschiff.png")));
+            lakaiImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Lakai.png")));
+            bossImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/Boss.png")));
 //            backgroundImageLevel1 = ImageIO.read(fBackgroundLevel1);
 //            backgroundImageLevel2 = ImageIO.read(fBackgroundLevel2);
-            backgroundImageLevel3 = ImageIO.read(fBackgroundLevel3);
+            backgroundImageLevel3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundLevel3.jpg")));
 //            backgroundImageLevel4 = ImageIO.read(fBackgroundLevel4);
-            backgroundImageLevel5 = ImageIO.read(fBackgroundLevel5);
-        } catch (IOException ignored) {}
+            backgroundImageLevel5 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundLevel5.jpg")));
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
 
         // Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setSize(windowWidthPixels, windowHeightPixels);

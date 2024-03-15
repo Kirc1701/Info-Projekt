@@ -10,7 +10,6 @@ import src.Objekte.Baubar.Basis.DefaultBasis;
 import src.Objekte.Baubar.Baubar;
 import src.Objekte.Baubar.Mauer.DefaultMauer;
 import src.Objekte.Baubar.Turm.DefaultTurm;
-import src.Objekte.Monster.Boss1;
 import src.Objekte.Monster.Monster;
 import src.Objekte.Objekt;
 import src.Objekte.Baubar.Turm.Turm;
@@ -346,8 +345,7 @@ public class Main {
     }
 
     public static void playMusic(int i) {
-        if (Einstellungen.musicmute) {
-        } else {
+        if (!Einstellungen.musicmute) {
             sound.setFile(i);
             sound.play();
             sound.loop();
@@ -360,8 +358,7 @@ public class Main {
     }
 
     public static void playSFX(int i) {
-        if (Einstellungen.soundmute) {
-        } else {
+        if (!Einstellungen.soundmute) {
             sfx.setFile(i);
             sfx.play();
         }
