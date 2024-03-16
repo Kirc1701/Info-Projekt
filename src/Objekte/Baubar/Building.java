@@ -1,32 +1,32 @@
 package src.Objekte.Baubar;
 
-import src.Coords;
 import src.Objekte.Baubar.Mauer.DefaultMauer;
 import src.Objekte.Baubar.Turm.DefaultTurm;
 import src.Objekte.Baubar.Turm.Scharfschuetzenturm;
 import src.Objekte.Baubar.Turm.Schnellschussgeschuetz;
 import src.Objekte.Objekt;
+import src.util.CoordsDouble;
+import src.util.CoordsInt;
 
-public abstract class Baubar extends Objekt {
+import static src.Main.karte;
+
+public abstract class Building extends Objekt {
     protected double kosten;
-//    public final static List<String> BAUBARE_KLASSEN = List.of(new String[]{
-//            "DefaultTurm",
-//            "DefaultMauer"
-//    });
-    public Baubar(int pStrength, int pHealth, Coords position, int speed, String type, double kosten) {
-        super(pStrength, pHealth, position, speed, type);
+    protected boolean isBlueprint;
+    public Building(int pStrength, int pHealth, CoordsInt position, String type, double kosten) {
+        super(pStrength, pHealth, position, type);
         this.kosten = kosten;
+        this.isBlueprint = false;
+    }
+    public void setBlueprint(boolean blueprint){
+        this.isBlueprint = blueprint;
     }
 
     public double getKosten() {
         return kosten;
     }
 
-//    public void setKosten(double kosten) {
-//        this.kosten = kosten;
-//    }
-
-    static public Baubar getBaubar(String name, Coords position){
+    static public Building getBaubar(String name, CoordsInt position){
         if(name.equals("DefaultTurm")){
             return new DefaultTurm(position);
         }else if(name.equals("DefaultMauer")){
@@ -38,5 +38,21 @@ public abstract class Baubar extends Objekt {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public CoordsDouble getDrawnPosition() {
+        return position.toCoordsDouble();
+    }
+
+    @Override
+    public float getOpacity() {
+        return isBlueprint? .5f : 1.0f;
+    }
+
+    @Override
+    public void die() {
+        super.die();
+        karte.removeBuilding(position);
     }
 }

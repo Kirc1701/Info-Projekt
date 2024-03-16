@@ -1,10 +1,10 @@
 package src.Objekte.Baubar.Basis;
 
-import src.Coords;
-import src.Objekte.Baubar.Baubar;
+import src.Objekte.Baubar.Building;
+import src.util.CoordsInt;
 
-public abstract class Basis extends Baubar {
-    public Basis(int strength, int health, Coords position, String type){
-        super(strength, health, position, 0, type, 0);
+public abstract class Basis extends Building {
+    public Basis(int strength, int health, CoordsInt position, String type){
+        super(strength, health, position, type, 0);
     }
 }

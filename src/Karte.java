@@ -6,8 +6,9 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import src.Level.Level;
 import src.Objekte.Baubar.Basis.Basis;
-import src.Objekte.Baubar.Baubar;
+import src.Objekte.Baubar.Building;
 import src.Objekte.Monster.Monster;
+import src.util.CoordsInt;
 
 import java.awt.*;
 import java.util.*;
@@ -18,9 +19,9 @@ import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 //Karte des Spiels
 public class Karte {
     //Der Graph der Karte
-    private final AbstractBaseGraph<Coords, DefaultWeightedEdge> mapGraph;
+    private final AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> mapGraph;
     //Liste an Gebäuden
-    private final Map<Coords, Baubar> buildings;
+    private final Map<CoordsInt, Building> buildings;
     //Width and Height
     private final int width;
     private final int height;
@@ -31,7 +32,7 @@ public class Karte {
     //aktuelles Level
     private final Level level;
     //spawnpoint
-    private final Coords spawnpoint;
+    private final CoordsInt spawnpoint;
 
     public Karte(Level level){
         //Initialisiert den Graphen und die Liste der Gebäude
@@ -47,22 +48,22 @@ public class Karte {
         spawnpoint = level.getSpawnPoint();
     }
 
-    public Baubar addBuilding(Coords coords, Baubar building) {
-        return modifyBuildings(coords, building, true);
+    public Building addBuilding(CoordsInt coordsInt, Building building) {
+        return modifyBuildings(coordsInt, building, true);
     }
 
-    public Baubar removeBuilding(Coords coords) {
-        return modifyBuildings(coords, null, false);
+    public Building removeBuilding(CoordsInt coordsInt) {
+        return modifyBuildings(coordsInt, null, false);
     }
 
-    private Baubar modifyBuildings(Coords coords, Baubar building, boolean shouldAdd) {
-        if (shouldAdd == buildings.containsKey(coords)) {
+    private Building modifyBuildings(CoordsInt coordsInt, Building building, boolean shouldAdd) {
+        if (shouldAdd == buildings.containsKey(coordsInt)) {
             return null;
         }
         if (shouldAdd) {
-            buildings.put(coords, building);
+            buildings.put(coordsInt, building);
         } else {
-            building = buildings.remove(coords);
+            building = buildings.remove(coordsInt);
         }
         updateMap();
         return building;
@@ -72,7 +73,7 @@ public class Karte {
         for (DefaultWeightedEdge edge : mapGraph.edgeSet()) {
             mapGraph.setEdgeWeight(edge, 1);
         }
-        for (Coords building : buildings.keySet()) {
+        for (CoordsInt building : buildings.keySet()) {
             for (DefaultWeightedEdge edge : mapGraph.edgesOf(building)) {
                 mapGraph.setEdgeWeight(edge, 10000);
             }
@@ -80,16 +81,16 @@ public class Karte {
     }
 
     // Baut den Graphen einer leeren height*width großen Karte
-    private AbstractBaseGraph<Coords, DefaultWeightedEdge> createMap(int height, int width){
+    private AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> createMap(int height, int width){
         //Neuer leerer Graph
-        AbstractBaseGraph<Coords, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         //Erstellung der Nodes
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
-                Coords newCoords = new Coords(j, i);
-//                System.out.println(newCoords.toString());
-                graph.addVertex(newCoords);
+                CoordsInt newCoordsInt = new CoordsInt(j, i);
+//                System.out.println(newCoordsInt.toString());
+                graph.addVertex(newCoordsInt);
             }
         }
 
@@ -97,14 +98,14 @@ public class Karte {
         for(int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if(i < height - 1){
-                    DefaultWeightedEdge edge = graph.addEdge(new Coords(j, i), new Coords(j, i + 1));
+                    DefaultWeightedEdge edge = graph.addEdge(new CoordsInt(j, i), new CoordsInt(j, i + 1));
                     graph.setEdgeWeight(edge, 1);
-//                    System.out.println(new Coords(i, j).toString() + " -> " + new Coords(i + 1, j).toString());
+//                    System.out.println(new CoordsInt(i, j).toString() + " -> " + new CoordsInt(i + 1, j).toString());
                 }
                 if(j < width - 1){
-                    DefaultWeightedEdge edge = graph.addEdge(new Coords(j, i), new Coords(j + 1, i));
+                    DefaultWeightedEdge edge = graph.addEdge(new CoordsInt(j, i), new CoordsInt(j + 1, i));
                     graph.setEdgeWeight(edge, 1);
-//                    System.out.println(new Coords(i, j).toString() + " -> " + new Coords(i, j + 1).toString());
+//                    System.out.println(new CoordsInt(i, j).toString() + " -> " + new CoordsInt(i, j + 1).toString());
                 }
             }
         }
@@ -124,8 +125,8 @@ public class Karte {
     }
 
     // Es wird ein Monster gespawnt
-    public Rectangle spawnMonster(int time) {
-        Monster monster = createAndSetupMonster(time);
+    public Rectangle spawnMonster() {
+        Monster monster = createAndSetupMonster();
         if(monster.getType().equals("Boss1")){
             Main.stopMusic();
             Main.playMusic(5);
@@ -134,12 +135,12 @@ public class Karte {
         return new Rectangle(monster.getPosition().x(), monster.getPosition().y(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
     }
 
-    private Monster createAndSetupMonster(int time) {
-        Monster monster = level.getMonstersToSpawn().remove(0);
+    private Monster createAndSetupMonster() {
+        Monster monster = level.getMonstersToSpawn().removeFirst();
         if(level.spawnAtPoint()) {
             monster.setPosition(spawnpoint);
         }else{
-            Pair<Coords, Coords> specificSpawnArea = level.getSpawnArea().get(new Random().nextInt(level.getSpawnArea().size()));
+            Pair<CoordsInt, CoordsInt> specificSpawnArea = level.getSpawnArea().get(new Random().nextInt(level.getSpawnArea().size()));
             int x;
             int y;
             try {
@@ -152,18 +153,17 @@ public class Karte {
             } catch(IllegalArgumentException e){
                 y = specificSpawnArea.getValue0().y();
             }
-            monster.setPosition(new Coords(x, y));
+            monster.setPosition(new CoordsInt(x, y));
         }
-        monster.setSpawntime(time);
         monsterList.add(monster);
         return monster;
     }
 
     //Getter- und setter-Methoden
-    public AbstractBaseGraph<Coords, DefaultWeightedEdge> getGraphOfMap() {
+    public AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> getGraphOfMap() {
         return mapGraph;
     }
-    public Map<Coords, Baubar> getBuildings() {
+    public Map<CoordsInt, Building> getBuildings() {
         return buildings;
     }
     public int getWidth() {

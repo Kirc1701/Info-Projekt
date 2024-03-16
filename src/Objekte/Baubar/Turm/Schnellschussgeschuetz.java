@@ -1,45 +1,42 @@
 package src.Objekte.Baubar.Turm;
 
-import src.Coords;
+import src.Karte;
+import src.Objekte.Monster.Bombenschiff;
 import src.Objekte.Monster.Monster;
+import src.util.CoordsInt;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
 
 import static java.util.Collections.min;
+import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 public class Schnellschussgeschuetz extends Turm{
-    public Schnellschussgeschuetz(Coords position){
+    private static final Image image;
+    static {
+        try {
+            image = ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/SchnellschussTurm.png"))).getScaledInstance(spaceBetweenLinesPixels, spaceBetweenLinesPixels, Image.SCALE_SMOOTH);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Schnellschussgeschuetz(CoordsInt position){
         super(2, 25, position, 5, 2, 40, "Schnellschussgeschuetz");
     }
 
     @Override
-    public Map<String, Integer> shoot(List<Monster> monsters) {
-        List<Monster> shootingMonsters = new ArrayList<>();
-        for (Monster monster: monsters) {
-            if(position.isInRange(reach, monster.getPosition())){
-                shootingMonsters.add(monster);
-            }
-        }
-        if(!shootingMonsters.isEmpty()) {
-            HashMap<Integer, Monster> monsterMap = new HashMap<>();
-            for(Monster monster : shootingMonsters){
-                monsterMap.put(monster.getSchritteBisZiel(), monster);
-            }
-            int minimum = min(monsterMap.keySet());
-            Monster monsterToShoot = monsterMap.get(minimum);
-            monsterToShoot.setHealth(monsterToShoot.getHealth() - strength);
-//            System.out.println("health: "+monsterToShoot.getHealth());
-
-            Map<String, Integer> map = new HashMap<>();
-            map.put("MonsterX", monsterToShoot.getPosition().x());
-            map.put("MonsterY", monsterToShoot.getPosition().y());
-            map.put("TurmX", position.x());
-            map.put("TurmY", position.y());
-            return map;
-        }
-        return new HashMap<>();
+    public Monster[] shoot(Karte karte) {
+        return new Monster[]{shootNormal(karte)};
     }
-}
+
+
+    @Override
+    public Image getImage() {
+        return image;
+    }
+
+    public static Image getStaticImage() {
+        return image;
+    }}

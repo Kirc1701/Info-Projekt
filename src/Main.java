@@ -7,15 +7,18 @@ import src.Graphikcontroller.*;
 import src.Level.*;
 import src.Objekte.Baubar.Basis.Basis;
 import src.Objekte.Baubar.Basis.DefaultBasis;
-import src.Objekte.Baubar.Baubar;
+import src.Objekte.Baubar.Building;
 import src.Objekte.Baubar.Mauer.DefaultMauer;
 import src.Objekte.Baubar.Turm.DefaultTurm;
 import src.Objekte.Monster.Monster;
 import src.Objekte.Objekt;
 import src.Objekte.Baubar.Turm.Turm;
+import src.util.CoordsInt;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -57,6 +60,9 @@ public class Main {
     public static SFX sfx = new SFX();
     public static Boolean source = false;
 
+    private static List<Drawable> drawables = new ArrayList<>();
+    private static List<Tickable> tickables = new ArrayList<>();
+
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
      *
@@ -72,31 +78,38 @@ public class Main {
             TimeUnit.MILLISECONDS.sleep(500);
         }
         aktuellesLevel = Hauptmenue.chosenLevel - 1;
-        //Neue Basis
         Level level = getLevel(aktuellesLevel);
         money = level.getStartKapital();
         while (true) {
-
             // A map is created based on the current level configuration
             karte = new Karte(level);
-            shotMonster = new HashMap[0];
-            oldShots = new Map[0];
 
             anzahlMauern = karte.getLevel().getAnzahlMauern();
 
+            JFrame frame = new JFrame();
+            frame.addWindowListener(
+                    new WindowAdapter() {
+                        public void windowClosing(WindowEvent e) {
+                            frame.setVisible(false);
+                            frame.dispose();
+                            System.exit(0);
+                        }
+                    }
+            );
             // Creation of game windows
-            JFrame hauptgrafik = new HauptgrafikSpiel(karte); // Main game window with map
+            HauptgrafikSpiel hauptgrafik = new HauptgrafikSpiel(karte); // Main game window with map
+            frame.setContentPane(hauptgrafik);
+            frame.setSize(hauptgrafik.getSize());
+            frame.setVisible(true);
+            frame.setResizable(false);
             new StarteSpielBildschirm(hauptgrafik.getWidth());
             playMusic(2);
-            aktuelleGrafik = hauptgrafik;
-            TimeUnit.MILLISECONDS.sleep(500);
-            aktuelleGrafik.repaint();
+            aktuelleGrafik = frame;
             laufendeKosten = 0;
             time = 0;
             // The while loop below forms part of the game loop. It waits for the game to start.
             while (screenSelection == 1) {
                 // Calls the method updateBuildings() which updates the state of the buildings in the game.
-                updateBuildings();
                 loadDesign();
                 time++;
 
@@ -106,144 +119,55 @@ public class Main {
             }
             stopMusic();
             playMusic(0);
-            while (!karte.gameOver()) {
-                shotMonster = new HashMap[0];
-                if (!karte.getMonsterList().isEmpty()) {
-                    for (Monster monster : karte.getMonsterList()) {
-                        if (monster.getSchritteBisZiel() > 1) {
-                            if (time % monster.getMovingSpeed() == monster.getSpawntime() % monster.getMovingSpeed()) {
-                                monster_update_place = monster.makeMove(karte);
-                                aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
-                            }
-                        } else {
-                            if (time % monster.getAttackSpeed() == 0) {
-                                Basis basis = karte.getBasis();
-                                monster.attack(basis);
-                                aktuelleGrafik.repaint(basis.getPosition().x() * spaceBetweenLinesPixels, basis.getPosition().y() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
-                            }
+            while(true) {
+                if(karte.gameOver()) {
+                    aktuelleGrafik.setVisible(false);
+                    aktuelleGrafik.dispose();
+                    if (aktuellesLevel == 4) {
+                        Hauptmenue.chosenLevel = 1;
+                    } else {
+                        if (karte.playerWins()) {
+                            aktuellesLevel++;
+                            Hauptmenue.chosenLevel = aktuellesLevel + 1;
                         }
                     }
-                }
 
-                if ((time % karte.getLevel().getSpawnTime() == 0) && !karte.getLevel().getMonstersToSpawn().isEmpty()) {
-                    monster_update_place = karte.spawnMonster(time);
-                    aktuelleGrafik.repaint(monster_update_place.x * spaceBetweenLinesPixels, monster_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, monster_update_place.width, monster_update_place.height);
-                }
-
-                for (Map<String, Integer> shot : oldShots) {
-                    int timeFired = shot.get("TimeFired");
-                    if (time == timeFired + 1) {
-                        int monsterX = shot.get("MonsterX");
-                        int monsterY = shot.get("MonsterY");
-                        int turmX = shot.get("TurmX");
-                        int turmY = shot.get("TurmY");
-
-                        paintShot(monsterX, monsterY, turmX, turmY);
-                        List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
-                        temp.remove(shot);
-                        Map<String, Integer>[] arr = new Map[temp.size()];
-                        oldShots = temp.toArray(arr);
+                    int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
+                    int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
+                    screenSelection = 0;
+                    stopMusic();
+                    if (karte.playerWins()) {
+                        stopMusic();
+                        aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
+                    } else {
+                        stopMusic();
+                        aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
                     }
-                }
-
-                int shotCounter = 0;
-                for (Objekt building : karte.getBuildings().values()) {
-                    if (building.getType().equals("DefaultTurm") ||
-                            building.getType().equals("Schnellschussgeschuetz") ||
-                            building.getType().equals("Scharfschuetzenturm")) {
-                        Turm turm = (Turm) building;
-                        if (time % turm.getSpeed() == turm.getSpawntime() % turm.getSpeed()) {
-                            List<Map<String, Integer>> tempShot = new ArrayList<>(List.of(shotMonster));
-                            tempShot.add(turm.shoot(karte.getMonsterList()));
-                            Map<String, Integer>[] arr = new Map[tempShot.size()];
-                            shotMonster = tempShot.toArray(arr);
-                            if (!shotMonster[shotCounter].isEmpty()) {
-                                int monsterX = shotMonster[shotCounter].get("MonsterX");
-                                int monsterY = shotMonster[shotCounter].get("MonsterY");
-                                int turmX = shotMonster[shotCounter].get("TurmX");
-                                int turmY = shotMonster[shotCounter].get("TurmY");
-
-                                paintShot(monsterX, monsterY, turmX, turmY);
-                                aktuelleGrafik.repaint(monsterX * spaceBetweenLinesPixels, monsterY * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
-                                shotMonster[shotCounter].put("TimeFired", time);
-
-                                List<Map<String, Integer>> temp = new ArrayList<>(List.of(oldShots));
-                                temp.add(shotMonster[shotCounter]);
-                                arr = new Map[temp.size()];
-                                oldShots = temp.toArray(arr);
-                                shotCounter++;
-                                Monster[] tempList = karte.getMonsterList().toArray(new Monster[karte.getMonsterList().size()]);
-                                karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
-                                for (Monster monster : tempList) {
-                                    if (!karte.getMonsterList().contains(monster)) {
-                                        laufendeKosten -= monster.getKopfgeld();
-                                        System.out.println("Money " + money);
-                                        if (monster.getType().equals("Boss1")) {
-                                            playSFX(9);
-                                        } else playSFX(1);
-                                    }
-                                }
-                            }
-                        }
+                    stopMusic();
+                    while (screenSelection == 0) {
+                        TimeUnit.MILLISECONDS.sleep(500);
                     }
-                }
-
-                for (Objekt building : karte.getBuildings().values().stream().toList()) {
-                    if (building.getHealth() <= 0) {
-                        int x = building.getPosition().x();
-                        int y = building.getPosition().y();
-                        karte.getBuildings().remove(new Coords(x, y));
+                    if (aktuellesLevel != Hauptmenue.chosenLevel) {
+                        aktuellesLevel = Hauptmenue.chosenLevel - 1;
+                        level = aktuellesLevel == 0 ?
+                                new Level1(karte.getBasis()) :
+                                aktuellesLevel == 1 ?
+                                        new Level2(karte.getBasis()) :
+                                        aktuellesLevel == 2 ?
+                                                new Level3(karte.getBasis()) :
+                                                aktuellesLevel == 3 ?
+                                                        new Level4(karte.getBasis()) :
+                                                        new Level5(karte.getBasis());
                     }
+                    break;
                 }
-                updateBuildings();
-                loadDesign();
-                time++;
-                TimeUnit.MILLISECONDS.sleep(500);
-            }
-            aktuelleGrafik.setVisible(false);
-            aktuelleGrafik.dispose();
-            if (aktuellesLevel == 4) {
-                Hauptmenue.chosenLevel = 1;
-            } else {
-                if (karte.playerWins()) {
-                    aktuellesLevel++;
-                    Hauptmenue.chosenLevel = aktuellesLevel + 1;
-                }
-            }
-//            karte.getBasis().setHealth(karte.getBasis().getMaxHealth())
-
-            int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
-            int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
-            screenSelection = 0;
-            stopMusic();
-            if (karte.playerWins()) {
-                stopMusic();
-                aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
-            } else {
-                stopMusic();
-                aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
-            }
-            stopMusic();
-            while (screenSelection == 0) {
-                TimeUnit.MILLISECONDS.sleep(500);
-            }
-            if (aktuellesLevel != Hauptmenue.chosenLevel) {
-                aktuellesLevel = Hauptmenue.chosenLevel - 1;
-                level = aktuellesLevel == 0 ?
-                        new Level1(karte.getBasis()) :
-                        aktuellesLevel == 1 ?
-                                new Level2(karte.getBasis()) :
-                                aktuellesLevel == 2 ?
-                                        new Level3(karte.getBasis()) :
-                                        aktuellesLevel == 3 ?
-                                                new Level4(karte.getBasis()) :
-                                                new Level5(karte.getBasis());
             }
         }
     }
 
+
     private static Level getLevel(int aktuellesLevel) {
-        Basis newBasis = new DefaultBasis(new Coords(0, 0));
+        Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
 
         // Player's starting balance is set according to the level's starting capital
         return aktuellesLevel == 0 ?
@@ -257,15 +181,15 @@ public class Main {
                                         new Level5(newBasis);
     }
 
-    private static void loadDesign() throws IOException {
+    public static void loadDesign() throws IOException {
         if (!loadDesign.isEmpty()) {
             File file = new File("savedDesigns/" + loadDesign + ".txt");
             if (file.canRead()) {
                 String[] arguments = getArguments(file);
 
                 for (int i = 0; i < arguments.length - 2; i += 3) {
-                    Baubar building = null;
-                    Coords position = new Coords(Integer.parseInt(String.valueOf(arguments[i])), Integer.parseInt(String.valueOf(arguments[i + 1])));
+                    Building building = null;
+                    CoordsInt position = new CoordsInt(Integer.parseInt(String.valueOf(arguments[i])), Integer.parseInt(String.valueOf(arguments[i + 1])));
                     if (arguments[i + 2].equals("DefaultTurm")) {
                         building = new DefaultTurm(position);
                     } else if (arguments[i + 2].equals("DefaultMauer")) {
@@ -274,13 +198,11 @@ public class Main {
                     if (building != null) {
                         if (money - building.getKosten() >= 0) {
                             karte.addBuilding(position, building);
-                            aktuelleGrafik.repaint(position.x() * spaceBetweenLinesPixels, position.y() * spaceBetweenLinesPixels + titelbalkenSizePixels, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
                             for (Monster monster : karte.getMonsterList()) {
                                 monster.updateMonsterPath(karte);
                             }
                             playSFX(8);
                             money -= building.getKosten();
-                            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 3, 100, 30);
                         }
                     }
                 }
@@ -327,22 +249,6 @@ public class Main {
      * It also deducts the ongoing costs from the available money if any.
      * Prints the updated money amount to the console.
      */
-    private static void updateBuildings() {
-        if (building_update) {
-            aktuelleGrafik.repaint(building_update_place.x * spaceBetweenLinesPixels, building_update_place.y * spaceBetweenLinesPixels + titelbalkenSizePixels, building_update_place.width, building_update_place.height);
-            building_update = false;
-            for (Monster monster : karte.getMonsterList()) {
-                monster.updateMonsterPath(karte);
-            }
-            playSFX(8);
-        }
-        if (laufendeKosten != 0) {
-            money -= laufendeKosten;
-            laufendeKosten = 0;
-            aktuelleGrafik.repaint(50, titelbalkenSizePixels / 3, 100, 30);
-            System.out.println("Money " + money);
-        }
-    }
 
     public static void playMusic(int i) {
         if (!Einstellungen.musicmute) {
@@ -362,5 +268,28 @@ public class Main {
             sfx.setFile(i);
             sfx.play();
         }
+    }
+
+    public static void registerTickable(Tickable t){
+        tickables.add(t);
+    }
+
+    public static void unregisterTickable(Tickable t){
+        tickables.remove(t);
+    }
+
+    public static void registerDrawable(Drawable d){
+        drawables.add(d);
+    }
+
+    public static void unregisterDrawable(Drawable d){
+        drawables.remove(d);
+    }
+
+    public static List<Tickable> getTickables(){
+        return tickables;
+    }
+    public static List<Drawable> getDrawables(){
+        return drawables;
     }
 }

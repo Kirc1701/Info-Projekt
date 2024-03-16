@@ -1,9 +1,9 @@
 package src.Graphikcontroller;
 
 // Import anderer Klassen innerhalb des Projekts
-import src.Coords;
 import src.Main;
-import src.Objekte.Baubar.Baubar;
+import src.Objekte.Baubar.Building;
+import src.util.CoordsInt;
 
 // Import anderer Klassen von außerhalb des Projekts
 import javax.imageio.ImageIO;
@@ -92,7 +92,7 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
             // Das Gebäude wird von der Karte entfernt.
             // Sollte hierbei irgendetwas schiefgehen, wie dass das Gebäude nicht vorhanden ist,
             // wird eine Fehlermeldung in die Konsole ausgegeben
-            Baubar building = karte.removeBuilding(new Coords(targetXCoordinate, targetYCoordinate));
+            Building building = karte.removeBuilding(new CoordsInt(targetXCoordinate, targetYCoordinate));
             if(building == null){
                 System.out.println("Something went wrong");
             }

@@ -1,8 +1,8 @@
 package src.Graphikcontroller;
 
-import src.Coords;
 import src.Objekte.Baubar.Basis.Basis;
-import src.Objekte.Baubar.Baubar;
+import src.Objekte.Baubar.Building;
+import src.util.CoordsInt;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class Save extends JFrame {
         JButton acceptText = new JButton("Save Design");
         acceptText.addActionListener(
                 e -> {
-                    Map<Coords, Baubar> listToSave = karte.getBuildings();
+                    Map<CoordsInt, Building> listToSave = karte.getBuildings();
                     File saveFile = new File("savedDesigns/"+textField.getText()+".txt");
                     try {
                         if(saveFile.createNewFile()){
@@ -61,9 +61,9 @@ public class Save extends JFrame {
         setLayout(new FlowLayout());
         setVisible(true);
     }
-    private void toFile(Map<Coords, Baubar> listToSave, FileWriter writer) throws IOException {
-        for(Coords key : listToSave.keySet()){
-            Baubar building = listToSave.get(key);
+    private void toFile(Map<CoordsInt, Building> listToSave, FileWriter writer) throws IOException {
+        for(CoordsInt key : listToSave.keySet()){
+            Building building = listToSave.get(key);
             if(!(building instanceof Basis)) {
                 writer.write("");
                 writer.flush();

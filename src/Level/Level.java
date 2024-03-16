@@ -1,9 +1,9 @@
 package src.Level;
 
 import org.javatuples.Pair;
-import src.Coords;
 import src.Objekte.Baubar.Basis.Basis;
 import src.Objekte.Monster.Monster;
+import src.util.CoordsInt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,16 @@ public abstract class Level {
     protected long spawnTime;
     protected int width;
     protected int height;
-    protected Coords basisPosition;
+    protected CoordsInt basisPosition;
     protected Basis basis;
     protected boolean spawnAtPoint;
-    protected Coords spawnPoint;
-    protected List<Pair<Coords, Coords>> spawnArea;
+    protected CoordsInt spawnPoint;
+    protected List<Pair<CoordsInt, CoordsInt>> spawnArea;
     protected double startKapital;
     protected int anzahlMauern;
 
     //konstruktor
-    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, Coords spawnPoint, double startKapital, int anzahlMauern){
+    public Level(long spawnTime, int width, int height, CoordsInt basisPosition, Basis basis, CoordsInt spawnPoint, double startKapital, int anzahlMauern){
         this.width = width;
         this.height = height;
         this.basisPosition = basisPosition;
@@ -36,7 +36,7 @@ public abstract class Level {
         this.spawnTime = spawnTime;
         spawnAtPoint = true;
     }
-    public Level(long spawnTime, int width, int height, Coords basisPosition, Basis basis, List<Pair<Coords, Coords>> spawnArea, double startKapital, int anzahlMauern){
+    public Level(long spawnTime, int width, int height, CoordsInt basisPosition, Basis basis, List<Pair<CoordsInt, CoordsInt>> spawnArea, double startKapital, int anzahlMauern){
         this.width = width;
         this.height = height;
         this.basisPosition = basisPosition;
@@ -62,13 +62,13 @@ public abstract class Level {
     public int getHeight() {
         return height;
     }
-    public Coords getBasisPosition() {
+    public CoordsInt getBasisPosition() {
         return basisPosition;
     }
     public Basis getBasis() {
         return basis;
     }
-    public Coords getSpawnPoint() {
+    public CoordsInt getSpawnPoint() {
         return spawnPoint;
     }
     public double getStartKapital() {
@@ -77,10 +77,10 @@ public abstract class Level {
     public void setBasis(Basis basis) {
         this.basis = basis;
     }
-    public List<Pair<Coords, Coords>> getSpawnArea() {
+    public List<Pair<CoordsInt, CoordsInt>> getSpawnArea() {
         return spawnArea;
     }
-    public void addSpawnArea(Pair<Coords, Coords> spawnArea) {
+    public void addSpawnArea(Pair<CoordsInt, CoordsInt> spawnArea) {
         this.spawnArea.add(spawnArea);
     }
 
