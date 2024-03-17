@@ -92,38 +92,16 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
             // Das Gebäude wird von der Karte entfernt.
             // Sollte hierbei irgendetwas schiefgehen, wie dass das Gebäude nicht vorhanden ist,
             // wird eine Fehlermeldung in die Konsole ausgegeben
-            Building building = karte.removeBuilding(new CoordsInt(targetXCoordinate, targetYCoordinate));
+            Building building = karte.getBuildings().get(new CoordsInt(targetXCoordinate, targetYCoordinate));
             if(building == null){
                 System.out.println("Something went wrong");
             }
-
-            Main.laufendeKosten -= building.getKosten();
-
-            // Es wird der Bereich an die Main-Klasse übergeben, der aktualisiert werden muss
-            Main.building_update_place = new Rectangle(targetXCoordinate, targetYCoordinate, spaceBetweenLinesPixels, spaceBetweenLinesPixels);
-
-            // Das Popup wird nicht mehr dargestellt
-            setVisible(false);
-
-            // Es kann ein neues Popup erzeugt werden
-            pressed[0] = false;
-
-            // Der zuvor spezifizierte Bereich kann nun aktualisiert werden
-            Main.building_update = true;
-
-            // Alle weiteren Prozesse im Popup werden unterbrochen
-            dispose();
-
-        // Sonst wird dieser Teil einfach ausgeführt
-        }else{
-            // Das Popup wird nicht mehr dargestellt
-            setVisible(false);
-
-            // Es kann ein neues Popup erzeugt werden
-            pressed[0] = false;
-
-            // Alle weiteren Prozesse im Popup werden unterbrochen
-            dispose();
+            assert building != null;
+            building.die();
+            Main.money += building.getKosten();
         }
+        setVisible(false);
+        pressed[0] = false;
+        dispose();
     }
 }

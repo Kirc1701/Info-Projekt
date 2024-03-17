@@ -91,24 +91,28 @@ public class HauptgrafikSpiel extends JPanel{
                                         chosenBuilding.die();
                                     }
                                     chosenBuilding = new DefaultTurm(new CoordsInt(-1, -1));
+                                    chosenBuilding.setBlueprint(true);
                                     pressed[1] = false;
                                 } else if(e.getX() >= 689 && e.getX() <= 730){
                                     if(chosenBuilding != null) {
                                         chosenBuilding.die();
                                     }
                                     chosenBuilding = new Schnellschussgeschuetz(new CoordsInt(-1, -1));
+                                    chosenBuilding.setBlueprint(true);
                                     pressed[1] = false;
                                 } else if(e.getX() >= 748 && e.getX() <= 789){
                                     if(chosenBuilding != null) {
                                         chosenBuilding.die();
                                     }
                                     chosenBuilding = new Scharfschuetzenturm(new CoordsInt(-1, -1));
+                                    chosenBuilding.setBlueprint(true);
                                     pressed[1] = false;
                                 } else if(e.getX() >= 807 && e.getX() <= 848){
                                     if(chosenBuilding != null) {
                                         chosenBuilding.die();
                                     }
                                     chosenBuilding = new DefaultMauer(new CoordsInt(-1, -1));
+                                    chosenBuilding.setBlueprint(true);
                                     pressed[1] = false;
                                 }
                             }
@@ -124,7 +128,7 @@ public class HauptgrafikSpiel extends JPanel{
                             // Wenn an der gewählten Position bereits ein Gebäude steht, so wird remove aufgerufen,
                             // sonst wird setzen aufgerufen
                             if(karte.getBuildings().containsKey(new CoordsInt(x, y))){
-                                if(karte.getBuildings().get(new CoordsInt(x, y)).getSpawntime() + 2 <= time) {
+                                if(karte.getBuildings().get(new CoordsInt(x, y)).getSpawntime() + 2 <= System.currentTimeMillis()) {
                                     try {
                                         new PopupRemoveBuilding(x, y, e.getX(), e.getY());
                                     } catch (IOException ignored) {}
@@ -167,15 +171,16 @@ public class HauptgrafikSpiel extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        double timeDelta = (System.currentTimeMillis() - lastTick) / 1000.0;
-        try {
-            tick(timeDelta);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         drawBackground(g);
-
         drawDrawables(g);
+        double timeDelta = (System.currentTimeMillis() - lastTick) / 1000.0;
+        if(screenSelection != 1) {
+            try {
+                tick(timeDelta);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         //Zeichnen der Kanten
         Graphics2D graphics2D = (Graphics2D) g;
@@ -298,6 +303,7 @@ public class HauptgrafikSpiel extends JPanel{
 
 
     private void tick(double timeDelta) throws IOException {
+        if(karte.gameOver()) return;
         spawnCooldown -= timeDelta;
         for (Tickable tickable : Main.getTickables()) {
             tickable.tick(timeDelta, karte);
@@ -311,9 +317,10 @@ public class HauptgrafikSpiel extends JPanel{
         karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
         for (Objekt building : karte.getBuildings().values().stream().toList()) {
             if (building.getHealth() <= 0) {
-                int x = building.getPosition().x();
-                int y = building.getPosition().y();
-                karte.getBuildings().remove(new CoordsInt(x, y));
+                building.die();
+                if(building.getType().equals("DefaultBasis")){
+                    setVisible(false);
+                }
             }
         }
         loadDesign();

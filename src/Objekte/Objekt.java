@@ -8,7 +8,7 @@ import src.util.CoordsInt;
 import java.awt.*;
 
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
-import static src.Main.time;
+
 
 public abstract class Objekt implements Drawable {
     protected int strength;
@@ -16,7 +16,7 @@ public abstract class Objekt implements Drawable {
     protected int health;
     protected CoordsInt position;
     protected String type;
-    protected int spawntime;
+    protected double spawntime;
 
     public Objekt(int pStrength, int pHealth, CoordsInt position, String type){
         strength = pStrength;
@@ -24,7 +24,7 @@ public abstract class Objekt implements Drawable {
         maxHealth = health;
         this.position = position;
         this.type = type;
-        this.spawntime = time;
+        spawntime = (double) System.currentTimeMillis() / 1000;
         Main.registerDrawable(this);
     }
 
@@ -40,7 +40,7 @@ public abstract class Objekt implements Drawable {
         return type;
     }
 
-    public int getSpawntime() {
+    public double getSpawntime() {
         return spawntime;
     }
 

@@ -26,6 +26,7 @@ public abstract class Monster extends Objekt implements Tickable {
     protected List<CoordsInt> monsterPathNodes;
     protected Direction direction;
     protected CoordsDouble drawnPosition;
+    protected double attackCooldown = attackSpeed;
 
     public Monster(int strength, int health, CoordsInt position, float movingSpeed, int attackSpeed, double kopfgeld, String type){
         super(strength, health, position, type);
@@ -34,6 +35,7 @@ public abstract class Monster extends Objekt implements Tickable {
         this.kopfgeld = kopfgeld;
         schritteBisZiel = 250;
         this.drawnPosition = position.toCoordsDouble();
+        Main.registerDrawable(this);
         Main.registerTickable(this);
     }
 
@@ -60,7 +62,7 @@ public abstract class Monster extends Objekt implements Tickable {
         Direction directionToMove = getDirectionDifference(drawnPosition, position.toCoordsDouble());
 
         if (directionToMove == null) {
-            makeMove(karte);
+            makeMove(timeDelta, karte);
             return;
         }
 
@@ -82,10 +84,10 @@ public abstract class Monster extends Objekt implements Tickable {
         this.drawnPosition = drawnPosition.add(moved);
     }
 
-    public void makeMove(Karte karte){
+    public void makeMove(double timeDelta, Karte karte){
         CoordsInt nextPosition = monsterPathNodes.get(1);
         if(attacking(karte)){
-            attack(karte.getBuildings().get(nextPosition));
+            attack(timeDelta, karte.getBuildings().get(nextPosition));
         }else {
             schritteBisZiel = monsterPathNodes.size() - 2;
             position = nextPosition;
@@ -98,10 +100,14 @@ public abstract class Monster extends Objekt implements Tickable {
 
     public abstract void updateMonsterPath(Karte karte);
 
-    public void attack(Objekt objekt){
-        objekt.setHealth(objekt.getHealth() - strength);
-        if (objekt.getType().equals("DefaultBasis")) {
-            playSFX(10);
+    public void attack(double timeDelta, Objekt objekt){
+        attackCooldown -= timeDelta;
+        if(attackCooldown <= 0) {
+            objekt.setHealth(objekt.getHealth() - strength);
+            if (objekt.getType().equals("DefaultBasis")) {
+                playSFX(10);
+            }
+            attackCooldown = attackSpeed;
         }
     }
 

@@ -35,24 +35,12 @@ import static java.lang.Math.min;
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 import static src.Graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
-/**
- * Main class that serves as the entry point for the program.
- * Contains the main method which starts the game.
- */
 // Main class
 public class Main {
-    public static boolean building_update = false;  // Flag to indicate if the building needs to be updated
-    public static Rectangle building_update_place = new Rectangle();  // The place in the GUI where the building update should be placed
-    public static Rectangle monster_update_place;  // The place in the GUI where the monster update should be placed
-    public static Map<String, Integer>[] shotMonster = new HashMap[0];  // An array of maps to keep track of shots at Monsters
-    public static Map<String, Integer>[] oldShots = new Map[0];  // An array of maps to keep track of old shots
     public static JFrame aktuelleGrafik;  // The current graphics element
     public static Karte karte;  // A map of our game world
     public static boolean gameHasStarted = false;  // A flag to indicate if the game has started
     public static double money = 0;  // The amount of money a player has
-    public static double laufendeKosten;  // Running costs variable
-    public static int time = 0;
-    //    public static boolean waitForStart = true;
     public static String loadDesign = "";
     public static int screenSelection = 0;
     public static int anzahlMauern = 0;
@@ -105,13 +93,10 @@ public class Main {
             new StarteSpielBildschirm(hauptgrafik.getWidth());
             playMusic(2);
             aktuelleGrafik = frame;
-            laufendeKosten = 0;
-            time = 0;
             // The while loop below forms part of the game loop. It waits for the game to start.
             while (screenSelection == 1) {
                 // Calls the method updateBuildings() which updates the state of the buildings in the game.
                 loadDesign();
-                time++;
 
                 // Sleeps the current thread for 500 milliseconds.
                 // This can be used to control the pace of the game, reducing the processing load on the CPU.
@@ -119,8 +104,10 @@ public class Main {
             }
             stopMusic();
             playMusic(0);
-            while(true) {
+            while(true){
                 if(karte.gameOver()) {
+                    drawables = new ArrayList<>();
+                    tickables = new ArrayList<>();
                     aktuelleGrafik.setVisible(false);
                     aktuelleGrafik.dispose();
                     if (aktuellesLevel == 4) {
@@ -164,7 +151,6 @@ public class Main {
             }
         }
     }
-
 
     private static Level getLevel(int aktuellesLevel) {
         Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
