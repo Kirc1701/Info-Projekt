@@ -11,7 +11,7 @@ import src.util.CoordsInt;
 import static src.Main.karte;
 
 public abstract class Building extends Objekt {
-    protected double kosten;
+    protected static double kosten;
     protected boolean isBlueprint;
     public Building(int pStrength, int pHealth, CoordsInt position, String type, double kosten) {
         super(pStrength, pHealth, position, type);
@@ -22,7 +22,7 @@ public abstract class Building extends Objekt {
         this.isBlueprint = blueprint;
     }
 
-    public double getKosten() {
+    public static double getKosten() {
         return kosten;
     }
 

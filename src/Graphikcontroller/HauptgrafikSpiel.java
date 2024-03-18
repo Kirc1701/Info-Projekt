@@ -24,6 +24,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import static src.Main.*;
@@ -42,7 +43,7 @@ public class HauptgrafikSpiel extends JPanel{
     private final Karte karte;
 
     // boolean der eine häufigere Öffnung des popups verhindert
-    public final static boolean[] pressed = {false, false};
+    public static boolean[] pressed = {false, false};
     private BufferedImage backgroundImageLevel3 = null;
     private BufferedImage backgroundImageLevel5 = null;
     private Building chosenBuilding = null;
@@ -70,6 +71,7 @@ public class HauptgrafikSpiel extends JPanel{
         } catch (IOException e) {
             System.out.println("Something went wrong");
         }
+
         // Hinzufügen des MouseListeners
         this.addMouseListener(
                 new MouseAdapter() {
@@ -78,7 +80,6 @@ public class HauptgrafikSpiel extends JPanel{
                     public void mousePressed(MouseEvent e) {
                         if(e.getY() <= titelbalkenSizePixels) {
                             if (!pressed[1]) {
-                                pressed[1] = true;
                                 if (e.getX() >= 300 && e.getX() <= 470) {
                                     new Save();
                                 } else if(e.getX() >= 490 && e.getX() <= 620){
@@ -136,12 +137,7 @@ public class HauptgrafikSpiel extends JPanel{
                                     pressed[0] = false;
                                 }
                             }else {
-                                try {
-                                    build(chosenBuilding.getClass().getConstructor(CoordsInt.class).newInstance(new CoordsInt(x,y)));
-                                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                                         NoSuchMethodException ex) {
-                                    throw new RuntimeException(ex);
-                                }
+                                build(chosenBuilding.getClass(), new CoordsInt(x,y), chosenBuilding.getKosten());
                                 pressed[0] = false;
                             }
                         }
@@ -300,8 +296,6 @@ public class HauptgrafikSpiel extends JPanel{
         repaint();
     }
 
-
-
     private void tick(double timeDelta) throws IOException {
         if(karte.gameOver()) return;
         spawnCooldown -= timeDelta;
@@ -367,17 +361,24 @@ public class HauptgrafikSpiel extends JPanel{
         }
     }
 
-    private void build(Building newBuilding) {
-        if (newBuilding.getKosten() <= money) {
-            if (karte.addBuilding(newBuilding.getPosition(), newBuilding) == null) {
-                System.out.println("Something went wrong");
-            } else {
+    private void build(Class toBuild, CoordsInt position, double price) {
+        if (price <= money) {
+            if (karte.getBuilding(position) == null) {
+                try {
+                    Building building = (Building) toBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
+                    karte.addBuilding(position, building);
+                    money -= price;
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+
                 for (Monster monster : karte.getMonsterList()) {
                     monster.updateMonsterPath(karte);
                 }
-                money -= newBuilding.getKosten();
             }
         }
+
         pressed[0] = false;
     }
 }

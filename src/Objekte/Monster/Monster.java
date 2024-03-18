@@ -14,6 +14,7 @@ import src.util.CoordsInt;
 
 import java.util.List;
 
+import static src.Main.karte;
 import static src.Main.playSFX;
 import static src.util.Math.getDirectionDifference;
 
@@ -144,6 +145,10 @@ public abstract class Monster extends Objekt implements Tickable {
         if (type.equals("Boss1")) {
             playSFX(9);
         } else playSFX(1);
+
+        if (karte.getMonsterList().isEmpty() && karte.getLevel().getMonstersToSpawn().isEmpty()) {
+            Main.onGameOver();
+        }
     }
 
     @Override

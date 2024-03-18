@@ -1,5 +1,6 @@
 package src.Objekte.Baubar.Basis;
 
+import src.Main;
 import src.Objekte.Baubar.Building;
 import src.util.CoordsInt;
 
@@ -10,5 +11,6 @@ public abstract class Basis extends Building {
 
     @Override
     public void die() {
+        Main.onGameOver();
     }
 }
