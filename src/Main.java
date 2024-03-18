@@ -22,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class Main {
 
     private static List<Drawable> drawables = new CopyOnWriteArrayList<>();
     private static List<Tickable> tickables = new CopyOnWriteArrayList<>();
+    private static int currentLevel = -1;
+
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.
@@ -62,110 +65,83 @@ public class Main {
         aktuelleGrafik = new Hauptmenue();
         playMusic(3);
         Main.screenSelection = 0;
-        int aktuellesLevel;
-        while (screenSelection == 0) {
-            TimeUnit.MILLISECONDS.sleep(500);
-        }
-        aktuellesLevel = Hauptmenue.chosenLevel - 1;
-        Level level = getLevel(aktuellesLevel);
+    }
+
+
+    public static void selectLevel(int chosenLevel) {
+        Level level = getLevel(chosenLevel);
+        currentLevel = chosenLevel;
         money = level.getStartKapital();
-        while (true) {
-            // A map is created based on the current level configuration
-            karte = new Karte(level);
+        karte = new Karte(level);
+        anzahlMauern = karte.getLevel().getAnzahlMauern();
+    }
 
-            anzahlMauern = karte.getLevel().getAnzahlMauern();
-
-            JFrame frame = new JFrame();
-            frame.addWindowListener(
-                    new WindowAdapter() {
-                        public void windowClosing(WindowEvent e) {
-                            frame.setVisible(false);
-                            frame.dispose();
-                            System.exit(0);
-                        }
-                    }
-            );
-            // Creation of game windows
-            HauptgrafikSpiel hauptgrafik = new HauptgrafikSpiel(karte); // Main game window with map
-            frame.setContentPane(hauptgrafik);
-            frame.setSize(hauptgrafik.getSize());
-            frame.setVisible(true);
-            frame.setResizable(false);
-            new StarteSpielBildschirm(hauptgrafik.getWidth());
-            playMusic(2);
-            aktuelleGrafik = frame;
-            // The while loop below forms part of the game loop. It waits for the game to start.
-            while (screenSelection == 1) {
-                // Calls the method updateBuildings() which updates the state of the buildings in the game.
-                loadDesign();
-
-                // Sleeps the current thread for 500 milliseconds.
-                // This can be used to control the pace of the game, reducing the processing load on the CPU.
-                TimeUnit.MILLISECONDS.sleep(500);
+    public static void setupGameWindow() {
+        JFrame frame = new JFrame();
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.setVisible(false);
+                frame.dispose();
+                System.exit(0);
             }
-            stopMusic();
-            playMusic(0);
-            while(true){
-                if(karte.gameOver()) {
-                    drawables = new ArrayList<>();
-                    tickables = new ArrayList<>();
-                    aktuelleGrafik.setVisible(false);
-                    aktuelleGrafik.dispose();
-                    if (aktuellesLevel == 4) {
-                        Hauptmenue.chosenLevel = 1;
-                    } else {
-                        if (karte.playerWins()) {
-                            aktuellesLevel++;
-                            Hauptmenue.chosenLevel = aktuellesLevel + 1;
-                        }
-                    }
+        });
 
-                    int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
-                    int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
-                    screenSelection = 0;
-                    stopMusic();
-                    if (karte.playerWins()) {
-                        stopMusic();
-                        aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
-                    } else {
-                        stopMusic();
-                        aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
-                    }
-                    stopMusic();
-                    while (screenSelection == 0) {
-                        TimeUnit.MILLISECONDS.sleep(500);
-                    }
-                    if (aktuellesLevel != Hauptmenue.chosenLevel) {
-                        aktuellesLevel = Hauptmenue.chosenLevel - 1;
-                        level = aktuellesLevel == 0 ?
-                                new Level1(karte.getBasis()) :
-                                aktuellesLevel == 1 ?
-                                        new Level2(karte.getBasis()) :
-                                        aktuellesLevel == 2 ?
-                                                new Level3(karte.getBasis()) :
-                                                aktuellesLevel == 3 ?
-                                                        new Level4(karte.getBasis()) :
-                                                        new Level5(karte.getBasis());
-                    }
-                    break;
-                }
+        HauptgrafikSpiel hauptgrafikSpiel = new HauptgrafikSpiel(karte);
+        frame.setContentPane(hauptgrafikSpiel);
+        frame.setSize(hauptgrafikSpiel.getSize());
+        frame.setVisible(true);
+        frame.setResizable(false);
+        new StarteSpielBildschirm(hauptgrafikSpiel.getWidth());
+        aktuelleGrafik = frame;
+    }
+
+
+
+    public static void onGameOver() {
+        System.out.println("Game is over");
+        drawables = new ArrayList<>();
+        tickables = new ArrayList<>();
+        aktuelleGrafik.setVisible(false);
+        aktuelleGrafik.dispose();
+        if (currentLevel == 4) {
+            Hauptmenue.chosenLevel = 1;
+        } else {
+            if (karte.playerWins()) {
+                currentLevel++;
+                Hauptmenue.chosenLevel = currentLevel + 1;
             }
         }
+
+        int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
+        int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
+        screenSelection = 0;
+        stopMusic();
+        if (karte.playerWins()) {
+            stopMusic();
+            aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
+        } else {
+            stopMusic();
+            aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
+        }
+        stopMusic();
+        if (currentLevel != Hauptmenue.chosenLevel) {
+            currentLevel = Hauptmenue.chosenLevel;
+            selectLevel(currentLevel);
+        }
+
+        aktuelleGrafik.dispose();
     }
 
     private static Level getLevel(int aktuellesLevel) {
         Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
-
-        // Player's starting balance is set according to the level's starting capital
-        return aktuellesLevel == 0 ?
-                new Level1(newBasis) :
-                aktuellesLevel == 1 ?
-                        new Level2(newBasis) :
-                        aktuellesLevel == 2 ?
-                                new Level3(newBasis) :
-                                aktuellesLevel == 3 ?
-                                        new Level4(newBasis) :
-                                        new Level5(newBasis);
+        try {
+            Class<?> levelToLoad = Class.forName("src.Level.Level" + aktuellesLevel);
+            return (Level) levelToLoad.getDeclaredConstructor(Basis.class).newInstance(newBasis);
+        } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            System.out.println("Couldn't load class file for level " + aktuellesLevel);
+            throw new RuntimeException(e);
+        }
     }
 
     public static void loadDesign() throws IOException {
@@ -278,5 +254,15 @@ public class Main {
     }
     public static List<Drawable> getDrawables(){
         return drawables;
+    }
+
+    public static void startGame() {
+        try {
+            loadDesign();
+            stopMusic();
+            playMusic(0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

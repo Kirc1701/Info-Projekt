@@ -27,7 +27,6 @@ public class Hauptmenue extends JFrame implements MouseListener {
                     }
                 }
         );
-        File file = new File("images/BackgroundMenu.png");
         try {
             bufferedImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundMenu.png")));
         } catch (IOException ignored) {}
@@ -67,9 +66,12 @@ public class Hauptmenue extends JFrame implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if(e.getX() >= 104 && e.getX() <= 798 && e.getY() >= 104 && e.getY() <= 178){
             Main.stopMusic();
-            Main.screenSelection = 1;
             setVisible(false);
             dispose();
+            Main.selectLevel(chosenLevel);
+            Main.screenSelection = 1;
+            Main.startGame();
+            Main.setupGameWindow();
         }else if(e.getX() >= 294 && e.getX() <= 598 && e.getY() >= 190 && e.getY() <= 264){
             new LevelAuswahl();
             setVisible(false);

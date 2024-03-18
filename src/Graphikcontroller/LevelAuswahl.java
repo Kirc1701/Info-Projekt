@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class LevelAuswahl extends JFrame implements MouseListener {
@@ -33,7 +35,8 @@ public class LevelAuswahl extends JFrame implements MouseListener {
     private final int width = 800;
     private final int height = 533;
     private static boolean hauptmenue_entered;
-    public LevelAuswahl(){
+
+    public LevelAuswahl() {
         hauptmenue_entered = false;
         addWindowListener(
                 new WindowAdapter() {
@@ -46,7 +49,8 @@ public class LevelAuswahl extends JFrame implements MouseListener {
         );
         try {
             bufferedImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundLevelAuswahl.png")));
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
         int systemWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         int systemHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         int leftCornerUpX = systemWidth / 2 - (width / 2);
@@ -101,33 +105,24 @@ public class LevelAuswahl extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(!hauptmenue_entered) {
+        Map<Rectangle, Integer> bounds = new HashMap<>(Map.of(
+                level1Bounds, 1,
+                level2Bounds, 2,
+                level3Bounds, 3,
+                level4Bounds, 4,
+                level5Bounds, 5
+        ));
+
+        if (!hauptmenue_entered) {
             hauptmenue_entered = true;
-            if (level1Bounds.contains(e.getX(), e.getY())) {
-                Hauptmenue.chosenLevel = 1;
-                new Hauptmenue();
-                setVisible(false);
-                dispose();
-            } else if (level2Bounds.contains(e.getX(), e.getY())) {
-                Hauptmenue.chosenLevel = 2;
-                new Hauptmenue();
-                setVisible(false);
-                dispose();
-            } else if (level3Bounds.contains(e.getX(), e.getY())) {
-                Hauptmenue.chosenLevel = 3;
-                new Hauptmenue();
-                setVisible(false);
-                dispose();
-            } else if (level4Bounds.contains(e.getX(), e.getY())) {
-                Hauptmenue.chosenLevel = 4;
-                new Hauptmenue();
-                setVisible(false);
-                dispose();
-            } else if (level5Bounds.contains(e.getX(), e.getY())) {
-                Hauptmenue.chosenLevel = 5;
-                new Hauptmenue();
-                setVisible(false);
-                dispose();
+
+            for (Rectangle bound : bounds.keySet()) {
+                if (bound.contains(e.getX(), e.getY())) {
+                    dispose();
+                    Main.selectLevel(bounds.get(bound));
+                    new Hauptmenue();
+                    setVisible(false);
+                }
             }
         }
     }

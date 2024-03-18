@@ -182,4 +182,8 @@ public class Karte {
     public Level getLevel() {
         return level;
     }
+
+    public Building getBuilding(CoordsInt position) {
+        return buildings.getOrDefault(position, null);
+    }
 }
