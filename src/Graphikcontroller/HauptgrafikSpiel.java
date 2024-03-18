@@ -251,11 +251,11 @@ public class HauptgrafikSpiel extends JPanel{
                         41,
                         null
                 );
-                if (chosenBuilding != null && chosenBuilding.getType().equals("SchnellschussTurm")) {
+                if (chosenBuilding != null && chosenBuilding.getType().equals("Schnellschussgeschuetz")) {
                     g.setColor(Color.BLUE.brighter());
                 }
                 g.drawString("Minigun", 687, titelbalkenSizePixels - 2); // Add text label for Schnellschuss Turm
-                if (chosenBuilding != null && chosenBuilding.getType().equals("SchnellschussTurm")) {
+                if (chosenBuilding != null && chosenBuilding.getType().equals("Schnellschussgeschuetz")) {
                     g.setColor(Color.WHITE);
                 }
             }
@@ -269,11 +269,11 @@ public class HauptgrafikSpiel extends JPanel{
                         41,
                         null
                 );
-                if (chosenBuilding != null && chosenBuilding.getType().equals("ScharfschussTurm")) {
+                if (chosenBuilding != null && chosenBuilding.getType().equals("Scharfschuetzenturm")) {
                     g.setColor(Color.BLUE.brighter());
                 }
                 g.drawString("Sniper", 748, titelbalkenSizePixels - 2); // Add text label for Scharfschuetzen Turm
-                if (chosenBuilding != null && chosenBuilding.getType().equals("ScharfschussTurm")) {
+                if (chosenBuilding != null && chosenBuilding.getType().equals("Scharfschuetzenturm")) {
                     g.setColor(Color.WHITE);
                 }
             }
