@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import java.util.List;
@@ -48,8 +49,8 @@ public class Main {
     public static SFX sfx = new SFX();
     public static Boolean source = false;
 
-    private static List<Drawable> drawables = new ArrayList<>();
-    private static List<Tickable> tickables = new ArrayList<>();
+    private static List<Drawable> drawables = new CopyOnWriteArrayList<>();
+    private static List<Tickable> tickables = new CopyOnWriteArrayList<>();
 
     /**
      * The main method of the program. It runs the game loop and controls the flow of the game.

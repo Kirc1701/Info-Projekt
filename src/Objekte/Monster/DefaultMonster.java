@@ -19,7 +19,7 @@ public class DefaultMonster extends Monster{
     private static Image image;
     static {
         try {
-            image = ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/Bombenschiff.png")));
+            image = ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/DefaultMonster.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

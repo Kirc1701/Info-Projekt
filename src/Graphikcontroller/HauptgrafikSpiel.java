@@ -32,7 +32,7 @@ import static src.Main.*;
 public class HauptgrafikSpiel extends JPanel{
     // Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
     public final static int spaceBetweenLinesPixels = 32;
-    public final static int titelbalkenSizePixels = 27 + 54;
+    public final static int titelbalkenSizePixels = 54;
 
     // Höhe und Breite des geöffneten Fensters in Pixeln
     private final int windowWidthPixels;
@@ -191,32 +191,32 @@ public class HauptgrafikSpiel extends JPanel{
         double geld = Main.money;
         g.setColor(Color.BLACK);
         int width = geld / 100 >= 1 ? 128 : 112;
-        g.fillRect(0, titelbalkenSizePixels/3, width, 27);
+        g.fillRect(0, 0, width, 27);
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 32);
 
         {
             g.setColor(Color.BLACK);
-            g.fillRect(298, titelbalkenSizePixels / 3, 172, 27);
+            g.fillRect(298, 0, 172, 27);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Helvetica", Font.BOLD, 20));
             g.drawString("Design speichern", 300, titelbalkenSizePixels - 32);
 
             g.setColor(Color.BLACK);
-            g.fillRect(488, titelbalkenSizePixels / 3, 132, 27);
+            g.fillRect(488, 0, 132, 27);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Helvetica", Font.BOLD, 20));
             g.drawString("Design laden", 490, titelbalkenSizePixels - 32);
 
             g.setColor(Color.BLACK);
-            g.fillRect(windowWidthPixels - 132, titelbalkenSizePixels / 3, 132, 27);
+            g.fillRect(windowWidthPixels - 132, 0, 132, 27);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Helvetica", Font.BOLD, 20));
             g.drawString("Einstellungen", windowWidthPixels - 130, titelbalkenSizePixels - 32);
 
             g.setColor(Color.BLACK);
-            g.fillRect(628, titelbalkenSizePixels / 3, 220, 54);
+            g.fillRect(628, 0, 220, 54);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Helvetica", Font.BOLD, 13));
             Image defaultTurmImage = DefaultTurm.getStaticImage();
@@ -224,11 +224,11 @@ public class HauptgrafikSpiel extends JPanel{
             Image scharfschuetzenTurmImage = Scharfschuetzenturm.getStaticImage();
             Image mauerImage = DefaultMauer.getStaticImage();
             if (defaultTurmImage != null) {
-                g.fillRect(632, titelbalkenSizePixels / 3 + 2, 37, 37);
+                g.fillRect(632, 2, 37, 37);
                 g.drawImage(
                         defaultTurmImage,
                         630,
-                        titelbalkenSizePixels / 3,
+                        0,
                         41,
                         41,
                         null
@@ -242,11 +242,11 @@ public class HauptgrafikSpiel extends JPanel{
                 }
             }
             if (schnellschussTurmImage != null) {
-                g.fillRect(691, titelbalkenSizePixels / 3 + 2, 37, 37);
+                g.fillRect(691, 2, 37, 37);
                 g.drawImage(
                         schnellschussTurmImage,
                         689,
-                        titelbalkenSizePixels / 3,
+                        0,
                         41,
                         41,
                         null
@@ -260,11 +260,11 @@ public class HauptgrafikSpiel extends JPanel{
                 }
             }
             if (scharfschuetzenTurmImage != null) {
-                g.fillRect(750, titelbalkenSizePixels / 3 + 2, 37, 37);
+                g.fillRect(750, 2, 37, 37);
                 g.drawImage(
                         scharfschuetzenTurmImage,
                         748,
-                        titelbalkenSizePixels / 3,
+                        0,
                         41,
                         41,
                         null
@@ -278,11 +278,11 @@ public class HauptgrafikSpiel extends JPanel{
                 }
             }
             if (mauerImage != null) {
-                g.fillRect(809, titelbalkenSizePixels / 3 + 2, 37, 37);
+                g.fillRect(809, 2, 37, 37);
                 g.drawImage(
                         mauerImage,
                         807,
-                        titelbalkenSizePixels / 3,
+                        0,
                         41,
                         41,
                         null
@@ -314,7 +314,12 @@ public class HauptgrafikSpiel extends JPanel{
             }
             spawnCooldown = karte.getLevel().getSpawnTime();
         }
-        karte.getMonsterList().removeIf(monster -> monster.getHealth() <= 0);
+        for(Monster monster : karte.getMonsterList()){
+            if(monster.getHealth() <= 0){
+                karte.getMonsterList().remove(monster);
+                monster.die();
+            }
+        }
         for (Objekt building : karte.getBuildings().values().stream().toList()) {
             if (building.getHealth() <= 0) {
                 building.die();
@@ -333,6 +338,7 @@ public class HauptgrafikSpiel extends JPanel{
             Graphics2D g2 = (Graphics2D) g;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, drawable.getOpacity()));
             g2.drawImage(drawable.getImage(), (int) pixelPosition.x(), (int) pixelPosition.y() + titelbalkenSizePixels, null);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         }
         for(Drawable drawable : Main.getDrawables()){
             drawable.draw(g);

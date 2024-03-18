@@ -15,6 +15,7 @@ import java.util.List;
 
 import static java.util.Collections.min;
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
+import static src.Graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
 public abstract class Turm extends Building implements Tickable {
     int reach;
@@ -80,7 +81,8 @@ public abstract class Turm extends Building implements Tickable {
             }
             CoordsDouble drawnPositionMonster = monster.getDrawnPosition().scale(spaceBetweenLinesPixels);
             g.setColor(Color.RED);
-            g.drawLine((int) drawnPositionTower.x(), (int) drawnPositionTower.y(), (int) drawnPositionMonster.x(), (int) drawnPositionMonster.y());
+            g.drawLine((int) drawnPositionTower.x()+ spaceBetweenLinesPixels/2, (int) drawnPositionTower.y()+ spaceBetweenLinesPixels/2 + titelbalkenSizePixels, (int) drawnPositionMonster.x() +spaceBetweenLinesPixels/2, (int) drawnPositionMonster.y() + spaceBetweenLinesPixels/2+ titelbalkenSizePixels);
+            shotMonsters = new Monster[0];
         }
     }
 }

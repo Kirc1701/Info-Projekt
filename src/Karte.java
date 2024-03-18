@@ -13,6 +13,7 @@ import src.util.CoordsInt;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
@@ -44,7 +45,7 @@ public class Karte {
         basis = level.getBasis();
         basis.setPosition(level.getBasisPosition());
         addBuilding(basis.getPosition(), basis);
-        monsterList = new ArrayList<>();
+        monsterList = new CopyOnWriteArrayList<>();
         spawnpoint = level.getSpawnPoint();
     }
 

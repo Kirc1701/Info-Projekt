@@ -8,6 +8,7 @@ import src.util.CoordsInt;
 import java.awt.*;
 
 import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
+import static src.Graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
 
 public abstract class Objekt implements Drawable {
@@ -79,7 +80,7 @@ public abstract class Objekt implements Drawable {
             graphics2D.setStroke(new BasicStroke(3));
             CoordsDouble objektPosition = getDrawnPosition().scale(spaceBetweenLinesPixels);
             graphics2D.setColor(Color.red);
-            graphics2D.drawLine((int) (objektPosition.x()+ 2), (int) (objektPosition.y() + 2), (int) (objektPosition.x() + width), (int) (objektPosition.y() + 2));
+            graphics2D.drawLine((int) (objektPosition.x()+ 2), (int) (objektPosition.y() + 2 + titelbalkenSizePixels), (int) (objektPosition.x() + width), (int) (objektPosition.y() + 2 + titelbalkenSizePixels));
         }
     }
 }
