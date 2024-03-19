@@ -24,7 +24,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 import static src.Main.*;
@@ -47,7 +46,6 @@ public class HauptgrafikSpiel extends JPanel{
     private BufferedImage backgroundImageLevel3 = null;
     private BufferedImage backgroundImageLevel5 = null;
     private Building chosenBuilding = null;
-    private Building hovered_image;
     private long lastTick = System.currentTimeMillis();
     private double spawnCooldown;
 
@@ -76,7 +74,6 @@ public class HauptgrafikSpiel extends JPanel{
         this.addMouseListener(
                 new MouseAdapter() {
                     // Wird aufgerufen, wenn die Maus gedrückt wird
-                    // asdf sd
                     public void mousePressed(MouseEvent e) {
                         if(e.getY() <= titelbalkenSizePixels) {
                             if (!pressed[1]) {
