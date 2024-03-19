@@ -22,7 +22,7 @@ public abstract class Building extends Objekt {
         this.isBlueprint = blueprint;
     }
 
-    public static double getKosten() {
+    public double getKosten() {
         return kosten;
     }
 

@@ -88,33 +88,13 @@ public class HauptgrafikSpiel extends JPanel{
                                     Main.source = true;
                                     new Einstellungen();
                                 } else if(e.getX() >= 630 && e.getX() <= 671){
-                                    if(chosenBuilding != null) {
-                                        chosenBuilding.die();
-                                    }
-                                    chosenBuilding = new DefaultTurm(new CoordsInt(-1, -1));
-                                    chosenBuilding.setBlueprint(true);
-                                    pressed[1] = false;
+                                    choseBuilding("Turm.DefaultTurm");
                                 } else if(e.getX() >= 689 && e.getX() <= 730){
-                                    if(chosenBuilding != null) {
-                                        chosenBuilding.die();
-                                    }
-                                    chosenBuilding = new Schnellschussgeschuetz(new CoordsInt(-1, -1));
-                                    chosenBuilding.setBlueprint(true);
-                                    pressed[1] = false;
+                                    choseBuilding("Turm.Schnellschussgeschuetz");
                                 } else if(e.getX() >= 748 && e.getX() <= 789){
-                                    if(chosenBuilding != null) {
-                                        chosenBuilding.die();
-                                    }
-                                    chosenBuilding = new Scharfschuetzenturm(new CoordsInt(-1, -1));
-                                    chosenBuilding.setBlueprint(true);
-                                    pressed[1] = false;
+                                    choseBuilding("Turm.Scharfschuetzenturm");
                                 } else if(e.getX() >= 807 && e.getX() <= 848){
-                                    if(chosenBuilding != null) {
-                                        chosenBuilding.die();
-                                    }
-                                    chosenBuilding = new DefaultMauer(new CoordsInt(-1, -1));
-                                    chosenBuilding.setBlueprint(true);
-                                    pressed[1] = false;
+                                    choseBuilding("Mauer.DefaultMauer");
                                 }
                             }
                             return;
@@ -156,7 +136,7 @@ public class HauptgrafikSpiel extends JPanel{
                 }
             }
         });
-        spawnCooldown = karte.getLevel().getSpawnTime();
+        spawnCooldown = 0;
         // Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setSize(windowWidthPixels, windowHeightPixels);
         setLayout(null);
@@ -171,11 +151,7 @@ public class HauptgrafikSpiel extends JPanel{
         drawDrawables(g);
         double timeDelta = (System.currentTimeMillis() - lastTick) / 1000.0;
         if(screenSelection != 1) {
-            try {
-                tick(timeDelta);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            tick(timeDelta);
         }
 
         //Zeichnen der Kanten
@@ -292,11 +268,16 @@ public class HauptgrafikSpiel extends JPanel{
                 }
             }
         }
+        try {
+            loadDesign();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         lastTick = System.currentTimeMillis();
         repaint();
     }
 
-    private void tick(double timeDelta) throws IOException {
+    private void tick(double timeDelta) {
         if(karte.gameOver()) return;
         spawnCooldown -= timeDelta;
         for (Tickable tickable : Main.getTickables()) {
@@ -322,7 +303,6 @@ public class HauptgrafikSpiel extends JPanel{
                 }
             }
         }
-        loadDesign();
     }
 
     private void drawDrawables(Graphics g) {
@@ -361,7 +341,7 @@ public class HauptgrafikSpiel extends JPanel{
         }
     }
 
-    private void build(Class toBuild, CoordsInt position, double price) {
+    private void build(Class<?> toBuild, CoordsInt position, double price) {
         if (price <= money) {
             if (karte.getBuilding(position) == null) {
                 try {
@@ -380,5 +360,30 @@ public class HauptgrafikSpiel extends JPanel{
         }
 
         pressed[0] = false;
+    }
+
+    private void choseBuilding(String chosen){
+        String chosenSub = chosen.split("\\.")[1];
+        if(chosenBuilding == null){
+            createChosenBuilding(chosen);
+            return;
+        }
+        chosenBuilding.die();
+        if(chosenBuilding.getType().equals(chosenSub)){
+            chosenBuilding = null;
+        }else{
+            createChosenBuilding(chosen);
+        }
+        pressed[1] = false;
+    }
+
+    private void createChosenBuilding(String chosen) {
+        try {
+            Class<?> buildingClass = Class.forName("src.Objekte.Baubar." + chosen);
+            chosenBuilding = (Building) buildingClass.getDeclaredConstructor(CoordsInt.class).newInstance(new CoordsInt(-1, -1));
+            chosenBuilding.setBlueprint(true);
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

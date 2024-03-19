@@ -37,8 +37,9 @@ public class EndbildschirmVerloren extends JFrame {
         JButton mainMenu = new JButton("Hauptmenü");
         mainMenu.addActionListener(
                 e -> {
-                    Main.stopMusic();
                     new Hauptmenue();
+                    Main.stopMusic();
+                    Main.playMusic(3);
                     setVisible(false);
                     dispose();
                 }

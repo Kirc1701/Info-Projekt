@@ -125,12 +125,6 @@ public class Main {
             aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
         }
         stopMusic();
-        if (currentLevel != Hauptmenue.chosenLevel) {
-            currentLevel = Hauptmenue.chosenLevel;
-            selectLevel(currentLevel);
-        }
-
-        aktuelleGrafik.dispose();
     }
 
     private static Level getLevel(int aktuellesLevel) {
@@ -260,7 +254,7 @@ public class Main {
         try {
             loadDesign();
             stopMusic();
-            playMusic(0);
+            playMusic(2);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -25,6 +25,8 @@ public class StarteSpielBildschirm extends JFrame {
         button.addActionListener(e -> {
             setVisible(false);
             Main.screenSelection = 2;
+            Main.stopMusic();
+            Main.playMusic(3);
             dispose();
         });
         add(button);

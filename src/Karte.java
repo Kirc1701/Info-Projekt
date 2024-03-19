@@ -10,12 +10,9 @@ import src.Objekte.Baubar.Building;
 import src.Objekte.Monster.Monster;
 import src.util.CoordsInt;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
 
 //Karte des Spiels
 public class Karte {
@@ -126,14 +123,13 @@ public class Karte {
     }
 
     // Es wird ein Monster gespawnt
-    public Rectangle spawnMonster() {
+    public void spawnMonster() {
         Monster monster = createAndSetupMonster();
         if(monster.getType().equals("Boss1")){
             Main.stopMusic();
             Main.playMusic(5);
         }
         monster.updateMonsterPath(this);
-        return new Rectangle(monster.getPosition().x(), monster.getPosition().y(), spaceBetweenLinesPixels, spaceBetweenLinesPixels);
     }
 
     private Monster createAndSetupMonster() {

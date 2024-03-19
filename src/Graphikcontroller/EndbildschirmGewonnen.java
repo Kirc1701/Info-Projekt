@@ -37,6 +37,8 @@ public class EndbildschirmGewonnen extends JFrame {
         mainMenu.addActionListener(
                 e -> {
                     new Hauptmenue();
+                    Main.stopMusic();
+                    Main.playMusic(3);
                     setVisible(false);
                     dispose();
                 }
