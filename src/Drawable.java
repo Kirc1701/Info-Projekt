@@ -5,11 +5,10 @@ import src.util.CoordsDouble;
 import java.awt.*;
 
 public interface Drawable {
-    public Image getImage();
+    Image getImage();
 
-    public CoordsDouble getDrawnPosition();
-    public float getOpacity();
-    public default void draw(Graphics g){
-        return;
+    CoordsDouble getDrawnPosition();
+    float getOpacity();
+    default void draw(Graphics g){
     }
 }

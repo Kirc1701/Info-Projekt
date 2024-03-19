@@ -5,7 +5,6 @@ import src.Direction;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.Dictionary;
 
 public class Math {
     public static Direction getDirectionDifference(CoordsDouble c1, CoordsDouble c2){

@@ -3,20 +3,17 @@ package src;
 // Import necessary packages and classes
 //import org.jetbrains.annotations.NotNull;
 
-import src.Graphikcontroller.*;
-import src.Level.*;
-import src.Objekte.Baubar.Basis.Basis;
-import src.Objekte.Baubar.Basis.DefaultBasis;
-import src.Objekte.Baubar.Building;
-import src.Objekte.Baubar.Mauer.DefaultMauer;
-import src.Objekte.Baubar.Turm.DefaultTurm;
-import src.Objekte.Monster.Monster;
-import src.Objekte.Objekt;
-import src.Objekte.Baubar.Turm.Turm;
+import src.graphikcontroller.*;
+import src.level.*;
+import src.objekte.building.basis.Basis;
+import src.objekte.building.basis.DefaultBasis;
+import src.objekte.building.Building;
+import src.objekte.building.mauer.DefaultMauer;
+import src.objekte.building.turm.DefaultTurm;
+import src.objekte.monster.Monster;
 import src.util.CoordsInt;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -24,18 +21,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
 
 import java.util.List;
 
 // Imported these to use in calculations
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
-import static src.Graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
-import static src.Graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
+import static src.graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
+import static src.graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
 // Main class
 public class Main {
@@ -46,8 +40,8 @@ public class Main {
     public static String loadDesign = "";
     public static int screenSelection = 0;
     public static int anzahlMauern = 0;
-    public static Sound sound = new Sound();
-    public static SFX sfx = new SFX();
+    public static final Sound sound = new Sound();
+    public static final SFX sfx = new SFX();
     public static Boolean source = false;
 
     private static List<Drawable> drawables = new CopyOnWriteArrayList<>();
@@ -59,10 +53,9 @@ public class Main {
      * The main method of the program. It runs the game loop and controls the flow of the game.
      *
      * @param args the command line arguments
-     * @throws InterruptedException if the thread is interrupted while sleeping
      */
-    public static void main(String[] args) throws InterruptedException, IOException {
-        aktuelleGrafik = new Hauptmenue();
+    public static void main(String[] args) {
+        aktuelleGrafik = new MainMenu();
         playMusic(3);
         Main.screenSelection = 0;
     }
@@ -105,11 +98,11 @@ public class Main {
         aktuelleGrafik.setVisible(false);
         aktuelleGrafik.dispose();
         if (currentLevel == 4) {
-            Hauptmenue.chosenLevel = 1;
+            MainMenu.chosenLevel = 1;
         } else {
             if (karte.playerWins()) {
                 currentLevel++;
-                Hauptmenue.chosenLevel = currentLevel + 1;
+                MainMenu.chosenLevel = currentLevel + 1;
             }
         }
 
@@ -130,7 +123,7 @@ public class Main {
     private static Level getLevel(int aktuellesLevel) {
         Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
         try {
-            Class<?> levelToLoad = Class.forName("src.Level.Level" + aktuellesLevel);
+            Class<?> levelToLoad = Class.forName("src.level.level" + aktuellesLevel);
             return (Level) levelToLoad.getDeclaredConstructor(Basis.class).newInstance(newBasis);
         } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             System.out.println("Couldn't load class file for level " + aktuellesLevel);
@@ -169,7 +162,9 @@ public class Main {
     }
 
     //    @NotNull
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static String[] getArguments(File file) throws IOException {
+        //noinspection resource
         FileReader reader = new FileReader(file);
         char[] input = new char[15000];
         reader.read(input);
@@ -208,7 +203,7 @@ public class Main {
      */
 
     public static void playMusic(int i) {
-        if (!Einstellungen.musicmute) {
+        if (!Einstellungen.musicMuted) {
             sound.setFile(i);
             sound.play();
             sound.loop();
@@ -217,7 +212,7 @@ public class Main {
 
     public static void stopMusic() {
         try {sound.stop();}
-        catch(Exception e) {System.out.println("bruh");}
+        catch(Exception e) {System.out.println("Nope");}
     }
 
     public static void playSFX(int i) {

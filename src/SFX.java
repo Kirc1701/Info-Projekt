@@ -1,5 +1,7 @@
 package src;
 
+import src.util.SoundUtils;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -9,7 +11,7 @@ import java.net.URL;
 
 public class SFX {
     static Clip clip;
-    URL[] soundURL = new URL[30];
+    final URL[] soundURL = new URL[30];
 
     public SFX() {
         soundURL[0] = getClass().getResource("/sounds/soundtrack.wav");
@@ -31,9 +33,7 @@ public class SFX {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 
     public void play() {
@@ -57,13 +57,6 @@ public class SFX {
     }
 
     public static void setVolume(float volume) {
-        if (clip == null) {
-            return; // Exit if clip is not initialized
-        }
-        if (volume < 0f || volume > 1f) {
-            throw new IllegalArgumentException("Volume not valid: " + volume);
-        }
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume));
+        SoundUtils.setVolume(volume, clip);
     }
 }

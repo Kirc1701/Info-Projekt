@@ -4,14 +4,13 @@ import org.javatuples.Pair;
 import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
-import src.Level.Level;
-import src.Objekte.Baubar.Basis.Basis;
-import src.Objekte.Baubar.Building;
-import src.Objekte.Monster.Monster;
+import src.level.Level;
+import src.objekte.building.basis.Basis;
+import src.objekte.building.Building;
+import src.objekte.monster.Monster;
 import src.util.CoordsInt;
 
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 //Karte des Spiels
@@ -23,11 +22,11 @@ public class Karte {
     //Width and Height
     private final int width;
     private final int height;
-    //Basis
+    //basis
     private final Basis basis;
-    //Liste aller existierenden Monster
+    //Liste aller existierenden monster
     private final List<Monster> monsterList;
-    //aktuelles Level
+    //aktuelles level
     private final Level level;
     //spawnpoint
     private final CoordsInt spawnpoint;
@@ -46,25 +45,24 @@ public class Karte {
         spawnpoint = level.getSpawnPoint();
     }
 
-    public Building addBuilding(CoordsInt coordsInt, Building building) {
-        return modifyBuildings(coordsInt, building, true);
+    public void addBuilding(CoordsInt coordsInt, Building building) {
+        modifyBuildings(coordsInt, building, true);
     }
 
-    public Building removeBuilding(CoordsInt coordsInt) {
-        return modifyBuildings(coordsInt, null, false);
+    public void removeBuilding(CoordsInt coordsInt) {
+        modifyBuildings(coordsInt, null, false);
     }
 
-    private Building modifyBuildings(CoordsInt coordsInt, Building building, boolean shouldAdd) {
+    private void modifyBuildings(CoordsInt coordsInt, Building building, boolean shouldAdd) {
         if (shouldAdd == buildings.containsKey(coordsInt)) {
-            return null;
+            return;
         }
         if (shouldAdd) {
             buildings.put(coordsInt, building);
         } else {
-            building = buildings.remove(coordsInt);
+            buildings.remove(coordsInt);
         }
         updateMap();
-        return building;
     }
 
     public void updateMap() {
@@ -122,7 +120,7 @@ public class Karte {
         return playerWins() || basis.getHealth() <= 0;
     }
 
-    // Es wird ein Monster gespawnt
+    // Es wird ein monster gespawnt
     public void spawnMonster() {
         Monster monster = createAndSetupMonster();
         if(monster.getType().equals("Boss1")){

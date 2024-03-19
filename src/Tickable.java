@@ -1,5 +1,5 @@
 package src;
 
 public interface Tickable {
-    public void tick(double timeDelta, Karte karte);
+    void tick(double timeDelta, Karte karte);
 }
