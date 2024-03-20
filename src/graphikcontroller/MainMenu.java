@@ -50,7 +50,7 @@ public class MainMenu extends JFrame implements MouseListener {
                 null
         );
         g.setFont(new Font("Helvetica", Font.BOLD, 36));
-        g.drawString("Starte Spiel | Gewähltes Level: Level " + chosenLevel, 118, 156);
+        g.drawString("Starte Spiel | Gewähltes Level: Level " + Main.getCurrentLevel(), 118, 156);
         g.drawString("-> Levelauswahl", 304, 242);
         g.drawString("Einstellungen",340, 328);
         g.drawString("Credits/Quellen",320, 414);
@@ -67,7 +67,7 @@ public class MainMenu extends JFrame implements MouseListener {
             Main.stopMusic();
             setVisible(false);
             dispose();
-            Main.selectLevel(chosenLevel);
+            Main.selectLevel(Main.getCurrentLevel());
             Main.screenSelection = 1;
             Main.startGame();
             Main.setupGameWindow();

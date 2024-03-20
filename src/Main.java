@@ -46,7 +46,7 @@ public class Main {
 
     private static List<Drawable> drawables = new CopyOnWriteArrayList<>();
     private static List<Tickable> tickables = new CopyOnWriteArrayList<>();
-    private static int currentLevel = -1;
+    private static int currentLevel = 1;
 
 
     /**
@@ -98,13 +98,8 @@ public class Main {
         aktuelleGrafik.setVisible(false);
         aktuelleGrafik.dispose();
         if (currentLevel == 4) {
-            MainMenu.chosenLevel = 1;
-        } else {
-            if (karte.playerWins()) {
-                currentLevel++;
-                MainMenu.chosenLevel = currentLevel + 1;
-            }
-        }
+            currentLevel = 1;
+        } else if (karte.playerWins()) currentLevel++;
 
         int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
         int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
@@ -121,6 +116,8 @@ public class Main {
     }
 
     private static Level getLevel(int aktuellesLevel) {
+        drawables = new CopyOnWriteArrayList<>();
+        tickables = new CopyOnWriteArrayList<>();
         Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
         try {
             Class<?> levelToLoad = Class.forName("src.level.Level" + aktuellesLevel);
@@ -136,7 +133,6 @@ public class Main {
             File file = new File("savedDesigns/" + loadDesign + ".txt");
             if (file.canRead()) {
                 String[] arguments = getArguments(file);
-
                 for (int i = 0; i < arguments.length - 2; i += 3) {
                     Building building = null;
                     CoordsInt position = new CoordsInt(Integer.parseInt(String.valueOf(arguments[i])), Integer.parseInt(String.valueOf(arguments[i + 1])));
@@ -177,30 +173,6 @@ public class Main {
         }
         return inputString.split("_");
     }
-
-    /**
-     * This method is used to paint a shot on the graphics.
-     *
-     * @param monsterX The x-coordinate of the monster.
-     * @param monsterY The y-coordinate of the monster.
-     * @param turmX    The x-coordinate of the tower.
-     * @param turmY    The y-coordinate of the tower.
-     */
-    private static void paintShot(int monsterX, int monsterY, int turmX, int turmY) {
-        int x = min(turmX, monsterX) * spaceBetweenLinesPixels;
-        int y = min(turmY, monsterY) * spaceBetweenLinesPixels + titelbalkenSizePixels;
-        int width = spaceBetweenLinesPixels * abs(turmX - monsterX);
-        int height = spaceBetweenLinesPixels * abs(turmY - monsterY);
-
-        aktuelleGrafik.repaint(x + spaceBetweenLinesPixels / 2 - 2, y + spaceBetweenLinesPixels / 2 - 2, width + 4, height + 4);
-    }
-
-    /**
-     * Updates the buildings in the game.
-     * This method repaints the graphics of the building being updated and resets the update flag.
-     * It also deducts the ongoing costs from the available money if any.
-     * Prints the updated money amount to the console.
-     */
 
     public static void playMusic(int i) {
         if (!Einstellungen.musicMuted) {
@@ -253,5 +225,9 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static int getCurrentLevel() {
+        return currentLevel;
     }
 }

@@ -80,19 +80,19 @@ public class LevelAuswahl extends JFrame implements MouseListener {
         g.setStroke(new BasicStroke(3));
 
         g.drawRect(level1Bounds.x, level1Bounds.y, level1Bounds.width, level1Bounds.height);
-        g.drawString("level 1", level1Bounds.x + 8, level1Bounds.y + 33);
+        g.drawString("Level 1", level1Bounds.x + 8, level1Bounds.y + 33);
 
         g.drawRect(level2Bounds.x, level2Bounds.y, level2Bounds.width, level2Bounds.height);
-        g.drawString("level 2", level2Bounds.x + 8, level2Bounds.y + 33);
+        g.drawString("Level 2", level2Bounds.x + 8, level2Bounds.y + 33);
 
         g.drawRect(level3Bounds.x, level3Bounds.y, level3Bounds.width, level3Bounds.height);
-        g.drawString("level 3", level3Bounds.x + 8, level3Bounds.y + 33);
+        g.drawString("Level 3", level3Bounds.x + 8, level3Bounds.y + 33);
 
         g.drawRect(level4Bounds.x, level4Bounds.y, level4Bounds.width, level4Bounds.height);
-        g.drawString("level 4", level4Bounds.x + 8, level4Bounds.y + 33);
+        g.drawString("Level 4", level4Bounds.x + 8, level4Bounds.y + 33);
 
         g.drawRect(level5Bounds.x, level5Bounds.y, level5Bounds.width, level5Bounds.height);
-        g.drawString("level 5", level5Bounds.x + 8, level5Bounds.y + 33);
+        g.drawString("Level 5", level5Bounds.x + 8, level5Bounds.y + 33);
 
         addMouseListener(this);
     }
