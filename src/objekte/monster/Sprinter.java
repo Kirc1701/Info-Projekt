@@ -18,7 +18,7 @@ public class Sprinter extends Monster{
     private static Image image;
     static {
         try {
-            image = ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/Sprinter.png")));
+            image = mirrorImage(ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/Sprinter.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -32,7 +32,7 @@ public class Sprinter extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Sprinter(CoordsInt position) {
-        super(15, 10, position, 1, 4, 5, "Sprinter");
+        super(15, 10, position, 6, 4, 5, "Sprinter", false);
     }
 
     @Override

@@ -128,7 +128,7 @@ public class Main {
         }
     }
 
-    public static void loadDesign() throws IOException {
+    public static void loadDesign() throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (!loadDesign.isEmpty()) {
             File file = new File("savedDesigns/" + loadDesign + ".txt");
             if (file.canRead()) {
@@ -136,20 +136,17 @@ public class Main {
                 for (int i = 0; i < arguments.length - 2; i += 3) {
                     Building building = null;
                     CoordsInt position = new CoordsInt(Integer.parseInt(String.valueOf(arguments[i])), Integer.parseInt(String.valueOf(arguments[i + 1])));
-                    if (arguments[i + 2].equals("DefaultTurm")) {
-                        building = new DefaultTurm(position);
-                    } else if (arguments[i + 2].equals("DefaultMauer")) {
-                        building = new DefaultMauer(position);
-                    }
-                    if (building != null) {
-                        if (money - building.getKosten() >= 0) {
-                            karte.addBuilding(position, building);
-                            for (Monster monster : karte.getMonsterList()) {
-                                monster.updateMonsterPath(karte);
-                            }
-                            playSFX(8);
-                            money -= building.getKosten();
+                    String build = arguments[i + 2].split(" ")[1];
+                    Class<?> buildingToBuild = Class.forName(build);
+                    building = (Building) buildingToBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
+
+                    if (money - building.getKosten() >= 0) {
+                        karte.addBuilding(position, building);
+                        for (Monster monster : karte.getMonsterList()) {
+                            monster.updateMonsterPath(karte);
                         }
+                        playSFX(8);
+                        money -= building.getKosten();
                     }
                 }
             }
@@ -222,7 +219,7 @@ public class Main {
             loadDesign();
             stopMusic();
             playMusic(2);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

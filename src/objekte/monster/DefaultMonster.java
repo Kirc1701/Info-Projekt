@@ -32,7 +32,7 @@ public class DefaultMonster extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public DefaultMonster(CoordsInt position) {
-        super(10, 20, position, 2, 4, 8, "Default");
+        super(10, 20, position, 2, 4, 8, "Default", false);
     }
 
     @Override

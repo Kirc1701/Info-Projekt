@@ -32,7 +32,7 @@ public class Golem extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Golem(CoordsInt position) {
-        super(20, 60, position, 4, 1, 20, "Golem");
+        super(20, 60, position, 1, 1, 20, "Golem", false);
     }
 
     @Override

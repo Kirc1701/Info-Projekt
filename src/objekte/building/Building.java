@@ -1,8 +1,11 @@
 package src.objekte.building;
 
 import src.objekte.Objekt;
+import src.objekte.monster.Monster;
 import src.util.CoordsDouble;
 import src.util.CoordsInt;
+
+import java.util.List;
 
 import static src.Main.karte;
 
@@ -36,5 +39,9 @@ public abstract class Building extends Objekt {
     public void die() {
         super.die();
         karte.removeBuilding(position);
+        List<Monster> monsters = karte.getMonsterList();
+        for (Monster monster : monsters){
+            monster.updateMonsterPath(karte);
+        }
     }
 }

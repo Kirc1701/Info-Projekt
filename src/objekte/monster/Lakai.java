@@ -18,7 +18,7 @@ public class Lakai extends Monster{
     private static Image image;
     static {
         try {
-            image = ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/Lakai.png")));
+            image = mirrorImage(ImageIO.read(Objects.requireNonNull(Bombenschiff.class.getClassLoader().getResourceAsStream("images/Lakai.png"))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -32,7 +32,7 @@ public class Lakai extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Lakai(CoordsInt position){
-        super(10, 20, position, 1, 3, 20, "Lakai");
+        super(10, 20, position, 4, 3, 20, "Lakai", true);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class Bombenschiff extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Bombenschiff(CoordsInt position){
-        super(30, 35, position, 4, 1, 40, "Bombenschiff");
+        super(30, 35, position, 1, 1, 40, "Bombenschiff", true);
     }
 
     @Override

@@ -62,15 +62,15 @@ public class Save extends JFrame {
         setVisible(true);
     }
     private void toFile(Map<CoordsInt, Building> listToSave, FileWriter writer) throws IOException {
-        for(CoordsInt key : listToSave.keySet()){
+        for (CoordsInt key : listToSave.keySet()){
             Building building = listToSave.get(key);
-            if(!(building instanceof Basis)) {
+            if (!(building instanceof Basis)) {
                 writer.write("");
                 writer.flush();
                 writer
                         .append(key.toString())
                         .append("_")
-                        .append(building.getType())
+                        .append(building.getClass().toString())
                         .append("_")
                 ;
             }

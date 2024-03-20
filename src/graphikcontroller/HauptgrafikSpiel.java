@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.List;
 
 import static src.Main.*;
 
@@ -267,7 +268,7 @@ public class HauptgrafikSpiel extends JPanel{
         }
         try {
             loadDesign();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
         lastTick = System.currentTimeMillis();
@@ -303,7 +304,8 @@ public class HauptgrafikSpiel extends JPanel{
     }
 
     private void drawDrawables(Graphics g) {
-        for (Drawable drawable : Main.getDrawables()) {
+        List<Drawable> drawables = Main.getDrawables().reversed();
+        for (Drawable drawable : drawables) {
             if(drawable.getDrawnPosition().equals(new CoordsDouble(-1, -1))) continue;
             CoordsDouble pixelPosition = drawable.getDrawnPosition().scale(spaceBetweenLinesPixels);
             Graphics2D g2 = (Graphics2D) g;
@@ -311,7 +313,7 @@ public class HauptgrafikSpiel extends JPanel{
             g2.drawImage(drawable.getImage(), (int) pixelPosition.x(), (int) pixelPosition.y() + titelbalkenSizePixels, null);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         }
-        for(Drawable drawable : Main.getDrawables()){
+        for(Drawable drawable : drawables){
             drawable.draw(g);
         }
     }
@@ -345,8 +347,7 @@ public class HauptgrafikSpiel extends JPanel{
                     Building building = (Building) toBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
                     karte.addBuilding(position, building);
                     money -= price;
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                         InvocationTargetException e) {
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
 

@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 //Karte des Spiels
 public class Karte {
     //Der Graph der Karte
-    private final AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> mapGraph;
+    private final SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> mapGraph;
     //Liste an Gebäuden
     private final Map<CoordsInt, Building> buildings;
     //Width and Height
@@ -77,9 +77,9 @@ public class Karte {
     }
 
     // Baut den Graphen einer leeren height*width großen Karte
-    private AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> createMap(int height, int width){
+    private SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> createMap(int height, int width){
         //Neuer leerer Graph
-        AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         //Erstellung der Nodes
         for(int i = 0; i < height; i++){
@@ -155,7 +155,7 @@ public class Karte {
     }
 
     //Getter- und setter-Methoden
-    public AbstractBaseGraph<CoordsInt, DefaultWeightedEdge> getGraphOfMap() {
+    public SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> getGraphOfMap() {
         return mapGraph;
     }
     public Map<CoordsInt, Building> getBuildings() {

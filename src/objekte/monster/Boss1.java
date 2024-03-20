@@ -32,7 +32,7 @@ public class Boss1 extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Boss1(CoordsInt position) {
-        super(30, 140, position, 3, 3, 100, "Boss1");
+        super(30, 140, position, 1.5f, 3, 100, "Boss1", false);
     }
 
     @Override

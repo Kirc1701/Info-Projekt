@@ -2,8 +2,7 @@ package src.objekte.monster;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.AsUnweightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.*;
 import src.Direction;
 import src.Karte;
 import src.Main;
@@ -28,20 +27,30 @@ public abstract class Monster extends Objekt implements Tickable {
     protected List<CoordsInt> monsterPathNodes;
     protected CoordsDouble drawnPosition;
     protected double attackCooldown = attackSpeed;
+    protected boolean flying;
 
-    public Monster(int strength, int health, CoordsInt position, float movingSpeed, int attackSpeed, double kopfgeld, String type){
+    public Monster(int strength, int health, CoordsInt position, float movingSpeed, int attackSpeed, double kopfgeld, String type, boolean flying){
         super(strength, health, position, type);
         this.attackSpeed = attackSpeed;
         this.movingSpeed = movingSpeed;
         this.kopfgeld = kopfgeld;
         schritteBisZiel = 250;
         this.drawnPosition = position.toCoordsDouble();
+        this.flying = flying;
         Main.registerDrawable(this);
         Main.registerTickable(this);
     }
 
     public void updateFlyingMonsterPath(Karte karte){
-        DijkstraShortestPath<CoordsInt, DefaultWeightedEdge> pathfinder = new DijkstraShortestPath<>(new AsUnweightedGraph<>(karte.getGraphOfMap()));
+        SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> graph = karte.getGraphOfMap();
+        for (DefaultWeightedEdge edge : graph.edgeSet()){
+            graph.setEdgeWeight(edge, 1);
+        }
+        CoordsInt positionBasis = karte.getBasis().getPosition();
+        for (DefaultWeightedEdge edge : graph.edgesOf(positionBasis)){
+            graph.setEdgeWeight(edge, 10000);
+        }
+        DijkstraShortestPath<CoordsInt, DefaultWeightedEdge> pathfinder = new DijkstraShortestPath<>(graph);
         GraphPath<CoordsInt, DefaultWeightedEdge> monsterPath = pathfinder.getPath(position, karte.getBasis().getPosition());
         monsterPathWeight = monsterPath.getWeight();
         monsterPathNodes = monsterPath.getVertexList();
@@ -87,16 +96,28 @@ public abstract class Monster extends Objekt implements Tickable {
 
     public void makeMove(double timeDelta, Karte karte){
         CoordsInt nextPosition = monsterPathNodes.get(1);
-        if(attacking(karte)){
-            attack(timeDelta, karte.getBuildings().get(nextPosition));
-        }else {
-            schritteBisZiel = monsterPathNodes.size() - 2;
-            position = nextPosition;
+        if (!flying) {
+            if (attackingWalking(karte)) {
+                attack(timeDelta, karte.getBuildings().get(nextPosition));
+            } else {
+                schritteBisZiel = monsterPathNodes.size() - 2;
+                position = nextPosition;
+            }
+        } else {
+            if (attackingFlying(karte)) {
+                attack(timeDelta, karte.getBuildings().get(nextPosition));
+            } else {
+                schritteBisZiel = monsterPathNodes.size() - 2;
+                position = nextPosition;
+            }
         }
     }
 
-    public boolean attacking(Karte karte){
+    public boolean attackingWalking(Karte karte){
         return monsterPathWeight >= 10000 && karte.getBuildings().containsKey(monsterPathNodes.get(1));
+    }
+    public boolean attackingFlying(Karte karte){
+        return monsterPathNodes.get(1).equals(karte.getBasis().getPosition());
     }
 
     public abstract void updateMonsterPath(Karte karte);
