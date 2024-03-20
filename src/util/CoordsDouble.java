@@ -31,6 +31,7 @@ public record CoordsDouble(double x, double y) {
         return new CoordsDouble(java.lang.Math.min(other.x(), this.x()), java.lang.Math.min(other.x(), this.y()));
     }
 
+    @SuppressWarnings("unused")
     public CoordsDouble abs(){
         return new CoordsDouble(java.lang.Math.abs(x), java.lang.Math.abs(x));
     }

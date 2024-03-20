@@ -205,7 +205,7 @@ public class HauptgrafikSpiel extends JPanel{
                 if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultTurm")) {
                     g.setColor(Color.BLUE.brighter());
                 }
-                g.drawString("turm", 630, titelbalkenSizePixels - 2); // Add text label for Default turm
+                g.drawString("Turm", 630, titelbalkenSizePixels - 2); // Add text label for Default turm
                 if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultTurm")) {
                     g.setColor(Color.WHITE);
                 }
@@ -259,7 +259,7 @@ public class HauptgrafikSpiel extends JPanel{
                 if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultMauer")) {
                     g.setColor(Color.BLUE.brighter());
                 }
-                g.drawString("mauer", 807, titelbalkenSizePixels - 2); // Add text label for Default mauer
+                g.drawString("Mauer", 807, titelbalkenSizePixels - 2); // Add text label for Default mauer
                 if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultMauer")) {
                     g.setColor(Color.WHITE);
                 }

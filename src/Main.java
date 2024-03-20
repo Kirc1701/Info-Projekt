@@ -123,7 +123,7 @@ public class Main {
     private static Level getLevel(int aktuellesLevel) {
         Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
         try {
-            Class<?> levelToLoad = Class.forName("src.level.level" + aktuellesLevel);
+            Class<?> levelToLoad = Class.forName("src.level.Level" + aktuellesLevel);
             return (Level) levelToLoad.getDeclaredConstructor(Basis.class).newInstance(newBasis);
         } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             System.out.println("Couldn't load class file for level " + aktuellesLevel);

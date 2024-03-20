@@ -20,12 +20,12 @@ import static src.util.Math.getDirectionDifference;
 
 public abstract class Monster extends Objekt implements Tickable {
     protected final float movingSpeed;
-    protected final int attackSpeed;
+    @SuppressWarnings("CanBeFinal")
+    protected int attackSpeed;
     protected int schritteBisZiel;
     protected final double kopfgeld;
     protected double monsterPathWeight;
     protected List<CoordsInt> monsterPathNodes;
-    protected Direction direction;
     protected CoordsDouble drawnPosition;
     protected double attackCooldown = attackSpeed;
 

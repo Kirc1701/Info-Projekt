@@ -19,7 +19,8 @@ import static src.graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
 
 public abstract class Turm extends Building implements Tickable {
     final int reach;
-    protected final int attackSpeed;
+    @SuppressWarnings("CanBeFinal")
+    protected int attackSpeed;
     protected double timeTilShoot = attackSpeed;
 
     private Monster[] shotMonsters = new Monster[0];
