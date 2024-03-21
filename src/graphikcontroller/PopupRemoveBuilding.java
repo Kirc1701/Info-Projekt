@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 // Import statischer Variablen aus anderen Klassen des Projekts
 import static src.graphikcontroller.HauptgrafikSpiel.pressed;
@@ -34,14 +35,13 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
     // locationX: x-Koordinate der Mausposition in Pixeln
     // locationY: y-Koordinate der Mausposition in Pixeln
     public PopupRemoveBuilding(int targetXCoordinate, int targetYCoordinate, int mouseLocationX, int mouseLocationY) throws IOException {
+        System.out.println("PopupRemove started");
         // Übergabe der Gebäudekoordinaten
         this.targetXCoordinate = targetXCoordinate;
         this.targetYCoordinate = targetYCoordinate;
 
         // Laden der Bilddatei in die Variable trashcanImage
-        File trashcanFile = new File("images/Trashcan.png");
-        BufferedImage trashcanImage;
-        trashcanImage = ImageIO.read(trashcanFile);
+        Image trashcanImage = ImageIO.read(Objects.requireNonNull(PopupRemoveBuilding.class.getClassLoader().getResourceAsStream("images/Trashcan.png"))).getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH);
 
         // WindowListener, der bei Betätigung des Schließen-Buttons das Popup beendet
         addWindowListener(
@@ -58,7 +58,7 @@ public class PopupRemoveBuilding extends JFrame implements ActionListener {
         );
         // Erstellung der Buttons
         // Erstellung des TrashButtons, der aus einer skalierten Version des trashcanImage besteht
-        JButton trashButton = new JButton(new ImageIcon(trashcanImage.getScaledInstance(spaceBetweenLinesPixels - 2, spaceBetweenLinesPixels - 2, Image.SCALE_SMOOTH)));
+        JButton trashButton = new JButton(new ImageIcon(trashcanImage));
         // Wird der TrashButton gedrückt, gibt er als ActionCommand "Delete" zurück
         // und die Methode actionPerformed() wird aufgerufen
         trashButton.setActionCommand("Delete");

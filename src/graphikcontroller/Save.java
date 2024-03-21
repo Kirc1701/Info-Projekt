@@ -33,7 +33,7 @@ public class Save extends JFrame {
         acceptText.addActionListener(
                 e -> {
                     Map<CoordsInt, Building> listToSave = karte.getBuildings();
-                    File saveFile = new File("savedDesigns/"+textField.getText()+".txt");
+                    File saveFile = new File(textField.getText()+".txt");
                     try {
                         if(saveFile.createNewFile()){
                             if(saveFile.canWrite()){

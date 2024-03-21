@@ -16,9 +16,7 @@ import src.util.CoordsInt;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -130,15 +128,15 @@ public class Main {
 
     public static void loadDesign() throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (!loadDesign.isEmpty()) {
-            File file = new File("savedDesigns/" + loadDesign + ".txt");
-            if (file.canRead()) {
-                String[] arguments = getArguments(file);
+            InputStream stream = Main.class.getClassLoader().getResourceAsStream(loadDesign + ".txt");
+            if (stream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                String[] arguments = getArguments(reader);
                 for (int i = 0; i < arguments.length - 2; i += 3) {
-                    Building building = null;
                     CoordsInt position = new CoordsInt(Integer.parseInt(String.valueOf(arguments[i])), Integer.parseInt(String.valueOf(arguments[i + 1])));
                     String build = arguments[i + 2].split(" ")[1];
                     Class<?> buildingToBuild = Class.forName(build);
-                    building = (Building) buildingToBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
+                    Building building = (Building) buildingToBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
 
                     if (money - building.getKosten() >= 0) {
                         karte.addBuilding(position, building);
@@ -149,6 +147,8 @@ public class Main {
                         money -= building.getKosten();
                     }
                 }
+            }else{
+                System.out.println("Ungültige File");
             }
             loadDesign = "";
         }
@@ -156,9 +156,7 @@ public class Main {
 
     //    @NotNull
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static String[] getArguments(File file) throws IOException {
-        //noinspection resource
-        FileReader reader = new FileReader(file);
+    private static String[] getArguments(BufferedReader reader) throws IOException {
         char[] input = new char[15000];
         reader.read(input);
         String inputString = String.copyValueOf(input);

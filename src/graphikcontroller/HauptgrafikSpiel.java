@@ -98,9 +98,9 @@ public class HauptgrafikSpiel extends JPanel{
                             return;
                         }
                         // Wenn pressed auf false steht, kann das Programm ausgeführt werden
-                        if(!pressed[0]) {
+//                        if(!pressed[0]) {
                             // pressed wird auf true gesetzt, um häufigere Öffnung des Fensters zu vermeiden
-                            pressed[0] = true;
+//                            pressed[0] = true;
                             // x und y werden aus dem Event gezogen
                             int x = e.getX() / spaceBetweenLinesPixels;
                             int y = (e.getY() - titelbalkenSizePixels) / spaceBetweenLinesPixels;
@@ -118,7 +118,7 @@ public class HauptgrafikSpiel extends JPanel{
                                 build(chosenBuilding.getClass(), new CoordsInt(x,y), chosenBuilding.getKosten());
                                 pressed[0] = false;
                             }
-                        }
+//                        }
                     }
                 }
         );
