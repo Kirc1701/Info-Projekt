@@ -1,9 +1,9 @@
 package src.level;
 
 import org.javatuples.Pair;
-import src.objekte.building.basis.Basis;
-import src.objekte.monster.DefaultMonster;
-import src.objekte.monster.Lakai;
+import src.drawables.objects.buildings.basis.Basis;
+import src.drawables.objects.monster.DefaultMonster;
+import src.drawables.objects.monster.Lakai;
 import src.util.CoordsInt;
 
 import java.util.ArrayList;

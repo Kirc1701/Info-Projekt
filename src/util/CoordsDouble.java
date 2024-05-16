@@ -35,4 +35,8 @@ public record CoordsDouble(double x, double y) {
     public CoordsDouble abs(){
         return new CoordsDouble(java.lang.Math.abs(x), java.lang.Math.abs(x));
     }
+
+    public CoordsInt toCoordsInt() {
+        return new CoordsInt((int) x, (int) y);
+    }
 }

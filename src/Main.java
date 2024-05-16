@@ -3,37 +3,31 @@ package src;
 // Import necessary packages and classes
 //import org.jetbrains.annotations.NotNull;
 
-import src.graphikcontroller.*;
-import src.level.*;
-import src.objekte.building.basis.Basis;
-import src.objekte.building.basis.DefaultBasis;
-import src.objekte.building.Building;
-import src.objekte.building.mauer.DefaultMauer;
-import src.objekte.building.turm.DefaultTurm;
-import src.objekte.monster.Monster;
+import src.drawables.objects.buildings.Building;
+import src.drawables.objects.buildings.basis.Basis;
+import src.drawables.objects.buildings.basis.DefaultBasis;
+import src.drawables.objects.monster.Monster;
+import src.level.Level;
 import src.util.CoordsInt;
+import src.visuals.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import java.util.List;
-
-// Imported these to use in calculations
-import static java.lang.Math.abs;
-import static java.lang.Math.min;
-import static src.graphikcontroller.HauptgrafikSpiel.spaceBetweenLinesPixels;
-import static src.graphikcontroller.HauptgrafikSpiel.titelbalkenSizePixels;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 // Main class
 public class Main {
     public static JFrame aktuelleGrafik;  // The current graphics element
-    public static Karte karte;  // A map of our game world
-    public static boolean gameHasStarted = false;  // A flag to indicate if the game has started
+    public static LogicRepresentation logicRepresentation;  // A map of our game world
     public static double money = 0;  // The amount of money a player has
     public static String loadDesign = "";
     public static int screenSelection = 0;
@@ -53,6 +47,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println(Toolkit.getDefaultToolkit().getScreenSize());
+
         aktuelleGrafik = new MainMenu();
         playMusic(3);
         Main.screenSelection = 0;
@@ -63,8 +59,8 @@ public class Main {
         Level level = getLevel(chosenLevel);
         currentLevel = chosenLevel;
         money = level.getStartKapital();
-        karte = new Karte(level);
-        anzahlMauern = karte.getLevel().getAnzahlMauern();
+        logicRepresentation = new LogicRepresentation(level);
+        anzahlMauern = logicRepresentation.getLevel().getAnzahlMauern();
     }
 
     public static void setupGameWindow() {
@@ -78,12 +74,12 @@ public class Main {
             }
         });
 
-        HauptgrafikSpiel hauptgrafikSpiel = new HauptgrafikSpiel(karte);
-        frame.setContentPane(hauptgrafikSpiel);
-        frame.setSize(hauptgrafikSpiel.getSize());
+        GameScreen gameScreen = new GameScreen(logicRepresentation);
+        frame.setContentPane(gameScreen);
+        frame.setSize(gameScreen.getSize());
         frame.setVisible(true);
         frame.setResizable(false);
-        new StarteSpielBildschirm(hauptgrafikSpiel.getWidth());
+        new StartGamePopUp(gameScreen.getWidth());
         aktuelleGrafik = frame;
     }
 
@@ -97,18 +93,18 @@ public class Main {
         aktuelleGrafik.dispose();
         if (currentLevel == 4) {
             currentLevel = 1;
-        } else if (karte.playerWins()) currentLevel++;
+        } else if (logicRepresentation.playerWins()) currentLevel++;
 
         int endeX = aktuelleGrafik.getX() + (aktuelleGrafik.getWidth() / 2) - 100;
         int endeY = aktuelleGrafik.getY() + (aktuelleGrafik.getHeight() / 2) - 50;
         screenSelection = 0;
         stopMusic();
-        if (karte.playerWins()) {
+        if (logicRepresentation.playerWins()) {
             stopMusic();
-            aktuelleGrafik = new EndbildschirmGewonnen(endeX, endeY);
+            aktuelleGrafik = new WinningScreen(endeX, endeY);
         } else {
             stopMusic();
-            aktuelleGrafik = new EndbildschirmVerloren(endeX, endeY);
+            aktuelleGrafik = new LosingScreen(endeX, endeY);
         }
         stopMusic();
     }
@@ -139,9 +135,9 @@ public class Main {
                     Building building = (Building) buildingToBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
 
                     if (money - building.getKosten() >= 0) {
-                        karte.addBuilding(position, building);
-                        for (Monster monster : karte.getMonsterList()) {
-                            monster.updateMonsterPath(karte);
+                        logicRepresentation.addBuilding(position, building);
+                        for (Monster monster : logicRepresentation.getMonsterList()) {
+                            monster.updateMonsterPath(logicRepresentation);
                         }
                         playSFX(8);
                         money -= building.getKosten();
@@ -170,7 +166,7 @@ public class Main {
     }
 
     public static void playMusic(int i) {
-        if (!Einstellungen.musicMuted) {
+        if (!Settings.musicMuted) {
             sound.setFile(i);
             sound.play();
             sound.loop();
@@ -183,7 +179,7 @@ public class Main {
     }
 
     public static void playSFX(int i) {
-        if (!Einstellungen.soundmute) {
+        if (!Settings.soundmute) {
             sfx.setFile(i);
             sfx.play();
         }

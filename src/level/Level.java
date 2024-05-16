@@ -1,8 +1,8 @@
 package src.level;
 
 import org.javatuples.Pair;
-import src.objekte.building.basis.Basis;
-import src.objekte.monster.Monster;
+import src.drawables.objects.buildings.basis.Basis;
+import src.drawables.objects.monster.Monster;
 import src.util.CoordsInt;
 
 import java.util.ArrayList;

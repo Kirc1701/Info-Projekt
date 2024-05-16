@@ -1,9 +1,9 @@
 package src.level;
 
 import org.javatuples.Pair;
-import src.objekte.building.basis.Basis;
-import src.objekte.monster.Bombenschiff;
-import src.objekte.monster.Lakai;
+import src.drawables.objects.buildings.basis.Basis;
+import src.drawables.objects.monster.BombCarrier;
+import src.drawables.objects.monster.Lakai;
 import src.util.CoordsInt;
 
 import java.util.ArrayList;
@@ -30,8 +30,8 @@ public class Level4 extends Level{
         monstersToSpawn.add(new Lakai(new CoordsInt(-1, -1)));
         monstersToSpawn.add(new Lakai(new CoordsInt(-1, -1)));
         monstersToSpawn.add(new Lakai(new CoordsInt(-1, -1)));
-        monstersToSpawn.add(new Bombenschiff(new CoordsInt(-1, -1)));
-        monstersToSpawn.add(new Bombenschiff(new CoordsInt(-1, -1)));
+        monstersToSpawn.add(new BombCarrier(new CoordsInt(-1, -1)));
+        monstersToSpawn.add(new BombCarrier(new CoordsInt(-1, -1)));
         basis.setHealth(basis.getMaxHealth());
         basis.setPosition(new CoordsInt(19, 10));
     }
