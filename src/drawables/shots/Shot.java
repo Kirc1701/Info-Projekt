@@ -28,7 +28,7 @@ public abstract class Shot implements Drawable, Tickable {
         this.targetPositionPixels = adaptForPixels(targetPosition);
         this.opacity = startingOpacity;
         Main.registerTickable(this);
-        Main.registerDrawable(this);
+        Main.registerDrawable(this, Main.getDrawables().indexOf(Main.basis));
     }
 
     private CoordsInt adaptForPixels(CoordsDouble coords) {
@@ -44,6 +44,7 @@ public abstract class Shot implements Drawable, Tickable {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, normalizedOpacity()));
         System.out.println(normalizedOpacity());
         g.drawLine(startingPositionPixels.x(), startingPositionPixels.y(), targetPositionPixels.x(), targetPositionPixels.y());
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
     }
 
     @Override

@@ -36,6 +36,8 @@ public class Main {
     public static final SFX sfx = new SFX();
     public static Boolean source = false;
 
+    public static Basis basis;
+
     private static List<Drawable> drawables = new CopyOnWriteArrayList<>();
     private static List<Tickable> tickables = new CopyOnWriteArrayList<>();
     private static int currentLevel = 1;
@@ -112,10 +114,10 @@ public class Main {
     private static Level getLevel(int aktuellesLevel) {
         drawables = new CopyOnWriteArrayList<>();
         tickables = new CopyOnWriteArrayList<>();
-        Basis newBasis = new DefaultBasis(new CoordsInt(0, 0));
+        basis = new DefaultBasis(new CoordsInt(0, 0));
         try {
             Class<?> levelToLoad = Class.forName("src.level.Level" + aktuellesLevel);
-            return (Level) levelToLoad.getDeclaredConstructor(Basis.class).newInstance(newBasis);
+            return (Level) levelToLoad.getDeclaredConstructor(Basis.class).newInstance(basis);
         } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             System.out.println("Couldn't load class file for level " + aktuellesLevel);
             throw new RuntimeException(e);
@@ -195,6 +197,10 @@ public class Main {
 
     public static void registerDrawable(Drawable d){
         drawables.add(d);
+    }
+
+    public static void registerDrawable(Drawable d, int index) {
+        drawables.add(index, d);
     }
 
     public static void unregisterDrawable(Drawable d){
