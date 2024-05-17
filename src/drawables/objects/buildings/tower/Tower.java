@@ -5,7 +5,7 @@ import src.Main;
 import src.Tickable;
 import src.drawables.objects.buildings.Building;
 import src.drawables.objects.monster.Monster;
-import src.drawables.shots.DefaultShot;
+import src.drawables.shots.classicshots.DefaultShot;
 import src.util.CoordsInt;
 
 import java.awt.*;
