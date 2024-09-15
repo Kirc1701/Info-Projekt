@@ -35,6 +35,7 @@ public abstract class Level implements Serializable {
     protected List<Pair<CoordsInt, CoordsInt>> spawnArea;
     @Getter
     protected final double startKapital;
+    @Setter
     @Getter
     protected int anzahlMauern;
 
@@ -70,9 +71,5 @@ public abstract class Level implements Serializable {
 
     public boolean spawnAtPoint() {
         return spawnAtPoint;
-    }
-
-    public void setAnzahlMauern(int anzahlMauern) {
-        this.anzahlMauern = anzahlMauern;
     }
 }

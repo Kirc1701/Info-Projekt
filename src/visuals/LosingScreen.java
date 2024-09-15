@@ -1,7 +1,5 @@
 package src.visuals;
 
-import src.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -30,7 +28,7 @@ public class LosingScreen extends JFrame {
 
         JButton mainMenu = new JButton("Hauptmenü");
         mainMenu.addActionListener(
-                e -> {
+                _ -> {
                     loop.update(main_menu);
                     stopMusic();
                     setVisible(false);

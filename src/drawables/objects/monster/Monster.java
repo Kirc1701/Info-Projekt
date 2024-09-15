@@ -19,6 +19,7 @@ import java.util.List;
 
 import static src.LoopType.game_over;
 import static src.Main.loop;
+import static src.drawables.objects.ObjectType.DefaultBasis;
 import static src.util.Math.getDirectionDifference;
 import static src.util.SoundUtils.playSFX;
 
@@ -134,7 +135,7 @@ public abstract class Monster extends Object implements Tickable, Serializable {
         attackCooldown -= timeDelta;
         if(attackCooldown <= 0) {
             object.setHealth(object.getHealth() - strength);
-            if (object.getType().equals("DefaultBasis")) {
+            if (object.getType().equals(DefaultBasis)) {
                 playSFX(10);
             }
             attackCooldown = attackSpeed;
@@ -154,16 +155,16 @@ public abstract class Monster extends Object implements Tickable, Serializable {
         return 1;
     }
 
-    public boolean hasArrived(){
-        return position.equals(drawnPosition);
-    }
+//    public boolean hasArrived(){
+//        return position.equals(drawnPosition);
+//    }
 
     @Override
     public void die() {
         super.die();
         loop.unregisterTickable(this);
         loop.setMoney(loop.getMoney() + bounty);
-        if (type.equals("Boss1")) {
+        if (type.equals(ObjectType.Boss1)) {
             playSFX(9);
         } else playSFX(1);
 

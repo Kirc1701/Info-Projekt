@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 
+@NoArgsConstructor
 public class DefaultBasis extends Basis{
     private static final Image image;
     static {
@@ -24,15 +25,12 @@ public class DefaultBasis extends Basis{
         super(0, 200, position, ObjectType.DefaultBasis);
     }
 
-    public DefaultBasis() {
-        super();
-    }
-
     @Override
     public Image getImage() {
         return image;
     }
 
-    public static Image getStaticImage() {
-        return image;
-    }}
+//    public static Image getStaticImage() {
+//        return image;
+//    }
+}

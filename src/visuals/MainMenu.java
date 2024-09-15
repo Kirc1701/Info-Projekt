@@ -23,7 +23,6 @@ public class MainMenu extends JFrame implements MouseListener {
     private BufferedImage bufferedImage = null;
 
     private final boolean old_game_active;
-    private int margin = 86;
     private int start_new_game_y = 156;
     private int level_selection_y = 242;
     private int settings_y = 328;
@@ -60,6 +59,7 @@ public class MainMenu extends JFrame implements MouseListener {
         } catch (IOException ignored) {}
 
         if(old_game_active){
+            int margin = 86;
             start_new_game_y += margin;
             level_selection_y += margin;
             settings_y += margin;

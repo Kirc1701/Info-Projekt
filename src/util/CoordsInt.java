@@ -15,9 +15,9 @@ public record CoordsInt(int x, int y) implements Serializable {
                 y + reach >= position.y();
     }
 
-    public CoordsDouble subtract(CoordsDouble other){
-        return new CoordsDouble(this.x - other.x(), this.y - other.y());
-    }
+//    public CoordsDouble subtract(CoordsDouble other){
+//        return new CoordsDouble(this.x - other.x(), this.y - other.y());
+//    }
     public CoordsDouble toCoordsDouble(){
         return new CoordsDouble(this.x, this.y);
     }

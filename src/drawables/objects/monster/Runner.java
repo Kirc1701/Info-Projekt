@@ -16,6 +16,7 @@ import java.util.Objects;
 import static src.util.Math.mirrorImage;
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 
+@NoArgsConstructor
 public class Runner extends Monster {
     private static Image image;
     static {

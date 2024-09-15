@@ -21,7 +21,6 @@ public class Main {
 
     public static LogicRepresentation logicRepresentation;  // A map of our game world
     public static String loadDesign = "";
-    public static int screenSelection = 0;
 
     public static final Sound sound = new Sound();
     public static final SFX sfx = new SFX();

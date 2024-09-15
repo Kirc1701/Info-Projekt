@@ -38,7 +38,7 @@ public class Settings extends JFrame {
         if (musicMuted) {
             mute.setText("Musik: aus");
         }
-        mute.addActionListener(actionEvent -> {
+        mute.addActionListener(_ -> {
             musicMuted = !musicMuted;
             if (musicMuted) {
                 stopMusic();
@@ -55,7 +55,7 @@ public class Settings extends JFrame {
         if (soundmute) {
             mute.setText("SFX: aus");
         }
-        sound.addActionListener(actionEvent -> {
+        sound.addActionListener(_ -> {
             soundmute = !soundmute;
             if (soundmute) {
                 sound.setText("SFX: aus");
@@ -66,7 +66,7 @@ public class Settings extends JFrame {
         });
 
         JButton menu = new JButton("Hauptmenü");
-        menu.addActionListener(actionEvent -> {
+        menu.addActionListener(_ -> {
             loop.update(LoopType.main_menu_during_game);
             setVisible(false);
             dispose();
@@ -74,7 +74,7 @@ public class Settings extends JFrame {
         JButton keep_playing = new JButton();
         if(opened_during_game) {
             keep_playing = new JButton("Weiter");
-            keep_playing.addActionListener(actionEvent -> {
+            keep_playing.addActionListener(_ -> {
                 if(game_started) loop.update(LoopType.game_loop_started);
                 else loop.update(LoopType.forward);
                 setVisible(false);

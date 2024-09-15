@@ -76,7 +76,7 @@ public class UpdateLoop implements Runnable {
         if(continue_game){
             LogicRepresentation lr;
             try (FileInputStream fileInputStream = new FileInputStream("Save.txt");
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);) {
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
                 lr = (LogicRepresentation) objectInputStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -138,7 +138,7 @@ public class UpdateLoop implements Runnable {
 
     private void settings() throws InterruptedException {
         try (FileOutputStream fileOutputStream = new FileOutputStream("Save.txt");
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);) {
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(logic_representation);
             objectOutputStream.flush();
         } catch (IOException ex) {

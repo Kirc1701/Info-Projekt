@@ -1,7 +1,5 @@
 package src.visuals;
 
-import src.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -27,7 +25,7 @@ public class StartGamePopUp extends JFrame {
         //Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setBackground(Color.white);
         JButton button = new JButton("Start");
-        button.addActionListener(e -> {
+        button.addActionListener(_ -> {
             setVisible(false);
             loop.update(game_loop_started);
             stopMusic();

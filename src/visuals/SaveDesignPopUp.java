@@ -30,7 +30,7 @@ public class SaveDesignPopUp extends JFrame {
         JTextField textField = new JTextField("", 8);
         JButton acceptText = new JButton("SaveDesignPopUp Design");
         acceptText.addActionListener(
-                e -> {
+                _ -> {
                     Map<CoordsInt, Building> listToSave = loop.getLogic_representation().getBuildings();
                     File saveFile = new File(textField.getText()+".txt");
                     try {

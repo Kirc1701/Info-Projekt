@@ -1,7 +1,6 @@
 package src.drawables.shots.classicshots;
 
 import src.LogicRepresentation;
-import src.Main;
 import src.drawables.shots.Shot;
 import src.util.CoordsDouble;
 
@@ -45,13 +44,13 @@ public abstract class ClassicShot extends Shot {
         progress += timeDelta;
     }
 
-    private float normalizedOpacity() {
-        if (opacity > 1) {
-            return 1.0f;
-        }
-        if (opacity < 0) {
-            return 0.0f;
-        }
-        return opacity;
-    }
+//    private float normalizedOpacity() {
+//        if (opacity > 1) {
+//            return 1.0f;
+//        }
+//        if (opacity < 0) {
+//            return 0.0f;
+//        }
+//        return opacity;
+//    }
 }
