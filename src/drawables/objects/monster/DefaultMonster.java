@@ -43,9 +43,9 @@ public class DefaultMonster extends Monster{
         updateWalkingMonsterPath(logicRepresentation);
     }
 
-    public static Image getStaticImage() {
-        return directionalImages.get(null);
-    }
+//    public static Image getStaticImage() {
+//        return directionalImages.get(null);
+//    }
     @Override
     public Image getImage() {
         return directionalImages.get(getDirection());
