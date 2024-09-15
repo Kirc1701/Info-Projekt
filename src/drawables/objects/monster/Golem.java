@@ -1,7 +1,9 @@
 package src.drawables.objects.monster;
 
+import lombok.NoArgsConstructor;
 import src.Direction;
 import src.LogicRepresentation;
+import src.drawables.objects.ObjectType;
 import src.util.CoordsInt;
 
 import javax.imageio.ImageIO;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import static src.util.Math.mirrorImage;
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 
+@NoArgsConstructor
 public class Golem extends Monster{
     private static Image image;
     static {
@@ -32,7 +35,7 @@ public class Golem extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Golem(CoordsInt position) {
-        super(20, 60, position, 1, 1, 20, "Golem", false);
+        super(20, 60, position, 1, 1, 20, ObjectType.Golem, false);
     }
 
     @Override

@@ -7,6 +7,8 @@ import src.util.CoordsDouble;
 
 import java.awt.*;
 
+import static src.Main.loop;
+
 public abstract class ClassicShot extends Shot {
     protected Color color;
     protected int thickness;
@@ -35,8 +37,8 @@ public abstract class ClassicShot extends Shot {
     public void tick(double timeDelta, LogicRepresentation logicRepresentation) {
         System.out.println(timeDelta);
         if (progress >= duration) {
-            Main.unregisterDrawable(this);
-            Main.unregisterTickable(this);
+            loop.unregisterDrawable(this);
+            loop.unregisterTickable(this);
         }
         double opacityDifference = timeDelta / duration;
         opacity -= (float) opacityDifference;

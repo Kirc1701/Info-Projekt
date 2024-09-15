@@ -1,6 +1,8 @@
 package src.drawables.objects.buildings.tower;
 
+import lombok.NoArgsConstructor;
 import src.LogicRepresentation;
+import src.drawables.objects.ObjectType;
 import src.drawables.objects.monster.BombCarrier;
 import src.drawables.objects.monster.Monster;
 import src.util.CoordsInt;
@@ -12,6 +14,7 @@ import java.util.Objects;
 
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 
+@NoArgsConstructor
 public class Minigun extends Tower {
     private static final Image image;
 
@@ -24,7 +27,7 @@ public class Minigun extends Tower {
     }
 
     public Minigun(CoordsInt position) {
-        super(2, 25, position, 5, 2, 40, "Minigun");
+        super(2, 25, position, 5, 2, 40, ObjectType.Minigun);
     }
 
     @Override

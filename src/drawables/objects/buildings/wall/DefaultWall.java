@@ -1,5 +1,7 @@
 package src.drawables.objects.buildings.wall;
 
+import lombok.NoArgsConstructor;
+import src.drawables.objects.ObjectType;
 import src.drawables.objects.monster.BombCarrier;
 import src.util.CoordsInt;
 
@@ -10,6 +12,7 @@ import java.util.Objects;
 
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 
+@NoArgsConstructor
 public class DefaultWall extends Wall {
     private static final Image image;
 
@@ -22,7 +25,7 @@ public class DefaultWall extends Wall {
     }
 
     public DefaultWall(CoordsInt position) {
-        super(10, position, 0, "DefaultWall");
+        super(10, position, 0, ObjectType.DefaultWall);
     }
 
 

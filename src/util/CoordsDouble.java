@@ -2,7 +2,9 @@ package src.util;
 
 import src.Direction;
 
-public record CoordsDouble(double x, double y) {
+import java.io.Serializable;
+
+public record CoordsDouble(double x, double y) implements Serializable {
     public String toString() {
         return x + "_" + y;
     }

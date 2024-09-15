@@ -1,7 +1,9 @@
 package src.drawables.objects.monster;
 
+import lombok.NoArgsConstructor;
 import src.Direction;
 import src.LogicRepresentation;
+import src.drawables.objects.ObjectType;
 import src.util.CoordsInt;
 
 import javax.imageio.ImageIO;
@@ -33,7 +35,7 @@ public class Runner extends Monster {
     }
 
     public Runner(CoordsInt position) {
-        super(15, 10, position, 6, 4, 5, "Runner", false);
+        super(15, 10, position, 6, 4, 5, ObjectType.Runner, false);
     }
 
     @Override

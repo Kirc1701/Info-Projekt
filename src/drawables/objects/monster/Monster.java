@@ -1,49 +1,55 @@
 package src.drawables.objects.monster;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import src.Direction;
 import src.LogicRepresentation;
-import src.Main;
 import src.Tickable;
 import src.drawables.objects.Object;
+import src.drawables.objects.ObjectType;
 import src.util.CoordsDouble;
 import src.util.CoordsInt;
 
+import java.io.Serializable;
 import java.util.List;
 
-import static src.Main.logicRepresentation;
-import static src.Main.playSFX;
+import static src.LoopType.game_over;
+import static src.Main.loop;
 import static src.util.Math.getDirectionDifference;
+import static src.util.SoundUtils.playSFX;
 
-public abstract class Monster extends Object implements Tickable {
-    protected final float movingSpeed;
+@NoArgsConstructor
+public abstract class Monster extends Object implements Tickable, Serializable {
+    protected float movingSpeed;
     @SuppressWarnings("CanBeFinal")
     protected int attackSpeed;
-    protected int schritteBisZiel;
-    protected final double kopfgeld;
+    @Getter
+    protected int stepsToGoal;
+    protected double bounty;
     protected double monsterPathWeight;
     protected List<CoordsInt> monsterPathNodes;
+    @Getter
     protected CoordsDouble drawnPosition;
     protected double attackCooldown = attackSpeed;
     protected boolean flying;
 
-    public Monster(int strength, int health, CoordsInt position, float movingSpeed, int attackSpeed, double kopfgeld, String type, boolean flying){
+    public Monster(int strength, int health, CoordsInt position, float movingSpeed, int attackSpeed, double bounty, ObjectType type, boolean flying){
         super(strength, health, position, type);
         this.attackSpeed = attackSpeed;
         this.movingSpeed = movingSpeed;
-        this.kopfgeld = kopfgeld;
-        schritteBisZiel = 250;
+        this.bounty = bounty;
+        stepsToGoal = 250;
         this.drawnPosition = position.toCoordsDouble();
         this.flying = flying;
-        Main.registerDrawable(this);
-        Main.registerTickable(this);
+        loop.registerTickable(this);
     }
 
     public void updateFlyingMonsterPath(LogicRepresentation logicRepresentation) {
-        SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> graph = logicRepresentation.getGraphOfMap();
+        SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> graph = logicRepresentation.getMapGraph();
         for (DefaultWeightedEdge edge : graph.edgeSet()){
             graph.setEdgeWeight(edge, 1);
         }
@@ -58,7 +64,7 @@ public abstract class Monster extends Object implements Tickable {
     }
 
     public void updateWalkingMonsterPath(LogicRepresentation logicRepresentation) {
-        DijkstraShortestPath<CoordsInt, DefaultWeightedEdge> pathfinder = new DijkstraShortestPath<>(logicRepresentation.getGraphOfMap());
+        DijkstraShortestPath<CoordsInt, DefaultWeightedEdge> pathfinder = new DijkstraShortestPath<>(logicRepresentation.getMapGraph());
         GraphPath<CoordsInt, DefaultWeightedEdge> monsterPath = pathfinder.getPath(position, logicRepresentation.getBasis().getPosition());
         monsterPathWeight = monsterPath.getWeight();
         monsterPathNodes = monsterPath.getVertexList();
@@ -101,14 +107,14 @@ public abstract class Monster extends Object implements Tickable {
             if (attackingWalking(logicRepresentation)) {
                 attack(timeDelta, logicRepresentation.getBuildings().get(nextPosition));
             } else {
-                schritteBisZiel = monsterPathNodes.size() - 2;
+                stepsToGoal = monsterPathNodes.size() - 2;
                 position = nextPosition;
             }
         } else {
             if (attackingFlying(logicRepresentation)) {
                 attack(timeDelta, logicRepresentation.getBuildings().get(nextPosition));
             } else {
-                schritteBisZiel = monsterPathNodes.size() - 2;
+                stepsToGoal = monsterPathNodes.size() - 2;
                 position = nextPosition;
             }
         }
@@ -135,10 +141,6 @@ public abstract class Monster extends Object implements Tickable {
         }
     }
 
-    public int getSchritteBisZiel() {
-        return schritteBisZiel;
-    }
-
     public Direction getDirection(){
         Direction direction = getDirectionDifference((monsterPathNodes.get(1).equals(position) ? position : monsterPathNodes.get(1)).toCoordsDouble(), drawnPosition);
         if(direction == null){
@@ -146,10 +148,6 @@ public abstract class Monster extends Object implements Tickable {
             return getDirection();
         }
         return direction;
-    }
-
-    public CoordsDouble getDrawnPosition(){
-        return drawnPosition;
     }
 
     public float getOpacity() {
@@ -163,14 +161,14 @@ public abstract class Monster extends Object implements Tickable {
     @Override
     public void die() {
         super.die();
-        Main.unregisterTickable(this);
-        Main.money += kopfgeld;
+        loop.unregisterTickable(this);
+        loop.setMoney(loop.getMoney() + bounty);
         if (type.equals("Boss1")) {
             playSFX(9);
         } else playSFX(1);
 
-        if (logicRepresentation.getMonsterList().isEmpty() && logicRepresentation.getLevel().getMonstersToSpawn().isEmpty()) {
-            Main.onGameOver();
+        if (loop.getLogic_representation().getMonsterList().isEmpty() && loop.getLogic_representation().getLevel().getMonstersToSpawn().isEmpty()) {
+            loop.update(game_over);
         }
     }
 

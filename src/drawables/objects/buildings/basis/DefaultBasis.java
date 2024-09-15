@@ -1,5 +1,7 @@
 package src.drawables.objects.buildings.basis;
 
+import lombok.NoArgsConstructor;
+import src.drawables.objects.ObjectType;
 import src.util.CoordsInt;
 
 import javax.imageio.ImageIO;
@@ -19,9 +21,12 @@ public class DefaultBasis extends Basis{
         }
     }
     public DefaultBasis(CoordsInt position) {
-        super(0, 200, position, "DefaultBasis");
+        super(0, 200, position, ObjectType.DefaultBasis);
     }
 
+    public DefaultBasis() {
+        super();
+    }
 
     @Override
     public Image getImage() {

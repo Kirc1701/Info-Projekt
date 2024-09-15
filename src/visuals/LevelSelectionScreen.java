@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static src.LoopType.main_menu;
+import static src.Main.loop;
+
 public class LevelSelectionScreen extends JFrame implements MouseListener {
     private final int levelWidth = 60;
     private final int levelHeight = 60;
@@ -118,8 +121,8 @@ public class LevelSelectionScreen extends JFrame implements MouseListener {
             for (Rectangle bound : bounds.keySet()) {
                 if (bound.contains(e.getX(), e.getY())) {
                     dispose();
-                    Main.selectLevel(bounds.get(bound));
-                    new MainMenu();
+                    loop.setCurrent_level(bounds.get(bound));
+                    loop.update(main_menu);
                     setVisible(false);
                 }
             }

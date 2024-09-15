@@ -1,48 +1,45 @@
 package src.drawables.objects;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import src.Drawable;
-import src.Main;
 import src.util.CoordsDouble;
 import src.util.CoordsInt;
 
 import java.awt.*;
+import java.io.Serializable;
 
+import static src.Main.loop;
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
-import static src.visuals.GameScreen.titelbalkenSizePixels;
+import static src.visuals.GameScreen.titleBarSizePixels;
 
-
-public abstract class Object implements Drawable {
-    protected final int strength;
-    protected final int maxHealth;
+public abstract class Object implements Drawable, Serializable {
+    protected int strength;
+    @Getter
+    protected int maxHealth;
+    @Getter
     protected int health;
+    @Setter
+    @Getter
     protected CoordsInt position;
-    protected final String type;
+    @Getter
+    protected ObjectType type;
+    @Getter
     protected double spawntime;
 
-    public Object(int pStrength, int pHealth, CoordsInt position, String type) {
+    public Object(int pStrength, int pHealth, CoordsInt position, ObjectType type) {
         strength = pStrength;
         health = pHealth;
         maxHealth = health;
         this.position = position;
         this.type = type;
         spawntime = (double) System.currentTimeMillis() / 1000;
-        Main.registerDrawable(this);
+        loop.registerDrawable(this);
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public CoordsInt getPosition() {
-        return position;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public double getSpawntime() {
-        return spawntime;
+    public Object(){
+        loop.registerDrawable(this);
     }
 
     public void setHealth(int health) {
@@ -52,20 +49,8 @@ public abstract class Object implements Drawable {
         }
     }
 
-    public void setPosition(CoordsInt position) {
-        this.position = position;
-    }
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public void setSpawntime(int spawntime) {
-        this.spawntime = spawntime;
-    }
-
     public void die(){
-        Main.unregisterDrawable(this);
+        loop.unregisterDrawable(this);
     }
 
     @Override
@@ -76,7 +61,7 @@ public abstract class Object implements Drawable {
         Graphics2D g2 = (Graphics2D) g;
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.getOpacity()));
         g2.drawImage(this.
-                getImage(), (int) pixelPosition.x(), (int) pixelPosition.y() + titelbalkenSizePixels, null);
+                getImage(), (int) pixelPosition.x(), (int) pixelPosition.y() + titleBarSizePixels, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         renderLifeBar((Graphics2D) g);
     }
@@ -88,7 +73,7 @@ public abstract class Object implements Drawable {
             graphics2D.setStroke(new BasicStroke(3));
             CoordsDouble objektPosition = getDrawnPosition().scale(spaceBetweenLinesPixels);
             graphics2D.setColor(Color.red);
-            graphics2D.drawLine((int) (objektPosition.x()+ 2), (int) (objektPosition.y() + 2 + titelbalkenSizePixels), (int) (objektPosition.x() + width), (int) (objektPosition.y() + 2 + titelbalkenSizePixels));
+            graphics2D.drawLine((int) (objektPosition.x()+ 2), (int) (objektPosition.y() + 2 + titleBarSizePixels), (int) (objektPosition.x() + width), (int) (objektPosition.y() + 2 + titleBarSizePixels));
         }
     }
 

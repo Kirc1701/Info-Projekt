@@ -1,7 +1,9 @@
 package src.drawables.objects.monster;
 
+import lombok.NoArgsConstructor;
 import src.Direction;
 import src.LogicRepresentation;
+import src.drawables.objects.ObjectType;
 import src.util.CoordsInt;
 
 import javax.imageio.ImageIO;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 import static src.util.Math.mirrorImage;
 
+@NoArgsConstructor
 public class Boss1 extends Monster{
     private static Image image;
     static {
@@ -32,7 +35,7 @@ public class Boss1 extends Monster{
         directionalImages.put(Direction.SOUTH, image);
     }
     public Boss1(CoordsInt position) {
-        super(30, 140, position, 1.5f, 3, 100, "Boss1", false);
+        super(30, 140, position, 1.5f, 3, 100, ObjectType.Boss1, false);
     }
 
     @Override

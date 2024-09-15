@@ -1,5 +1,6 @@
 package src.visuals;
 
+import src.LoopType;
 import src.Main;
 
 import javax.swing.*;
@@ -7,18 +8,24 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static src.Main.loop;
+import static src.util.SoundUtils.*;
+
 public class Settings extends JFrame {
     public static boolean musicMuted = false;
     public static boolean soundmute = false;
 
-    public Settings() {
+    public Settings(boolean opened_during_game, boolean game_started) {
         addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
-                        if(Main.screenSelection == 0){
-                            new MainMenu();
+                        if(opened_during_game){
+                            if(game_started) loop.update(LoopType.game_loop_started);
+                            else loop.update(LoopType.forward);
+                            setVisible(false);
+                            dispose();
                         }else{
-                            GameScreen.pressed[1] = false;
+                            loop.update(LoopType.main_menu);
                         }
                         Main.source = false;
                         setVisible(false);
@@ -34,15 +41,16 @@ public class Settings extends JFrame {
         mute.addActionListener(actionEvent -> {
             musicMuted = !musicMuted;
             if (musicMuted) {
-                Main.stopMusic();
+                stopMusic();
                 mute.setText("Musik: aus");
             } else {
                 if (Main.source) {
-                    Main.playMusic(0);
-                } else Main.playMusic(3);
+                    playMusic(0);
+                } else playMusic(3);
                 mute.setText("Musik: an");
             }
         });
+
         JButton sound = new JButton("SFX: an");
         if (soundmute) {
             mute.setText("SFX: aus");
@@ -54,21 +62,31 @@ public class Settings extends JFrame {
             } else {
                 sound.setText("SFX: an");
             }
-            Main.playSFX(1);
+            playSFX(1);
         });
 
         JButton menu = new JButton("Hauptmenü");
         menu.addActionListener(actionEvent -> {
-            new MainMenu();
+            loop.update(LoopType.main_menu_during_game);
             setVisible(false);
             dispose();
         });
-
+        JButton keep_playing = new JButton();
+        if(opened_during_game) {
+            keep_playing = new JButton("Weiter");
+            keep_playing.addActionListener(actionEvent -> {
+                if(game_started) loop.update(LoopType.game_loop_started);
+                else loop.update(LoopType.forward);
+                setVisible(false);
+                dispose();
+            });
+        }
 
         add(mute);
         add(sound);
 
         add(menu);
+        if(opened_during_game) add(keep_playing);
         setSize(300, 300);
         setLocation(
                 Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 150,

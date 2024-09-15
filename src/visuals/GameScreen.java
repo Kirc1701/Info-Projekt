@@ -1,12 +1,10 @@
 package src.visuals;
 
-// Import anderer Klassen innerhalb des Projekts
+// Import of other classes into the project
 
-import src.Drawable;
-import src.LogicRepresentation;
-import src.Main;
-import src.Tickable;
+import src.*;
 import src.drawables.objects.Object;
+import src.drawables.objects.ObjectType;
 import src.drawables.objects.buildings.Building;
 import src.drawables.objects.buildings.tower.DefaultTower;
 import src.drawables.objects.buildings.tower.Minigun;
@@ -23,27 +21,27 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 
 import static src.Main.*;
 
-// Das Hauptfenster, auf dem das Spiel abläuft.
+// Main window which runs the game
 public class GameScreen extends JPanel {
-    // Abstand zwischen den Linien, somit Größe der Kästchen in Pixeln
+    // space between lines, aka length of squares
     public final static int spaceBetweenLinesPixels = 32;
-    public final static int titelbalkenSizePixels = 54;
+    public final static int titleBarSizePixels = 54;
 
-    // Höhe und Breite des geöffneten Fensters in Pixeln
+    // height and width of the opened window in pixels
     private final int windowWidthPixels;
     private final int windowHeightPixels;
 
-    // Verknüpfung mit der logischen Implementierung der LogicRepresentation
+    // Connection with the logical implementation of the LogicRepresentation
     private final LogicRepresentation logicRepresentation;
 
-    // boolean der eine häufigere Öffnung des popups verhindert
+    // boolean that prevents opening the popup multiple times
     public static final boolean[] pressed = {false, false};
     private BufferedImage backgroundImageLevel3 = null;
     private BufferedImage backgroundImageLevel5 = null;
@@ -51,20 +49,15 @@ public class GameScreen extends JPanel {
     private long lastTick = System.currentTimeMillis();
     private double spawnCooldown;
 
-    // Konstruktor für die Klasse GameScreen
+    public static boolean paused = true;
+
+    // constructor for class GameScreen
     public GameScreen(LogicRepresentation logicRepresentation) {
-        // Initialisierung der LogicRepresentation
         this.logicRepresentation = logicRepresentation;
 
-        // Initialisierung der Höhe und Breite als Vielfaches der Node-Anzahl
-        // Anpassung der Höhe unter Einbeziehung des Titelbalkens
         windowWidthPixels = logicRepresentation.getWidth() * spaceBetweenLinesPixels;
-        windowHeightPixels = logicRepresentation.getHeight() * spaceBetweenLinesPixels + titelbalkenSizePixels;
+        windowHeightPixels = logicRepresentation.getHeight() * spaceBetweenLinesPixels + titleBarSizePixels;
 
-        // WindowListener um das Schließen des Fensters zu registrieren
-
-
-        // Erstellung eines Images, in welches danach die Bilddateien geladen werden
         try {
             backgroundImageLevel3 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundLevel3.jpg")));
             backgroundImageLevel5 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundLevel5.jpg")));
@@ -72,201 +65,87 @@ public class GameScreen extends JPanel {
             System.out.println("Something went wrong");
         }
 
-        // Hinzufügen des MouseListeners
-        this.addMouseListener(
-                new MouseAdapter() {
-                    // Wird aufgerufen, wenn die Maus gedrückt wird
-                    public void mousePressed(MouseEvent e) {
-                        if(e.getY() <= titelbalkenSizePixels) {
-                            if (!pressed[1]) {
-                                if (e.getX() >= 300 && e.getX() <= 470) {
-                                    new SaveDesignPopUp();
-                                } else if(e.getX() >= 490 && e.getX() <= 620){
-                                    new LoadDesignPopUp();
-                                } else if(e.getX() >= windowWidthPixels - 130){
-                                    Main.source = true;
-                                    new Settings();
-                                } else if(e.getX() >= 630 && e.getX() <= 671){
-                                    choseBuilding("tower.DefaultTower");
-                                } else if(e.getX() >= 689 && e.getX() <= 730){
-                                    choseBuilding("tower.Minigun");
-                                } else if(e.getX() >= 748 && e.getX() <= 789){
-                                    choseBuilding("tower.Sniper");
-                                } else if(e.getX() >= 807 && e.getX() <= 848){
-                                    choseBuilding("wall.DefaultWall");
+        {
+            this.addMouseListener(
+                    new MouseAdapter() {
+                        public void mousePressed(MouseEvent e) {
+                            if (e.getY() <= titleBarSizePixels) {
+                                if (!pressed[1]) {
+                                    if (e.getX() >= 300 && e.getX() <= 470) {
+                                        new SaveDesignPopUp();
+                                    } else if (e.getX() >= 490 && e.getX() <= 620) {
+                                        new LoadDesignPopUp();
+                                    } else if (e.getX() >= windowWidthPixels - 130) {
+                                        Main.source = true;
+                                        loop.update(LoopType.settings);
+                                    } else if (e.getX() >= 630 && e.getX() <= 671) {
+                                        choseBuilding("tower.DefaultTower");
+                                    } else if (e.getX() >= 689 && e.getX() <= 730) {
+                                        choseBuilding("tower.Minigun");
+                                    } else if (e.getX() >= 748 && e.getX() <= 789) {
+                                        choseBuilding("tower.Sniper");
+                                    } else if (e.getX() >= 807 && e.getX() <= 848) {
+                                        choseBuilding("wall.DefaultWall");
+                                    }
                                 }
+                                return;
                             }
-                            return;
-                        }
-                        // Wenn pressed auf false steht, kann das Programm ausgeführt werden
-//                        if(!pressed[0]) {
-                            // pressed wird auf true gesetzt, um häufigere Öffnung des Fensters zu vermeiden
-//                            pressed[0] = true;
-                            // x und y werden aus dem Event gezogen
+
                             int x = e.getX() / spaceBetweenLinesPixels;
-                            int y = (e.getY() - titelbalkenSizePixels) / spaceBetweenLinesPixels;
-                            // Wenn an der gewählten Position bereits ein Gebäude steht, so wird remove aufgerufen,
-                            // sonst wird setzen aufgerufen
-                        if (logicRepresentation.getBuildings().containsKey(new CoordsInt(x, y))) {
-                            if (logicRepresentation.getBuildings().get(new CoordsInt(x, y)).getSpawntime() + 2 <= System.currentTimeMillis()) {
+                            int y = (e.getY() - titleBarSizePixels) / spaceBetweenLinesPixels;
+
+                            if (logicRepresentation.getBuildings().containsKey(new CoordsInt(x, y))) {
+                                if (logicRepresentation.getBuildings().get(new CoordsInt(x, y)).getSpawntime() + 2 <= System.currentTimeMillis()) {
                                     try {
                                         new RemoveBuildingPopUp(x, y, e.getX(), e.getY());
-                                    } catch (IOException ignored) {}
-                                }else {
+                                    } catch (IOException ignored) {
+                                    }
+                                } else {
                                     pressed[0] = false;
                                 }
-                            }else {
-                                build(chosenBuilding.getClass(), new CoordsInt(x,y), chosenBuilding.getKosten());
+                            } else {
+                                build(chosenBuilding.getClass(), new CoordsInt(x, y), chosenBuilding.getCost());
                                 pressed[0] = false;
                             }
-//                        }
+                        }
+                    }
+            );
+
+        }
+        {
+            this.addMouseMotionListener(new MouseMotionAdapter() {
+                public void mouseMoved(MouseEvent e) {
+                    if (chosenBuilding == null) return;
+                    int x = e.getX() / spaceBetweenLinesPixels;
+                    int y = (e.getY() - titleBarSizePixels) / spaceBetweenLinesPixels;
+                    if (e.getY() > titleBarSizePixels && !logicRepresentation.getBuildings().containsKey(new CoordsInt(x, y))) {
+                        chosenBuilding.setPosition(new CoordsInt(x, y));
+                    } else {
+                        chosenBuilding.setPosition(new CoordsInt(-1, -1));
                     }
                 }
-        );
-        this.addMouseMotionListener(new MouseMotionAdapter(){
-            public void mouseMoved(MouseEvent e) {
-                if(chosenBuilding == null) return;
-                int x = e.getX() / spaceBetweenLinesPixels;
-                int y = (e.getY() - titelbalkenSizePixels) / spaceBetweenLinesPixels;
-                if (e.getY() > titelbalkenSizePixels && !logicRepresentation.getBuildings().containsKey(new CoordsInt(x, y))) {
-                    chosenBuilding.setPosition(new CoordsInt(x,y));
-                }else{
-                    chosenBuilding.setPosition(new CoordsInt(-1, -1));
-                }
-            }
-        });
+            });
+        }
         spawnCooldown = 0;
-        // Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
+
         setSize(windowWidthPixels, windowHeightPixels);
         setLayout(null);
         setVisible(true);
     }
 
-    // paint()-Methode
+    // paint()-Method
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawBackground(g);
         drawDrawables(g);
         double timeDelta = (System.currentTimeMillis() - lastTick) / 1000.0;
-        if(screenSelection != 1) {
+        if(!paused) {
             tick(timeDelta);
         }
 
-        //Zeichnen der Kanten
-        Graphics2D graphics2D = (Graphics2D) g;
-        graphics2D.setStroke(new BasicStroke(1));
-        graphics2D.setColor(Color.black);
-        graphics2D.drawLine(0, titelbalkenSizePixels, windowWidthPixels, titelbalkenSizePixels);
+        paintingTitleBarAndEdges(g);
 
-        double geld = Main.money;
-        g.setColor(Color.BLACK);
-        int width = geld / 100 >= 1 ? 128 : 112;
-        g.fillRect(0, 0, width, 27);
-        g.setColor(Color.white);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Geld: " + geld, 10, titelbalkenSizePixels - 32);
-
-        {
-            g.setColor(Color.BLACK);
-            g.fillRect(298, 0, 172, 27);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Helvetica", Font.BOLD, 20));
-            g.drawString("Design speichern", 300, titelbalkenSizePixels - 32);
-
-            g.setColor(Color.BLACK);
-            g.fillRect(488, 0, 132, 27);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Helvetica", Font.BOLD, 20));
-            g.drawString("Design laden", 490, titelbalkenSizePixels - 32);
-
-            g.setColor(Color.BLACK);
-            g.fillRect(windowWidthPixels - 132, 0, 132, 27);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Helvetica", Font.BOLD, 20));
-            g.drawString("Settings", windowWidthPixels - 130, titelbalkenSizePixels - 32);
-
-            g.setColor(Color.BLACK);
-            g.fillRect(628, 0, 220, 54);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Helvetica", Font.BOLD, 13));
-            Image defaultTurmImage = DefaultTower.getStaticImage();
-            Image schnellschussTurmImage = Minigun.getStaticImage();
-            Image scharfschuetzenTurmImage = Sniper.getStaticImage();
-            Image mauerImage = DefaultWall.getStaticImage();
-            if (defaultTurmImage != null) {
-                g.fillRect(632, 2, 37, 37);
-                g.drawImage(
-                        defaultTurmImage,
-                        630,
-                        0,
-                        41,
-                        41,
-                        null
-                );
-                if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultTower")) {
-                    g.setColor(Color.BLUE.brighter());
-                }
-                g.drawString("Tower", 630, titelbalkenSizePixels - 2); // Add text label for Default tower
-                if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultTower")) {
-                    g.setColor(Color.WHITE);
-                }
-            }
-            if (schnellschussTurmImage != null) {
-                g.fillRect(691, 2, 37, 37);
-                g.drawImage(
-                        schnellschussTurmImage,
-                        689,
-                        0,
-                        41,
-                        41,
-                        null
-                );
-                if (chosenBuilding != null && chosenBuilding.getType().equals("Minigun")) {
-                    g.setColor(Color.BLUE.brighter());
-                }
-                g.drawString("Minigun", 687, titelbalkenSizePixels - 2); // Add text label for Schnellschuss tower
-                if (chosenBuilding != null && chosenBuilding.getType().equals("Minigun")) {
-                    g.setColor(Color.WHITE);
-                }
-            }
-            if (scharfschuetzenTurmImage != null) {
-                g.fillRect(750, 2, 37, 37);
-                g.drawImage(
-                        scharfschuetzenTurmImage,
-                        748,
-                        0,
-                        41,
-                        41,
-                        null
-                );
-                if (chosenBuilding != null && chosenBuilding.getType().equals("Sniper")) {
-                    g.setColor(Color.BLUE.brighter());
-                }
-                g.drawString("Sniper", 748, titelbalkenSizePixels - 2); // Add text label for Scharfschuetzen tower
-                if (chosenBuilding != null && chosenBuilding.getType().equals("Sniper")) {
-                    g.setColor(Color.WHITE);
-                }
-            }
-            if (mauerImage != null) {
-                g.fillRect(809, 2, 37, 37);
-                g.drawImage(
-                        mauerImage,
-                        807,
-                        0,
-                        41,
-                        41,
-                        null
-                );
-                if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultWall")) {
-                    g.setColor(Color.BLUE.brighter());
-                }
-                g.drawString("Wall", 807, titelbalkenSizePixels - 2); // Add text label for Default wall
-                if (chosenBuilding != null && chosenBuilding.getType().equals("DefaultWall")) {
-                    g.setColor(Color.WHITE);
-                }
-            }
-        }
         try {
             loadDesign();
         } catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
@@ -276,10 +155,61 @@ public class GameScreen extends JPanel {
         repaint();
     }
 
+    private void paintingTitleBarAndEdges(Graphics g) {
+        paint_edges((Graphics2D) g);
+
+        paintTextIntoTitleBar(0, (loop.getMoney()/100 >= 1 ? 128:112), 27, "Geld: "+loop.getMoney(),"Arial", 20, g);
+        paintTextIntoTitleBar(298, 172, 27, "Design speichern", "Helvetica", 20, g);
+        paintTextIntoTitleBar(488, 132, 27, "Design laden", "Helvetica", 20, g);
+        paintTextIntoTitleBar(windowWidthPixels -132, 132, 27, "Settings", "Helvetica", 20, g);
+
+        paintTextIntoTitleBar(628, 220, 54, "", "Helvetica", 13, g);
+
+        paintBuildingsIntoTitleBar(DefaultTower.getStaticImage(), 630, ObjectType.DefaultTower, "Default", g);
+        paintBuildingsIntoTitleBar(Minigun.getStaticImage(), 689, ObjectType.Minigun, "Mini-Gun", g);
+        paintBuildingsIntoTitleBar(Sniper.getStaticImage(), 748, ObjectType.Sniper, "Sniper", g);
+        paintBuildingsIntoTitleBar(DefaultWall.getStaticImage(), 807, ObjectType.DefaultWall, "Wall", g);
+    }
+
+    private void paintTextIntoTitleBar(int x, int width, int height, String attribute, String fontType, int fontSize, Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(x, 0, width, height);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(fontType, Font.BOLD, fontSize));
+        g.drawString(attribute, x+2, titleBarSizePixels - 32);
+    }
+
+    private void paintBuildingsIntoTitleBar(Image image, int x, ObjectType buildingType, String visibleType, Graphics g){
+        if(image != null){
+            g.fillRect(x+2, 2, 37, 37);
+            g.drawImage(
+                    image,
+                    x,
+                    0,
+                    41,
+                    41,
+                    null
+            );
+            if(chosenBuilding!= null && chosenBuilding.getType().equals(buildingType)){
+                g.setColor(Color.BLUE.brighter());
+            }
+            g.drawString(visibleType, x, titleBarSizePixels -2);
+            if(chosenBuilding != null && chosenBuilding.getType().equals(buildingType)){
+                g.setColor(Color.WHITE);
+            }
+        }
+    }
+
+    private void paint_edges(Graphics2D graphics2D) {
+        graphics2D.setStroke(new BasicStroke(1));
+        graphics2D.setColor(Color.black);
+        graphics2D.drawLine(0, titleBarSizePixels, windowWidthPixels, titleBarSizePixels);
+    }
+
     private void tick(double timeDelta) {
         if (logicRepresentation.gameOver()) return;
         spawnCooldown -= timeDelta;
-        for (Tickable tickable : Main.getTickables()) {
+        for (Tickable tickable : loop.getTickables()) {
             tickable.tick(timeDelta, logicRepresentation);
         }
         if(spawnCooldown <= 0){
@@ -297,7 +227,7 @@ public class GameScreen extends JPanel {
         for (Object building : logicRepresentation.getBuildings().values().stream().toList()) {
             if (building.getHealth() <= 0) {
                 building.die();
-                if(building.getType().equals("DefaultBasis")){
+                if(building.getType().equals(ObjectType.DefaultBasis)){
                     setVisible(false);
                 }
             }
@@ -305,7 +235,7 @@ public class GameScreen extends JPanel {
     }
 
     private void drawDrawables(Graphics g) {
-        List<Drawable> drawables = Main.getDrawables().reversed();
+        List<Drawable> drawables = loop.getDrawables().reversed();
         for(Drawable drawable : drawables){
             drawable.draw(g);
         }
@@ -316,7 +246,7 @@ public class GameScreen extends JPanel {
             g.drawImage(
                     backgroundImageLevel3,
                     0,
-                    titelbalkenSizePixels,
+                    titleBarSizePixels,
                     windowWidthPixels,
                     windowHeightPixels,
                     null
@@ -325,7 +255,7 @@ public class GameScreen extends JPanel {
             g.drawImage(
                     backgroundImageLevel5,
                     0,
-                    titelbalkenSizePixels,
+                    titleBarSizePixels,
                     windowWidthPixels,
                     windowHeightPixels,
                     null
@@ -334,22 +264,20 @@ public class GameScreen extends JPanel {
     }
 
     private void build(Class<?> toBuild, CoordsInt position, double price) {
-        if (price <= money) {
+        if (price <= loop.getMoney()) {
             if (logicRepresentation.getBuilding(position) == null) {
                 try {
                     Building building = (Building) toBuild.getDeclaredConstructor(CoordsInt.class).newInstance(position);
                     logicRepresentation.addBuilding(position, building);
-                    money -= price;
+                    loop.setMoney(loop.getMoney() - price);
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
-
                 for (Monster monster : logicRepresentation.getMonsterList()) {
                     monster.updateMonsterPath(logicRepresentation);
                 }
             }
         }
-
         pressed[0] = false;
     }
 
@@ -360,7 +288,7 @@ public class GameScreen extends JPanel {
             return;
         }
         chosenBuilding.die();
-        if(chosenBuilding.getType().equals(chosenSub)){
+        if(chosenBuilding.getType().toString().equals(chosenSub)){
             chosenBuilding = null;
         }else{
             createChosenBuilding(chosen);

@@ -1,8 +1,9 @@
 package src.drawables.objects.buildings.tower;
 
+import lombok.NoArgsConstructor;
 import src.LogicRepresentation;
-import src.Main;
 import src.Tickable;
+import src.drawables.objects.ObjectType;
 import src.drawables.objects.buildings.Building;
 import src.drawables.objects.monster.Monster;
 import src.drawables.shots.classicshots.DefaultShot;
@@ -14,20 +15,22 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Collections.min;
+import static src.Main.loop;
 
+@NoArgsConstructor
 public abstract class Tower extends Building implements Tickable {
-    final int reach;
+    protected int reach;
     @SuppressWarnings("CanBeFinal")
     protected int attackSpeed;
     protected double timeTilShoot = attackSpeed;
 
     private Monster[] shotMonsters = new Monster[0];
 
-    public Tower(int strength, int health, CoordsInt position, int reach, int speed, double kosten, String type) {
+    public Tower(int strength, int health, CoordsInt position, int reach, int speed, double kosten, ObjectType type) {
         super(strength, health, position, type, kosten);
         attackSpeed = speed;
         this.reach = reach;
-        Main.registerTickable(this);
+        loop.registerTickable(this);
     }
 
     @Override
@@ -55,7 +58,7 @@ public abstract class Tower extends Building implements Tickable {
         if(!shootingMonsters.isEmpty()) {
             HashMap<Integer, Monster> monsterMap = new HashMap<>();
             for(Monster monster : shootingMonsters){
-                monsterMap.put(monster.getSchritteBisZiel(), monster);
+                monsterMap.put(monster.getStepsToGoal(), monster);
             }
             int minimum = min(monsterMap.keySet());
             Monster monsterToShoot = monsterMap.get(minimum);
@@ -68,7 +71,7 @@ public abstract class Tower extends Building implements Tickable {
     @Override
     public void die() {
         super.die();
-        Main.unregisterTickable(this);
+        loop.unregisterTickable(this);
     }
 
     @Override

@@ -1,34 +1,51 @@
 package src;
 
+import lombok.Getter;
 import org.javatuples.Pair;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
+import src.drawables.objects.ObjectType;
 import src.drawables.objects.buildings.Building;
 import src.drawables.objects.buildings.basis.Basis;
 import src.drawables.objects.monster.Monster;
 import src.level.Level;
 import src.util.CoordsInt;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static src.Main.loop;
+import static src.util.SoundUtils.playMusic;
+import static src.util.SoundUtils.stopMusic;
+
 //LogicRepresentation des Spiels
-public class LogicRepresentation {
-    //Der Graph der LogicRepresentation
+public class LogicRepresentation implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    @Getter
     private final SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> mapGraph;
     //Liste an Gebäuden
+    @Getter
     private final Map<CoordsInt, Building> buildings;
     //Width and Height
+    @Getter
     private final int width;
+    @Getter
     private final int height;
     //basis
+    @Getter
     private final Basis basis;
     //Liste aller existierenden monster
+    @Getter
     private final List<Monster> monsterList;
+    private final List<Monster> monstersToSpawn;
     //aktuelles level
+    @Getter
     private final Level level;
     //spawnpoint
     private final CoordsInt spawnpoint;
@@ -44,6 +61,7 @@ public class LogicRepresentation {
         basis.setPosition(level.getBasisPosition());
         addBuilding(basis.getPosition(), basis);
         monsterList = new CopyOnWriteArrayList<>();
+        monstersToSpawn = level.getMonstersToSpawn();
         spawnpoint = level.getSpawnPoint();
     }
 
@@ -125,15 +143,15 @@ public class LogicRepresentation {
     // Es wird ein monster gespawnt
     public void spawnMonster() {
         Monster monster = createAndSetupMonster();
-        if(monster.getType().equals("Boss1")){
-            Main.stopMusic();
-            Main.playMusic(5);
+        if(monster.getType().equals(ObjectType.Boss1)){
+            stopMusic();
+            playMusic(5);
         }
         monster.updateMonsterPath(this);
     }
 
     private Monster createAndSetupMonster() {
-        Monster monster = level.getMonstersToSpawn().removeFirst();
+        Monster monster = monstersToSpawn.removeFirst();
         if(level.spawnAtPoint()) {
             monster.setPosition(spawnpoint);
         }else{
@@ -156,27 +174,21 @@ public class LogicRepresentation {
         return monster;
     }
 
-    //Getter- und setter-Methoden
-    public SimpleWeightedGraph<CoordsInt, DefaultWeightedEdge> getGraphOfMap() {
-        return mapGraph;
-    }
-    public Map<CoordsInt, Building> getBuildings() {
-        return buildings;
-    }
-    public int getWidth() {
-        return width;
-    }
-    public int getHeight() {
-        return height;
-    }
-    public Basis getBasis() {
-        return basis;
-    }
-    public List<Monster> getMonsterList() {
-        return monsterList;
-    }
-    public Level getLevel() {
-        return level;
+    public void addToDrawablesAndTickables(){
+        for(Building building : buildings.values()){
+            if(building.getType().equals(ObjectType.DefaultTower)||building.getType().equals(ObjectType.Sniper) || building.getType().equals(ObjectType.Minigun)){
+                loop.registerTickable((Tickable) building);
+            }
+            loop.registerDrawable(building);
+        }
+        for(Monster monster : monsterList){
+            loop.registerDrawable(monster);
+            loop.registerTickable(monster);
+        }
+        for(Monster monster : monstersToSpawn){
+            loop.registerDrawable(monster);
+            loop.registerTickable(monster);
+        }
     }
 
     public Building getBuilding(CoordsInt position) {

@@ -1,6 +1,8 @@
 package src.drawables.objects.buildings.tower;
 
+import lombok.NoArgsConstructor;
 import src.LogicRepresentation;
+import src.drawables.objects.ObjectType;
 import src.drawables.objects.monster.BombCarrier;
 import src.drawables.objects.monster.Monster;
 import src.util.CoordsInt;
@@ -12,6 +14,7 @@ import java.util.Objects;
 
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 
+@NoArgsConstructor
 public class Sniper extends Tower {
     private static final Image image;
 
@@ -24,7 +27,7 @@ public class Sniper extends Tower {
     }
 
     public Sniper(CoordsInt position) {
-        super(20, 25, position, 8, 10, 50, "Sniper");
+        super(20, 25, position, 8, 10, 50, ObjectType.Sniper);
     }
 
     @Override

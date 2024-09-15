@@ -1,13 +1,13 @@
 package src.drawables.shots;
 
 import src.Drawable;
-import src.Main;
 import src.Tickable;
 import src.util.CoordsDouble;
 import src.util.CoordsInt;
 
+import static src.Main.loop;
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
-import static src.visuals.GameScreen.titelbalkenSizePixels;
+import static src.visuals.GameScreen.titleBarSizePixels;
 
 public abstract class Shot implements Drawable, Tickable {
     protected double progress;
@@ -22,12 +22,12 @@ public abstract class Shot implements Drawable, Tickable {
         this.startingPositionPixels = adaptForPixels(startingPosition);
         this.targetPositionPixels = adaptForPixels(targetPosition);
         this.opacity = startingOpacity;
-        Main.registerTickable(this);
-        Main.registerDrawable(this, Main.getDrawables().indexOf(Main.basis));
+        loop.registerTickable(this);
+        loop.registerDrawable(this, loop.getDrawables().indexOf(loop.getBasis()));
     }
 
     private CoordsInt adaptForPixels(CoordsDouble coords) {
-        return coords.scale(spaceBetweenLinesPixels).add(new CoordsDouble((double) spaceBetweenLinesPixels / 2, (double) spaceBetweenLinesPixels / 2 + titelbalkenSizePixels)).toCoordsInt();
+        return coords.scale(spaceBetweenLinesPixels).add(new CoordsDouble((double) spaceBetweenLinesPixels / 2, (double) spaceBetweenLinesPixels / 2 + titleBarSizePixels)).toCoordsInt();
     }
 
     @Override

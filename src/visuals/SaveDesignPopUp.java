@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
-import static src.Main.logicRepresentation;
+import static src.Main.loop;
 
 public class SaveDesignPopUp extends JFrame {
     public SaveDesignPopUp() {
@@ -26,13 +26,12 @@ public class SaveDesignPopUp extends JFrame {
                     }
                 }
         );
-        //Grundlegende Initialisierung des Fensters, anschließende Darstellung des Fensters
         setBackground(Color.white);
         JTextField textField = new JTextField("", 8);
         JButton acceptText = new JButton("SaveDesignPopUp Design");
         acceptText.addActionListener(
                 e -> {
-                    Map<CoordsInt, Building> listToSave = logicRepresentation.getBuildings();
+                    Map<CoordsInt, Building> listToSave = loop.getLogic_representation().getBuildings();
                     File saveFile = new File(textField.getText()+".txt");
                     try {
                         if(saveFile.createNewFile()){

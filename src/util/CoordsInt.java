@@ -1,6 +1,8 @@
 package src.util;
 
-public record CoordsInt(int x, int y) {
+import java.io.Serializable;
+
+public record CoordsInt(int x, int y) implements Serializable {
 
     public String toString() {
         return x + "_" + y;

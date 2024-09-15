@@ -7,6 +7,11 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static src.LoopType.game_loop_started;
+import static src.Main.loop;
+import static src.util.SoundUtils.playMusic;
+import static src.util.SoundUtils.stopMusic;
+
 
 public class StartGamePopUp extends JFrame {
     public StartGamePopUp(int x) {
@@ -24,9 +29,9 @@ public class StartGamePopUp extends JFrame {
         JButton button = new JButton("Start");
         button.addActionListener(e -> {
             setVisible(false);
-            Main.screenSelection = 2;
-            Main.stopMusic();
-            Main.playMusic(0);
+            loop.update(game_loop_started);
+            stopMusic();
+            playMusic(0);
             dispose();
         });
         add(button);

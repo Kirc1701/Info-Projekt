@@ -1,7 +1,9 @@
 package src.drawables.objects.monster;
 
+import lombok.NoArgsConstructor;
 import src.Direction;
 import src.LogicRepresentation;
+import src.drawables.objects.ObjectType;
 import src.util.CoordsInt;
 
 import javax.imageio.ImageIO;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import static src.visuals.GameScreen.spaceBetweenLinesPixels;
 import static src.util.Math.mirrorImage;
 
+@NoArgsConstructor
 public class BombCarrier extends Monster {
     private static Image image;
     static {
@@ -33,7 +36,7 @@ public class BombCarrier extends Monster {
     }
 
     public BombCarrier(CoordsInt position) {
-        super(30, 35, position, 1, 1, 40, "BombCarrier", true);
+        super(30, 35, position, 1, 1, 40, ObjectType.BombCarrier, true);
     }
 
     @Override
