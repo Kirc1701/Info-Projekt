@@ -53,6 +53,18 @@ public class UpdateLoop implements Runnable {
 
     public void run() {
         current_loop = main_menu;
+        try{
+            InputStream stream = MainMenu.class.getClassLoader().getResourceAsStream("Save.txt");
+            if(stream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                char[] input = new char[6];
+                reader.read(input);
+                if(input[0] == '\u0000') throw new IOException("Invalid save file");
+                SetupMethods.selectLevel(input[5] - '0');
+                reader.close();
+            }
+        } catch (IOException _) {
+        }
         main_menu_loop();
     }
 

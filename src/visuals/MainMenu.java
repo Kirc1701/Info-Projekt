@@ -22,7 +22,7 @@ import static src.Main.loop;
 public class MainMenu extends JFrame implements MouseListener {
     private BufferedImage bufferedImage = null;
 
-    private final boolean old_game_active;
+    private boolean old_game_active = false;
     private int start_new_game_y = 156;
     private int level_selection_y = 242;
     private int settings_y = 328;
@@ -44,15 +44,17 @@ public class MainMenu extends JFrame implements MouseListener {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
                 char[] input = new char[6];
                 reader.read(input);
+                if(input[0] == '\u0000'){
+                    old_game_active = false;
+                    throw new IOException("Invalid save file");
+                }
                 String str = String.copyValueOf(input, 0, 5);
                 old_game_active = !str.equals("Level");
-                SetupMethods.selectLevel(input[5] - '0');
                 reader.close();
             }else{
                 old_game_active = false;
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException _) {
         }
         try {
             bufferedImage = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/BackgroundMenu.png")));
