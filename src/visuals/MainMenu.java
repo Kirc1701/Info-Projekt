@@ -1,7 +1,5 @@
 package src.visuals;
 
-import src.SetupMethods;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

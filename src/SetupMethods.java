@@ -8,6 +8,9 @@ import src.visuals.StartGamePopUp;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import static src.Main.loop;
@@ -40,6 +43,13 @@ public class SetupMethods {
             @Override
             public void windowClosing(WindowEvent e) {
                 game_frame.setVisible(false);
+                try (FileOutputStream fileOutputStream = new FileOutputStream("Save.txt");
+                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+                    objectOutputStream.writeObject(loop.getLogic_representation());
+                    objectOutputStream.flush();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 game_frame.dispose();
                 System.exit(0);
             }
