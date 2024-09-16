@@ -60,7 +60,8 @@ public class UpdateLoop implements Runnable {
                 char[] input = new char[6];
                 reader.read(input);
                 if(input[0] == '\u0000') throw new IOException("Invalid save file");
-                SetupMethods.selectLevel(input[5] - '0');
+                String str = String.copyValueOf(input, 0, 5);
+                if(str.equals("Level")) SetupMethods.selectLevel(input[5] - '0');
                 reader.close();
             }
         } catch (IOException _) {
@@ -87,19 +88,39 @@ public class UpdateLoop implements Runnable {
         SetupMethods.selectLevel(current_level);
         if(continue_game){
             LogicRepresentation lr;
-            try (FileInputStream fileInputStream = new FileInputStream("Save.txt");
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            try (FileInputStream fileInputStream = (FileInputStream) UpdateLoop.class.getClassLoader().getResourceAsStream("Save.txt");
+                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
                 lr = (LogicRepresentation) objectInputStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
             logic_representation = lr;
         }else{
-            try (PrintWriter printWriter = new PrintWriter("Save.txt")) {
-                printWriter.print("");
-            } catch (FileNotFoundException e) {
+            File save_file = new File("Save.txt");
+            try{
+                if(save_file.createNewFile()){
+                    if(save_file.canWrite()){
+                        FileWriter fileWriter = new FileWriter(save_file, true);
+                        fileWriter.write("");
+                        fileWriter.flush();
+                        fileWriter.close();
+                    }
+                }else{
+                    if(save_file.canWrite()){
+                        FileWriter fileWriter = new FileWriter(save_file, false);
+                        fileWriter.write("");
+                        fileWriter.flush();
+                        fileWriter.close();
+                    }
+                }
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+//            try (PrintWriter printWriter = new PrintWriter("Save.txt")) {
+//                printWriter.print("");
+//            } catch (FileNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
         }
         playMusic(2);
         music_playing = true;

@@ -1,3 +1,6 @@
-Manifest-Version: 3.0.0
+Manifest-Version: 1.0
 Main-Class: src.Main
-Class-Path: savedDesigns/
+Class-Path: jgrapht-core-1.5.2.jar jheaps-0.14.jar apfloat-1.10.1.jar jg
+ rapht-ext-1.5.2.jar jgrapht-core-1.5.2.jar jheaps-0.14.jar apfloat-1.10
+ .1.jar jgraphx-4.2.2.jar javatuples-1.2.jar lombok-1.18.34.jar Save.txt
+

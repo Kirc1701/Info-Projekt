@@ -169,6 +169,8 @@ public class QuellenCredits extends JFrame {
         });
         add(sfx);
 
+        add(new JLabel("    CoverIcon"));
+        add(new JLabel("Icon made by Paul J. from www.flaticon.com"));
 
         setSize(550, 350);
         setLocation(
